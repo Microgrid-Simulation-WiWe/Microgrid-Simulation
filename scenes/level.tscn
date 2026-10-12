@@ -1,3 +1,99 @@
 [gd_scene format=3 uid="uid://d1rth4hee6l04"]
 
+[ext_resource type="Shader" uid="uid://dlnyd0uiebpv2" path="res://assets/shader/edge_detection.gdshader" id="1_mx8sn"]
+[ext_resource type="Shader" uid="uid://d2dpqqn35sfxw" path="res://assets/shader/godot_palette_shader.gdshader" id="2_ppgk2"]
+[ext_resource type="Texture2D" uid="uid://d0645nry1qcet" path="res://assets/sprites/apollo-46-1x.png" id="3_2r41h"]
+[ext_resource type="Texture2D" uid="uid://c64jvjfllj3fc" path="res://assets/sprites/checker.jpg" id="4_klq6b"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
+flip_faces = true
+size = Vector2(2, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b121j"]
+render_priority = 0
+shader = ExtResource("1_mx8sn")
+shader_parameter/lightIntensity = 1.25
+shader_parameter/lineAlpha = 0.7
+shader_parameter/useLighting = false
+shader_parameter/lineHighlight = 0.2
+shader_parameter/lineShadow = 0.55
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8c41q"]
+shader = ExtResource("2_ppgk2")
+shader_parameter/palette = ExtResource("3_2r41h")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_xrivr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_b1lj4"]
+diffuse_mode = 3
+specular_mode = 2
+albedo_texture = ExtResource("4_klq6b")
+uv1_scale = Vector3(9, 9, 9)
+texture_filter = 0
+
+[sub_resource type="BoxMesh" id="BoxMesh_xrivr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13qdw"]
+albedo_color = Color(0.77378815, 0.6596884, 0.34055406, 1)
+
+[sub_resource type="Environment" id="Environment_xrivr"]
+
 [node name="Level" type="Node3D" unique_id=1055091197]
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=314120593]
+texture_filter = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=840495631]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="camera" type="Node3D" parent="SubViewportContainer/SubViewport" unique_id=541718152]
+
+[node name="Camera3D" type="Camera3D" parent="SubViewportContainer/SubViewport/camera" unique_id=647722584]
+transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 20, 30)
+projection = 1
+size = 35.0
+far = 200.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/camera/Camera3D" unique_id=907759062]
+cast_shadow = 0
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_13qdw")
+surface_material_override/0 = SubResource("ShaderMaterial_b121j")
+
+[node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/camera" unique_id=1610680427]
+material = SubResource("ShaderMaterial_8c41q")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="meshes" type="Node3D" parent="SubViewportContainer/SubViewport" unique_id=566281937]
+
+[node name="ground" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/meshes" unique_id=1394744518]
+transform = Transform3D(21.213203, 0, 21.213203, 0, 30, 0, -21.213203, 0, 21.213203, 0, 0, 0)
+mesh = SubResource("PlaneMesh_xrivr")
+surface_material_override/0 = SubResource("StandardMaterial3D_b1lj4")
+
+[node name="test_box" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/meshes" unique_id=1983583849]
+transform = Transform3D(3.4703035, 0, 0.89092577, 0, 3.5828419, 0, -0.89092577, 0, 3.4703035, 12.7238245, 1.5568535, 0)
+mesh = SubResource("BoxMesh_xrivr")
+surface_material_override/0 = SubResource("StandardMaterial3D_13qdw")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=22769394]
+transform = Transform3D(-0.17364816, 0.7544065, 0.63302225, -5.619428e-08, -0.64278764, 0.76604444, 0.9848077, 0.13302216, 0.11161893, 0, 5, 50)
+shadow_enabled = true
+shadow_bias = 0.2
+shadow_blur = 0.1
+directional_shadow_mode = 1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=563246080]
+environment = SubResource("Environment_xrivr")
