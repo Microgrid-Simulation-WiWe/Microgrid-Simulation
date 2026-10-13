@@ -1,0 +1,43 @@
+{
+	"schema_version": 1,
+	"id": "wind",
+	"display_name": "Windrad",
+	"type": "generator",
+	"sort_order": 2,
+	"build": {
+		"cost": 3,
+		"area_usage": [1, 1]
+	},
+	"power": {
+		"unit_power_mw": 2.0,
+		"min_load": 0,
+		"ramp_per_tick": 100
+	},
+	"input": {
+		"key": "wind_speed",
+		"curve": [[0, 0], [3, 0], [6, 0.11], [9, 0.41], [12, 1], [25, 1], [25.01, 0]]
+	},
+	"variability": {
+		"amount": 0.1,
+		"frequency": 0.05
+	},
+	"assets": {
+		"icon": "",
+		"model": "",
+		"textures": {
+			"albedo": ""
+		},
+		"animation": "",
+		"sounds": {
+			"loop": ""
+		},
+		"effects": [],
+		"scene": null
+	},
+	"visual": {
+		"scale": 1.0,
+		"offset": [0, 0, 0],
+		"anim_speed": [0.2, 1.5],
+		"volume_db": [-30, -6]
+	}
+}

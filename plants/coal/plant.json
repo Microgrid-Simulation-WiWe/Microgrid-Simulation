@@ -1,0 +1,43 @@
+{
+	"schema_version": 1,
+	"id": "coal",
+	"display_name": "Kohlekraftwerk",
+	"type": "generator",
+	"sort_order": 4,
+	"build": {
+		"cost": 2,
+		"area_usage": [2, 2]
+	},
+	"power": {
+		"unit_power_mw": 5.0,
+		"min_load": 40,
+		"ramp_per_tick": 2
+	},
+	"input": {
+		"key": "",
+		"curve": []
+	},
+	"variability": {
+		"amount": 0,
+		"frequency": 0.05
+	},
+	"assets": {
+		"icon": "",
+		"model": "",
+		"textures": {
+			"albedo": ""
+		},
+		"animation": "",
+		"sounds": {
+			"loop": ""
+		},
+		"effects": [],
+		"scene": null
+	},
+	"visual": {
+		"scale": 1.0,
+		"offset": [0, 0, 0],
+		"anim_speed": [0.2, 1.5],
+		"volume_db": [-30, -6]
+	}
+}

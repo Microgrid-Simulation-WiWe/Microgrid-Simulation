@@ -1,0 +1,43 @@
+{
+	"schema_version": 1,
+	"id": "nuclear",
+	"display_name": "Atomkraftwerk",
+	"type": "generator",
+	"sort_order": 6,
+	"build": {
+		"cost": 5,
+		"area_usage": [2, 2]
+	},
+	"power": {
+		"unit_power_mw": 10.0,
+		"min_load": 50,
+		"ramp_per_tick": 1
+	},
+	"input": {
+		"key": "cooling_water",
+		"curve": [[0, 0], [1, 1]]
+	},
+	"variability": {
+		"amount": 0,
+		"frequency": 0.05
+	},
+	"assets": {
+		"icon": "",
+		"model": "",
+		"textures": {
+			"albedo": ""
+		},
+		"animation": "",
+		"sounds": {
+			"loop": ""
+		},
+		"effects": [],
+		"scene": null
+	},
+	"visual": {
+		"scale": 1.0,
+		"offset": [0, 0, 0],
+		"anim_speed": [0.2, 1.5],
+		"volume_db": [-30, -6]
+	}
+}

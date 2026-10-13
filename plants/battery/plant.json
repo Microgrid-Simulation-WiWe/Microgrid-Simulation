@@ -1,0 +1,40 @@
+{
+	"schema_version": 1,
+	"id": "battery",
+	"display_name": "Batteriespeicher",
+	"type": "storage",
+	"sort_order": 7,
+	"build": {
+		"cost": 2,
+		"area_usage": [1, 1]
+	},
+	"power": {
+		"unit_power_mw": 2.0,
+		"ramp_per_tick": 100
+	},
+	"storage": {
+		"unit_capacity_mwh": 4.0,
+		"charge_efficiency": 0.95,
+		"discharge_efficiency": 0.95,
+		"initial_soc": 0.5
+	},
+	"assets": {
+		"icon": "",
+		"model": "",
+		"textures": {
+			"albedo": ""
+		},
+		"animation": "",
+		"sounds": {
+			"loop": ""
+		},
+		"effects": [],
+		"scene": null
+	},
+	"visual": {
+		"scale": 1.0,
+		"offset": [0, 0, 0],
+		"anim_speed": [0.2, 1.5],
+		"volume_db": [-30, -6]
+	}
+}

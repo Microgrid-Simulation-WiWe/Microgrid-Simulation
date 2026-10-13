@@ -1,0 +1,5 @@
+{
+	"id": "missing_asset",
+	"type": "storage",
+	"assets": { "icon": "gibt_es_nicht.png" }
+}
