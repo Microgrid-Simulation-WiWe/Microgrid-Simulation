@@ -3,9 +3,7 @@ extends SceneTree
 ##   godot --headless --path . --script res://plants/_tests/run_tests.gd
 
 const FIXTURES_DIR := "res://plants/_tests/fixtures"
-const BASE_TYPES: Array[StringName] = [&"solar", &"wind", &"hydro", &"coal", &"nuclear", &"battery"]
-## gas ist vorerst ausgeblendet, wird für den Test aber direkt geladen. Wieder eingeblendet: _make_plant(&"gas", 0).
-const HIDDEN_GAS_DIR := "res://plants/.gas"
+const BASE_TYPES: Array[StringName] = [&"solar", &"wind", &"hydro", &"coal", &"gas", &"nuclear", &"battery"]
 
 var _failures := 0
 
@@ -71,8 +69,7 @@ func _test_generators() -> void:
 	_check(ticks == 50, "Atom 50 → 100 %% dauert 50 Ticks (%d)" % ticks)
 	nuclear.free()
 
-	var gas_definition := PlantRegistry._load_definition(HIDDEN_GAS_DIR.path_join(PlantRegistry.JSON_FILE), HIDDEN_GAS_DIR)
-	var gas := _create_plant(gas_definition, 0)
+	var gas := _make_plant(&"gas", 0)
 	gas.setpoint = 100.0
 	_run(gas, inputs, 5)
 	_check(is_zero_approx(gas.actual_power_mw), "unit_count 0 → 0 MW")

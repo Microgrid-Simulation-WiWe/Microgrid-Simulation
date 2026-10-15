@@ -22,7 +22,7 @@
 		"frequency": 0.05
 	},
 	"assets": {
-		"icon": "",
+		"icon": "gas-stove.svg",
 		"model": "",
 		"textures": {
 			"albedo": ""

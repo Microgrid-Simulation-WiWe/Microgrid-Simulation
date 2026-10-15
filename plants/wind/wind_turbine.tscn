@@ -1,3 +1,5 @@
-[gd_scene format=3 uid="uid://bu04dljsmty4i"]
+[gd_scene format=3 uid="uid://c06q17l7hells"]
 
-[node name="WindTurbine" type="Node3D" unique_id=1324734145]
+[ext_resource type="PackedScene" path="res://plants/_base/generator_building_base.tscn" id="1_j3cyi"]
+
+[node name="GeneratorBuilding" unique_id=997457953 instance=ExtResource("1_j3cyi")]

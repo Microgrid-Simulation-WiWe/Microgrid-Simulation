@@ -19,7 +19,7 @@
 		"initial_soc": 0.5
 	},
 	"assets": {
-		"icon": "",
+		"icon": "battery-pack.svg",
 		"model": "",
 		"textures": {
 			"albedo": ""
