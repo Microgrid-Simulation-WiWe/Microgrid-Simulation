@@ -3,7 +3,9 @@ extends SceneTree
 ##   godot --headless --path . --script res://plants/_tests/run_tests.gd
 
 const FIXTURES_DIR := "res://plants/_tests/fixtures"
-const BASE_TYPES: Array[StringName] = [&"solar", &"wind", &"hydro", &"coal", &"gas", &"nuclear", &"battery", &"pumped_hydro"]
+const BASE_TYPES: Array[StringName] = [&"solar", &"wind", &"hydro", &"coal", &"nuclear", &"battery"]
+## gas ist vorerst ausgeblendet, wird für den Test aber direkt geladen. Wieder eingeblendet: _make_plant(&"gas", 0).
+const HIDDEN_GAS_DIR := "res://plants/.gas"
 
 var _failures := 0
 
@@ -31,7 +33,7 @@ func _test_registry() -> void:
 	var sorted := range(1, all.size()).all(func(i: int) -> bool: return all[i - 1].sort_order <= all[i].sort_order)
 	_check(sorted, "nach sort_order sortiert")
 	_check(PlantRegistry.get_by_id(&"wind") is GeneratorDefinition, "wind ist ein Generator")
-	_check(PlantRegistry.get_by_id(&"pumped_hydro") is StorageDefinition, "pumped_hydro ist ein Speicher")
+	_check(PlantRegistry.get_by_id(&"battery") is StorageDefinition, "battery ist ein Speicher")
 	_check(PlantRegistry.get_by_id(&"wind").building_scene != null, "Standard-Gebäudeszene gesetzt")
 
 
@@ -69,7 +71,8 @@ func _test_generators() -> void:
 	_check(ticks == 50, "Atom 50 → 100 %% dauert 50 Ticks (%d)" % ticks)
 	nuclear.free()
 
-	var gas := _make_plant(&"gas", 0)
+	var gas_definition := PlantRegistry._load_definition(HIDDEN_GAS_DIR.path_join(PlantRegistry.JSON_FILE), HIDDEN_GAS_DIR)
+	var gas := _create_plant(gas_definition, 0)
 	gas.setpoint = 100.0
 	_run(gas, inputs, 5)
 	_check(is_zero_approx(gas.actual_power_mw), "unit_count 0 → 0 MW")
@@ -125,13 +128,17 @@ func _test_loading_errors() -> void:
 	var minimal := PlantRegistry.get_by_id(&"minimal") as GeneratorDefinition
 	_check(minimal != null and minimal.ramp_per_tick == 100.0 and minimal.input_curve == null, "fehlende Felder → Standardwerte")
 	_check(PlantRegistry.get_all().size() == 2, "unbekannter type und doppelte id → übersprungen")
+	_check(PlantRegistry.get_by_id(&"hidden") == null, "Punkt-Ordner (.hidden) → übersprungen")
 	var missing := PlantRegistry.get_by_id(&"missing_asset")
 	_check(missing is StorageDefinition and missing.icon == null, "fehlendes Asset → kein Absturz, icon leer")
 	PlantRegistry.scan()
 
 
 func _make_plant(id: StringName, units := 1) -> PowerPlant:
-	var definition := PlantRegistry.get_by_id(id)
+	return _create_plant(PlantRegistry.get_by_id(id), units)
+
+
+func _create_plant(definition: PlantDefinition, units := 1) -> PowerPlant:
 	var plant := definition.create_plant()
 	plant.setup(definition, 0)
 	plant.unit_count = units

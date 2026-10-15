@@ -1,5 +1,6 @@
 class_name PlantRegistry
 ## Findet alle Anlagentypen: Jeder Unterordner von res://plants mit einer plant.json ist ein Typ.
+## Ordner mit "." am Anfang (z. B. .gas) werden übersprungen, so lässt sich ein Typ vorerst ausblenden.
 ## Statische Klasse (kein Autoload nötig), lädt beim ersten Zugriff.
 
 const PLANTS_DIR := "res://plants"
@@ -28,6 +29,8 @@ static func scan(directory := PLANTS_DIR) -> void:
 	_definitions.clear()
 	_loaded = true
 	for folder_name in DirAccess.get_directories_at(directory):
+		if folder_name.begins_with("."):  # Windows liefert Punkt-Ordner mit, Linux/macOS nicht.
+			continue
 		var folder := directory.path_join(folder_name)
 		var json_path := folder.path_join(JSON_FILE)
 		if not FileAccess.file_exists(json_path):

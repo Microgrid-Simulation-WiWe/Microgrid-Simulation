@@ -18,10 +18,10 @@ Die `plant.json` eines **ähnlichen** Typs in den neuen Ordner kopieren:
 | Neuer Typ ist … | Vorlage |
 |---|---|
 | ein **Erzeuger**, abhängig vom Wetter | `solar/`, `wind/` oder `hydro/` |
-| ein **Erzeuger**, frei steuerbar | `gas/`, `coal/` oder `nuclear/` |
-| ein **Speicher** | `battery/` oder `pumped_hydro/` |
+| ein **Erzeuger**, frei steuerbar | `.gas/`, `coal/` oder `nuclear/` |
+| ein **Speicher** | `battery/` oder `.pumped_hydro/` |
 
-Für Biogas nehmen wir `gas/plant.json`.
+Für Biogas nehmen wir `.gas/plant.json`. Ordner mit `.` am Anfang zeigt der Godot-Editor nicht an, diese Datei also im Explorer oder in VS Code kopieren.
 
 ## 3. Werte anpassen
 
@@ -120,6 +120,7 @@ Beim Spielen sind alle Werte im **Remote-Inspector** sichtbar und live änderbar
 
 ## Sonderfälle
 
+- **Typ vorerst ausblenden:** Den Ordner mit `.` beginnen lassen (z. B. `gas` → `.gas`). Die Registry überspringt ihn dann. Der Godot-Editor zeigt Punkt-Ordner nicht an, umbenennen also im Explorer oder in VS Code.
 - **Aufwendiges Gebäude** (mehrere Animationen, spezielle Effekte):
   1. Rechtsklick auf `_base/generator_building_base.tscn` (bzw. `storage_…`) → *Neue geerbte Szene*.
   2. Im Typ-Ordner speichern und in der JSON unter `assets.scene` eintragen.

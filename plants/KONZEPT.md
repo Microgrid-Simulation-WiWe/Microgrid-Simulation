@@ -112,11 +112,12 @@ res://plants/
 ├─ KONZEPT.md  HOW_TO.md
 ├─ _base/          Basisklassen, Basis-Szenen, plant_schema.md
 ├─ _tests/         run_tests.gd + fixtures/ (absichtlich fehlerhafte plant.json)
-├─ solar/ wind/ hydro/ coal/ gas/ nuclear/ battery/ pumped_hydro/
+├─ solar/ wind/ hydro/ coal/ nuclear/ battery/   .gas/ .pumped_hydro/ (ausgeblendet)
 │    └─ plant.json (+ später icon.png, models/, textures/, sounds/, effects/)
 ```
 
 - Ordner, die mit `_` beginnen, enthalten keine `plant.json` direkt und werden deshalb nicht als Typ erkannt.
+- Ordner, die mit `.` beginnen, überspringt die Registry. So ist ein Typ vorerst ausgeblendet, aktuell `.gas` und `.pumped_hydro`. Der Godot-Editor zeigt solche Ordner nicht an und exportiert sie nicht.
 - Die Asset-Pfade in den `plant.json` sind noch leer, weil es noch keine Grafiken und Sounds gibt. Bis dahin zeigt ein Gebäude eine graue Platzhalter-Box.
 
 ## 5. Startwerte (Platzhalter, Balancing später)
@@ -127,10 +128,10 @@ res://plants/
 | Wind | generator | 2 | 0 | 100 | `wind_speed` (0 unter 3 m/s, voll ab 12 m/s, 0 über 25 m/s) | ±10 % | 3 | 1×1 |
 | Wasser | generator | 1 | 0 | 100 | `water_flow` | ±2 % | 3 | 1×1 |
 | Kohle | generator | 5 | 40 % | 2 | – | – | 2 | 2×2 |
-| Gas | generator | 3 | 20 % | 10 | – | – | 2 | 1×1 |
+| Gas (ausgeblendet) | generator | 3 | 20 % | 10 | – | – | 2 | 1×1 |
 | Atom | generator | 10 | 50 % | 1 | `cooling_water` | – | 5 | 2×2 |
 | Batterie | storage | 2 MW / 4 MWh | – | 100 | η 95 %/95 % | – | 2 | 1×1 |
-| Pumpspeicher | storage | 5 MW / 40 MWh | – | 100 | η 88 %/88 % | – | 4 | 2×2 |
+| Pumpspeicher (ausgeblendet) | storage | 5 MW / 40 MWh | – | 100 | η 88 %/88 % | – | 4 | 2×2 |
 
 ## 6. Inspector und JSON
 
@@ -154,10 +155,10 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - Solar bei Nacht
 - Atom-Mindestlast und -Rampe (50 → 100 % in 50 Ticks)
 - `unit_count` 0
-- Gas Ein/Aus mit Rampe
+- Gas Ein/Aus mit Rampe (direkt aus `.gas` geladen)
 - Speicher: Entladen bis leer, Laden mit Wirkungsgrad
 - `EnergyMix`, `build()` und Gebäude mit Platzhalter
-- Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets
+- Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets, Punkt-Ordner
 
 ## 8. Stand der Umsetzung
 
