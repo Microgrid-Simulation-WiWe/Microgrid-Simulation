@@ -5,7 +5,7 @@
 	"type": "generator",
 	"sort_order": 2,
 	"build": {
-		"cost": 3,
+		"cost": 1,
 		"area_usage": [1, 1]
 	},
 	"power": {
@@ -23,7 +23,7 @@
 	},
 	"assets": {
 		"icon": "wind_turbine_icon.svg",
-		"model": "",
+		"model": "../../assets/meshes/windradglb.glb",
 		"textures": {
 			"albedo": ""
 		},
@@ -32,7 +32,7 @@
 			"loop": ""
 		},
 		"effects": [],
-		"scene": "wind_turbine.tscn"
+		"scene": null
 	},
 	"visual": {
 		"scale": 1.0,

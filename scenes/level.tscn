@@ -4,6 +4,8 @@
 [ext_resource type="Shader" uid="uid://d2dpqqn35sfxw" path="res://assets/shader/godot_palette_shader.gdshader" id="2_ppgk2"]
 [ext_resource type="Texture2D" uid="uid://d0645nry1qcet" path="res://assets/sprites/apollo-46-1x.png" id="3_2r41h"]
 [ext_resource type="Texture2D" uid="uid://c64jvjfllj3fc" path="res://assets/sprites/checker.jpg" id="4_klq6b"]
+[ext_resource type="Script" uid="uid://ba6vhqsn6x2lq" path="res://plants/_base/energy_mix.gd" id="5_ppgk2"]
+[ext_resource type="Script" uid="uid://du12005ipj46s" path="res://scenes/build_wind_button.gd" id="6_wbtn"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -97,3 +99,17 @@ directional_shadow_mode = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="SubViewportContainer/SubViewport" unique_id=563246080]
 environment = SubResource("Environment_xrivr")
+
+[node name="EnergyMix" type="Node" parent="." unique_id=1527151300]
+script = ExtResource("5_ppgk2")
+metadata/_custom_type_script = "uid://ba6vhqsn6x2lq"
+
+[node name="BuildWindButton" type="Button" parent="." unique_id=1742385061 node_paths=PackedStringArray("energy_mix", "target")]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 136.0
+offset_bottom = 48.0
+text = "Windrad bauen"
+script = ExtResource("6_wbtn")
+energy_mix = NodePath("../EnergyMix")
+target = NodePath("../SubViewportContainer/SubViewport/meshes")

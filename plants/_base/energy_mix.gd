@@ -26,6 +26,9 @@ func _ready() -> void:
 		plant.setup(definition, noise_seed)
 		add_child(plant)
 		_plants.append(plant)
+		
+	print("Plants:")
+	print("\n".join(_plants))
 
 
 func _process(delta: float) -> void:
