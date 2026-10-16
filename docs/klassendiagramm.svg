@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="2196" height="1623" viewBox="0 0 2196 1623">
-<rect width="2196" height="1623" fill="#ffffff"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="2196" height="1641" viewBox="0 0 2196 1641">
+<rect width="2196" height="1641" fill="#ffffff"/>
 <text x="40" y="58" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="26" font-weight="700" fill="#1f2328">Microgrid – UML-Klassendiagramm</text>
-<text x="40" y="86" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#57606a">Alle GDScript-Klassen aus res://plants und res://scenes · Stand: 15.10.2026</text>
+<text x="40" y="86" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#57606a">Alle GDScript-Klassen aus res://plants und res://scenes · Code-Stand: Commit d9cc275 (15.10.2026)</text>
 <path d="M501.0,549.0 L95.0,549.0 L95.0,211.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M95.0,198.0 L102.5,211.0 L87.5,211.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M190,230 H95.0" fill="none" stroke="#3d4450" stroke-width="1.4"/>
@@ -68,6 +68,12 @@
 <path d="M873.0,1456.0 L1011.0,1456.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
 <path d="M1001.2,1451.0 L1011.0,1456.0 L1001.2,1461.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="942.0" y="1448" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">«create»</text>
+<path d="M1011.0,1227.0 L889.0,1227.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+<path d="M898.8,1232.0 L889.0,1227.0 L898.8,1222.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="950.0" y="1219" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest Werte</text>
+<path d="M1011.0,1500.0 L873.0,1500.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+<path d="M882.8,1505.0 L873.0,1500.0 L882.8,1495.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="942.0" y="1492" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest Werte</text>
 <path d="M1646.0,1468.0 L1393.0,1468.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
 <path d="M1402.8,1473.0 L1393.0,1468.0 L1402.8,1463.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="1519.5" y="1460" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest state_of_charge</text>
@@ -364,17 +370,19 @@
 <text x="1717" y="53.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Test-Knopf in scenes/level.tscn:</text>
 <text x="1717" y="70.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">baut pro Klick ein Windrad.</text>
 <line x1="713" y1="402" x2="713" y2="380" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
-<path d="M617,402 H920 L930,412 V466 H617 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
-<path d="M920,402 V412 H930" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
-<text x="628" y="421.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Statische Klasse, kein Autoload.</text>
-<text x="628" y="438.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Liest alle res://plants/*/plant.json;</text>
-<text x="628" y="454.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">„type“ → Generator- oder StorageDefinition.</text>
+<path d="M617,402 H933 L943,412 V482 H617 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
+<path d="M933,402 V412 H943" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
+<text x="628" y="421.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Statische Klasse (kein Autoload). Liest beim</text>
+<text x="628" y="438.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">ersten Zugriff jede res://plants/*/plant.json</text>
+<text x="628" y="454.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">(Ordner mit „.“ vorne werden übersprungen);</text>
+<text x="628" y="471.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">„type“ → Generator- oder StorageDefinition.</text>
 <line x1="340" y1="339" x2="341.5" y2="311" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
-<path d="M140,339 H470 L480,349 V403 H140 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
+<path d="M140,339 H470 L480,349 V419 H140 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M470,339 V349 H480" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="151" y="358.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Einflussgrößen eines Ticks (Wetter, Tageszeit),</text>
 <text x="151" y="375.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">später vom Wetter-System gesetzt.</text>
-<text x="151" y="391.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">GeneratorDefinition.input_key wählt eine davon.</text>
+<text x="151" y="391.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">GeneratorDefinition.input_key wählt eine davon</text>
+<text x="151" y="408.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">(wird beim Laden geprüft).</text>
 <line x1="400" y1="602.5" x2="501" y2="601" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M60,579 H390 L400,589 V626 H60 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M390,579 V589 H400" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
@@ -393,30 +401,33 @@
 <text x="1022" y="901.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Einheiten zusammen. Steuerwerte setzt der</text>
 <text x="1022" y="917.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Spieler, tick() berechnet daraus die Leistung.</text>
 <line x1="1131" y1="1284" x2="1131" y2="1266" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
-<path d="M1011,1284 H1341 L1351,1294 V1331 H1011 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
+<path d="M1011,1284 H1341 L1351,1294 V1348 H1011 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1341,1284 V1294 H1351" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
-<text x="1022" y="1303.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Fährt per Rampe zum Sollwert – mindestens</text>
-<text x="1022" y="1320.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">min_load, höchstens die aktuelle Verfügbarkeit.</text>
+<text x="1022" y="1303.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">An: fährt per Rampe zu max(setpoint, min_load),</text>
+<text x="1022" y="1320.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">höchstens bis zur aktuellen Verfügbarkeit.</text>
+<text x="1022" y="1336.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Aus: fährt per Rampe auf 0.</text>
 <line x1="1131" y1="1539" x2="1131" y2="1521" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1011,1539 H1300 L1310,1549 V1586 H1011 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1300,1539 V1549 H1310" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="1022" y="1558.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">setpoint &gt; 0 entlädt, &lt; 0 lädt – begrenzt</text>
 <text x="1022" y="1575.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">durch Ladestand und Wirkungsgrad.</text>
 <line x1="1796" y1="775" x2="1796" y2="749" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
-<path d="M1646,775 H2057 L2067,785 V839 H1646 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
-<path d="M2057,775 V785 H2067" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
-<text x="1657" y="794.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Darstellung eines gebauten Gebäudes. Rechnet nichts,</text>
-<text x="1657" y="811.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">reagiert nur auf state_changed. Szene: *_building_base.tscn</text>
-<text x="1657" y="827.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">(Model, AnimationPlayer, AudioStreamPlayer3D, Effects).</text>
-<path d="M1646,875 H2016 L2026,885 V1005 H1646 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
-<path d="M2016,875 V885 H2026" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
-<text x="1657" y="894.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" font-weight="700" fill="#3b3418">Ablauf zur Laufzeit</text>
-<text x="1657" y="911.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">1. Start: EnergyMix holt alle Steckbriefe aus der</text>
-<text x="1671" y="927.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">PlantRegistry und legt je Typ eine PowerPlant an.</text>
-<text x="1657" y="944.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">2. Bauen: build(id) zählt unit_count hoch und</text>
-<text x="1671" y="960.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">liefert das passende Gebäude.</text>
-<text x="1657" y="977.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">3. Tick: EnergyMix.tick() ruft PowerPlant.tick() auf;</text>
-<text x="1671" y="993.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">state_changed → Gebäude passt Animation und Ton an.</text>
+<path d="M1646,775 H2009 L2019,785 V872 H1646 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
+<path d="M2009,775 V785 H2019" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
+<text x="1657" y="794.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Darstellung eines gebauten Gebäudes, rechnet nichts:</text>
+<text x="1657" y="811.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">setup() baut es aus den Assets auf, danach reagiert</text>
+<text x="1657" y="827.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">es nur auf state_changed.</text>
+<text x="1657" y="844.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Standard-Szene: *_building_base.tscn (Model,</text>
+<text x="1657" y="860.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">AnimationPlayer, AudioStreamPlayer3D, Effects).</text>
+<path d="M1646,908 H2016 L2026,918 V1038 H1646 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
+<path d="M2016,908 V918 H2026" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
+<text x="1657" y="927.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" font-weight="700" fill="#3b3418">Ablauf zur Laufzeit</text>
+<text x="1657" y="944.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">1. Start: EnergyMix holt alle Steckbriefe aus der</text>
+<text x="1671" y="960.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">PlantRegistry und legt je Typ eine PowerPlant an.</text>
+<text x="1657" y="977.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">2. Bauen: build(id) zählt unit_count hoch und liefert</text>
+<text x="1671" y="993.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">das Gebäude; add_child() macht der Aufrufer.</text>
+<text x="1657" y="1010.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">3. Tick: EnergyMix.tick() ruft PowerPlant.tick() auf;</text>
+<text x="1671" y="1026.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">state_changed → Gebäude passt Animation und Ton an.</text>
 <line x1="1766" y1="1214" x2="1766" y2="1196" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1646,1214 H1955 L1965,1224 V1245 H1646 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1955,1214 V1224 H1965" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
@@ -426,7 +437,7 @@
 <path d="M1942,1503 V1513 H1952" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="1657" y="1522.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Lade-/Entladeleistung → Animation und Ton,</text>
 <text x="1657" y="1539.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Ladestand → fill_indicator.</text>
-<rect x="40" y="1196" width="440" height="395" rx="6" fill="#fafbfc" stroke="#d0d7de"/>
+<rect x="40" y="1196" width="440" height="415" rx="6" fill="#fafbfc" stroke="#d0d7de"/>
 <text x="54" y="1220" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="14" font-weight="600" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Legende</text>
 <path d="M56.0,1242.0 L103.0,1242.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M116.0,1242.0 L103.0,1249.5 L103.0,1234.5 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
@@ -450,18 +461,19 @@
 <text x="88" y="1413" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">für Unterklassen bzw. Godot-Callback</text>
 <text x="66" y="1432" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">-</text>
 <text x="88" y="1432" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">intern (Name beginnt mit _)</text>
-<text x="56" y="1457" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">kursiv = abstrakt (@abstract) · unterstrichen = statisch</text>
-<text x="56" y="1477" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Rückgabetyp void weggelassen · «signal» = Godot-Signal</text>
-<text x="56" y="1503" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Farben:</text>
-<rect x="56" y="1513" width="16" height="14" rx="3" fill="#dbe9f8" stroke="#4a7fbf"/>
-<text x="78" y="1525" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Daten</text>
-<rect x="124.5" y="1513" width="16" height="14" rx="3" fill="#dcf0e0" stroke="#3f8f55"/>
-<text x="146.5" y="1525" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Logik</text>
-<rect x="193.0" y="1513" width="16" height="14" rx="3" fill="#fbe7cf" stroke="#c47f2c"/>
-<text x="215.0" y="1525" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Darstellung</text>
-<rect x="302.9" y="1513" width="16" height="14" rx="3" fill="#ebe4f6" stroke="#7d64b0"/>
-<text x="324.9" y="1525" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Szene &amp; Tests</text>
-<rect x="56" y="1535" width="16" height="14" rx="3" fill="#f3f4f6" stroke="#8c959f" stroke-dasharray="4 2"/>
-<text x="78" y="1547" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Godot-Engine</text>
-<text x="56" y="1575" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#57606a" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Nicht enthalten: Szenen (*.tscn) und Shader (*.gdshader).</text>
+<text x="56" y="1457" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">kursiv = abstrakt (@abstract)</text>
+<text x="56" y="1477" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">unterstrichen = statisch (static, const)</text>
+<text x="56" y="1497" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Rückgabetyp void weggelassen · «signal» = Godot-Signal</text>
+<text x="56" y="1523" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Farben:</text>
+<rect x="56" y="1533" width="16" height="14" rx="3" fill="#dbe9f8" stroke="#4a7fbf"/>
+<text x="78" y="1545" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Daten</text>
+<rect x="124.5" y="1533" width="16" height="14" rx="3" fill="#dcf0e0" stroke="#3f8f55"/>
+<text x="146.5" y="1545" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Logik</text>
+<rect x="193.0" y="1533" width="16" height="14" rx="3" fill="#fbe7cf" stroke="#c47f2c"/>
+<text x="215.0" y="1545" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Darstellung</text>
+<rect x="302.9" y="1533" width="16" height="14" rx="3" fill="#ebe4f6" stroke="#7d64b0"/>
+<text x="324.9" y="1545" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Szene &amp; Tests</text>
+<rect x="56" y="1555" width="16" height="14" rx="3" fill="#f3f4f6" stroke="#8c959f" stroke-dasharray="4 2"/>
+<text x="78" y="1567" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Godot-Engine</text>
+<text x="56" y="1595" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#57606a" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">Nicht enthalten: Szenen (*.tscn) und Shader (*.gdshader).</text>
 </svg>
