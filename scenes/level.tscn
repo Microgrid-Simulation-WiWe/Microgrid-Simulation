@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://d0645nry1qcet" path="res://assets/sprites/apollo-46-1x.png" id="3_2r41h"]
 [ext_resource type="Texture2D" uid="uid://c64jvjfllj3fc" path="res://assets/sprites/checker.jpg" id="4_klq6b"]
 [ext_resource type="Script" uid="uid://ba6vhqsn6x2lq" path="res://plants/_base/energy_mix.gd" id="5_ppgk2"]
-[ext_resource type="Script" uid="uid://du12005ipj46s" path="res://scenes/build_wind_button.gd" id="6_wbtn"]
-[ext_resource type="Script" uid="uid://mk8jube4dact" path="res://scenes/power_display.gd" id="7_pwr"]
+[ext_resource type="Script" uid="uid://du12005ipj46s" path="res://scripts/build_wind_button.gd" id="6_wbtn"]
+[ext_resource type="Script" uid="uid://mk8jube4dact" path="res://scripts/power_display.gd" id="7_pwr"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -102,6 +102,10 @@ directional_shadow_mode = 1
 environment = SubResource("Environment_xrivr")
 
 [node name="EnergyMix" type="Node" parent="." unique_id=1527151300]
+script = ExtResource("5_ppgk2")
+metadata/_custom_type_script = "uid://ba6vhqsn6x2lq"
+
+[node name="EnergyMix" type="Node" parent="EnergyMix" unique_id=367442591]
 script = ExtResource("5_ppgk2")
 metadata/_custom_type_script = "uid://ba6vhqsn6x2lq"
 

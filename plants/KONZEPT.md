@@ -52,8 +52,8 @@ GDScript-`@abstract` (ab Godot 4.5) verhindert, dass Basisklassen direkt benutzt
 
 ```
 plant.json ──► PlantRegistry (statisch: get_all(), get_by_id(), scan())
-                 │ liest alle res://plants/*/plant.json, prüft, sortiert
-                 ▼
+				 │ liest alle res://plants/*/plant.json, prüft, sortiert
+				 ▼
 DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node3D)
 @abstract PlantDefinition        @abstract PowerPlant          @abstract PlantBuilding
  ├─ GeneratorDefinition ───────► ├─ GeneratorPlant ◄────────── ├─ GeneratorBuilding

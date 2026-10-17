@@ -2,11 +2,10 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ch2ogx1vn2cra"
-path.s3tc="res://.godot/imported/windradglb_apollo-46-1x.png-a56d673862f43f8224f3e252ea87a396.s3tc.ctex"
+uid="uid://btseg5m4qngj7"
+path="res://.godot/imported/windrad_apollo-46-1x.png-aa82445e64e8e9dca60fde56420e3a97.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
-"vram_texture": true
+"vram_texture": false
 }
 generator_parameters={
 "md5": "b0337ea95eb9ff3df5ea32d2bc8fff42"
@@ -14,12 +13,12 @@ generator_parameters={
 
 [deps]
 
-source_file="res://assets/meshes/windradglb_apollo-46-1x.png"
-dest_files=["res://.godot/imported/windradglb_apollo-46-1x.png-a56d673862f43f8224f3e252ea87a396.s3tc.ctex"]
+source_file="res://assets/meshes/windrad_apollo-46-1x.png"
+dest_files=["res://.godot/imported/windrad_apollo-46-1x.png-aa82445e64e8e9dca60fde56420e3a97.ctex"]
 
 [params]
 
-compress/mode=2
+compress/mode=0
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -27,7 +26,7 @@ compress/rdo_quality_loss=0.0
 compress/hdr_compression=1
 compress/normal_map=0
 compress/channel_pack=0
-mipmaps/generate=true
+mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=0
 roughness/src_normal=""
