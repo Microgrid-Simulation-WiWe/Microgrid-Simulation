@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c64jvjfllj3fc" path="res://assets/sprites/checker.jpg" id="4_klq6b"]
 [ext_resource type="Script" uid="uid://ba6vhqsn6x2lq" path="res://plants/_base/energy_mix.gd" id="5_ppgk2"]
 [ext_resource type="Script" uid="uid://du12005ipj46s" path="res://scenes/build_wind_button.gd" id="6_wbtn"]
+[ext_resource type="Script" uid="uid://mk8jube4dact" path="res://scenes/power_display.gd" id="7_pwr"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -113,3 +114,17 @@ text = "Windrad bauen"
 script = ExtResource("6_wbtn")
 energy_mix = NodePath("../EnergyMix")
 target = NodePath("../SubViewportContainer/SubViewport/meshes")
+
+[node name="PowerDisplay" type="Label" parent="." unique_id=1717843489 node_paths=PackedStringArray("energy_mix")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 39.0
+grow_horizontal = 0
+text = "Erzeugung: 0.0 MW"
+horizontal_alignment = 2
+script = ExtResource("7_pwr")
+energy_mix = NodePath("../EnergyMix")
