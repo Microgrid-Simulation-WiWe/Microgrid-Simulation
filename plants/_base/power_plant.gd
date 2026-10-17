@@ -27,13 +27,13 @@ const READ_ONLY := PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_READ_ONLY
 @export_custom(PROPERTY_HINT_NONE, "suffix:MW", READ_ONLY) var actual_power_mw := 0.0
 
 
-func setup(p_definition: PlantDefinition, _noise_seed: int) -> void:
+func setup(p_definition: PlantDefinition) -> void:
 	definition = p_definition
 	name = String(definition.id)
 
 
 ## Berechnet die Leistung für einen Tick.
-@abstract func tick(inputs: SimInputs, tick_hours: float) -> void
+@abstract func tick(tick_hours: float) -> void
 
 
 ## Fährt die Leistung um höchstens ramp_per_tick %-Punkte der installierten Leistung Richtung Ziel.

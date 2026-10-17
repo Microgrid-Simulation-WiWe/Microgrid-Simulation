@@ -31,36 +31,6 @@ Jeder Anlagentyp hat genau eine `plant.json` in seinem Ordner `res://plants/<id>
 | `ramp_per_tick` | Zahl | `100` | alle | Wie viele %-Punkte der installierten Leistung sich die Leistung pro Tick höchstens ändert. `100` = sofort, `1` = sehr träge (0 → 100 % in 100 Ticks). |
 | `min_load` | Zahl | `0` | Erzeuger | Mindestlast in %, solange die Anlage an ist. Ein kleinerer Sollwert wird darauf angehoben. |
 
-## `input` – Einflussgröße (nur Erzeuger)
-
-| Feld | Typ | Standard | Bedeutung |
-|---|---|---|---|
-| `key` | Text | `""` | Welche Größe aus `SimInputs` wirkt. `""` = keine, die Anlage ist immer voll verfügbar. |
-| `curve` | [[x, y], …] | `[]` | Kennlinie: Einflussgröße x → Verfügbarkeit y (0..1), linear zwischen den Punkten. Außerhalb gilt der Rand-Wert. |
-
-**Mögliche Werte für `key`** (definiert in `_base/sim_inputs.gd`):
-
-| `key` | Einheit | Typisch für |
-|---|---|---|
-| `solar_irradiance` | 0..1 (relativ zur Spitzenstrahlung, Tag/Nacht und Wolken eingerechnet) | Solar |
-| `wind_speed` | m/s | Wind |
-| `water_flow` | 0..1 (relativer Abfluss) | Laufwasser |
-| `cooling_water` | 0..1 (Kühlwasser-Verfügbarkeit) | Atom, Kohle |
-| `time_of_day_h` | 0–24 | nur zur Info |
-
-Beispiel Wind mit Sturmabschaltung über 25 m/s:
-
-```json
-"curve": [[0, 0], [3, 0], [6, 0.11], [9, 0.41], [12, 1], [25, 1], [25.01, 0]]
-```
-
-## `variability` – Zufall (nur Erzeuger)
-
-| Feld | Typ | Standard | Bedeutung |
-|---|---|---|---|
-| `amount` | Zahl | `0` | Schwankung der Verfügbarkeit, z. B. `0.1` = ±10 %. |
-| `frequency` | Zahl | `0.05` | Wie schnell es schwankt. Kleiner = ruhiger. Der Verlauf ist glatt (`FastNoiseLite`) und über den Seed reproduzierbar. |
-
 ## `storage` – Speicher (nur `type: "storage"`)
 
 | Feld | Typ | Standard | Bedeutung |

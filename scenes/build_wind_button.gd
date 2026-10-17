@@ -1,5 +1,6 @@
 extends Button
 ## Test-Knopf: baut bei jedem Klick ein Windrad und stellt es in die Welt.
+## wird später entfernt -> Objtekte werden durch "Inventarbar" / Code erzeugt
 
 @export var energy_mix: EnergyMix
 ## Hier werden die Gebäude eingehängt (muss in der Welt der Kamera liegen).

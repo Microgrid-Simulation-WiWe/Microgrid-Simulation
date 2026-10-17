@@ -18,8 +18,7 @@ Das Microgrid-Planspiel (Godot 4.7, 3D, GDScript) braucht ein einheitliches, erw
 **Anforderungen:**
 - Jede Anlage hat eine Leistungsgrenze.
 - Der Spieler steuert sie von Hand: Sollwert, Drosselung, Ein/Aus.
-- Ihre Leistung hängt von Einflussgrößen ab: Sonne, Wind, Wasser, Zufall.
-- Woher Wetter- und Zeitdaten kommen, gehört **nicht** zu diesem Teil.
+- Ihre Leistung wird über den Sollwert gesteuert. Zusätzlich kann eine Zufallsschwankung von außen eingestellt werden. Wetter wirkt noch nicht.
 
 ## Festgelegte Entscheidungen
 
@@ -83,14 +82,15 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
 
 **Ein Tick beim Erzeuger:**
 1. `P_inst = unit_count · unit_power_mw`
-2. `P_avail = P_inst · Kennlinie(Einflussgröße) · availability_modifier · (1 + Rauschen)`, begrenzt auf 0..P_inst
+2. `P_avail = P_inst · availability_modifier`, begrenzt auf 0..P_inst
 3. Ziel:
    - Ist die Anlage aus, ist das Ziel 0.
    - Sonst `min(max(setpoint, min_load) · P_inst, P_avail)`.
 4. Rampe: höchstens `ramp_per_tick` %-Punkte von `P_inst` Richtung Ziel.
-5. Harte Grenze `min(P_actual, P_avail)`. Fällt das Wetter weg, sinkt die Leistung sofort.
+5. Zufall (nur Erzeuger): Ist die Leistung > 0, wird `noise_level · P_inst · Zufallswert` addiert, Zufallswert gleichverteilt in −1..1. `noise_level` 0 = aus.
+6. Harte Grenze `0..P_avail`. Sinkt die Verfügbarkeit (Störung), sinkt die Leistung sofort.
 
-Bei Erneuerbaren wirkt der Sollwert damit als **Drosselung**. Atom bleibt mindestens bei 50 %, solange es an ist.
+Atom bleibt mindestens bei 50 %, solange es an ist.
 
 **Ein Tick beim Speicher:**
 - Der Sollwert wird mit der Rampe angefahren.
@@ -99,11 +99,7 @@ Bei Erneuerbaren wirkt der Sollwert damit als **Drosselung**. Atom bleibt mindes
   - Laden höchstens `(1 − soc) · Kapazität / (η · tick_hours)`.
 - Leer oder voll heißt 0 MW. Das ist Physik und keine automatische Regelung.
 
-**Einflussgrößen (`SimInputs`):**
-- Eine Resource mit `solar_irradiance`, `wind_speed`, `water_flow`, `cooling_water` und `time_of_day_h`.
-- Der `EnergyMix` reicht sie pro Tick an alle Anlagen weiter. Später setzt sie das Wetter-System.
-
-**Zufall:** glattes `FastNoiseLite`-Rauschen. Der Seed (`EnergyMix.noise_seed`) macht Szenarien reproduzierbar.
+**Wetter** ist vorerst entfernt (siehe Abschnitt 8). Die Zufallsschwankung wird pro Anlage von außen gesetzt (`noise_level`, Standard 0).
 
 ## 4. Ordnerstruktur
 
@@ -122,23 +118,23 @@ res://plants/
 
 ## 5. Startwerte (Platzhalter, Balancing später)
 
-| Typ | `type` | MW/Einheit | Mindestlast | Rampe %/Tick | Einfluss | Zufall | Baupunkte | Felder |
-|---|---|---|---|---|---|---|---|---|
-| Solar | generator | 1 | 0 | 100 | `solar_irradiance` | ±5 % | 2 | 2×1 |
-| Wind | generator | 2 | 0 | 100 | `wind_speed` (0 unter 3 m/s, voll ab 12 m/s, 0 über 25 m/s) | ±10 % | 3 | 1×1 |
-| Wasser | generator | 1 | 0 | 100 | `water_flow` | ±2 % | 3 | 1×1 |
-| Kohle | generator | 5 | 40 % | 2 | – | – | 2 | 2×2 |
-| Gas | generator | 3 | 20 % | 10 | – | – | 2 | 1×1 |
-| Atom | generator | 10 | 50 % | 1 | `cooling_water` | – | 5 | 2×2 |
-| Batterie | storage | 2 MW / 4 MWh | – | 100 | η 95 %/95 % | – | 2 | 1×1 |
-| Pumpspeicher (ausgeblendet) | storage | 5 MW / 40 MWh | – | 100 | η 88 %/88 % | – | 4 | 2×2 |
+| Typ | `type` | MW/Einheit | Mindestlast | Rampe %/Tick | Wirkungsgrad | Baupunkte | Felder |
+|---|---|---|---|---|---|---|---|
+| Solar | generator | 1 | 0 | 100 | – | 2 | 2×1 |
+| Wind | generator | 2 | 0 | 100 | – | 3 | 1×1 |
+| Wasser | generator | 1 | 0 | 100 | – | 3 | 1×1 |
+| Kohle | generator | 5 | 40 % | 2 | – | 2 | 2×2 |
+| Gas | generator | 3 | 20 % | 10 | – | 2 | 1×1 |
+| Atom | generator | 10 | 50 % | 1 | – | 5 | 2×2 |
+| Batterie | storage | 2 MW / 4 MWh | – | 100 | η 95 %/95 % | 2 | 1×1 |
+| Pumpspeicher (ausgeblendet) | storage | 5 MW / 40 MWh | – | 100 | η 88 %/88 % | 4 | 2×2 |
 
 ## 6. Inspector und JSON
 
 - **Standardwerte** stehen nur in der `plant.json`. Das ist die einzige Quelle, es gibt keine doppelte Pflege.
 - **Zur Laufzeit** sind Definitionen und Anlagen im **Remote-Inspector** sichtbar und live änderbar. Das wird nicht gespeichert.
 - **Im Inspector** gepflegt werden:
-  - die globalen Simulationswerte am `EnergyMix`: `tick_hours`, `ticks_per_second`, `noise_seed`, `inputs`
+  - die globalen Simulationswerte am `EnergyMix`: `tick_hours`, `ticks_per_second`
   - die Basis-Szenen
 
 ## 7. Tests
@@ -151,8 +147,7 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 
 **Was geprüft wird:**
 - Registry und Sortierung
-- Wind-Kennlinie mit Sturmabschaltung
-- Solar bei Nacht
+- Wind folgt dem Sollwert (100 % / 50 %) und dem Störfaktor
 - Atom-Mindestlast und -Rampe (50 → 100 % in 50 Ticks)
 - `unit_count` 0
 - Gas Ein/Aus mit Rampe
@@ -172,6 +167,10 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - automatisches Anwenden von `assets.textures`
 - Debug-Szene mit Schiebereglern
 - `co2_t_per_mwh` und `cost_per_mwh` für eine spätere Bewertung
+
+**Vorerst wieder entfernt** (17.10.2026; der Code steht in der Git-History):
+- Einflussgrößen `SimInputs` und Kennlinien `input.key`/`input.curve` (Sonne, Wind mit Sturmabschaltung, Wasser, Kühlwasser)
+- Zufall über `variability` in der `plant.json` (`FastNoiseLite`, `EnergyMix.noise_seed`). Ersetzt durch einen einfachen Zufallswert mit `noise_level` (siehe Abschnitt 3).
 
 **Noch offen (Team / Product Owner):**
 1. **Tick-Länge und Rundendauer:** Wie viel Sim-Zeit ist ein Tick? Davon hängen Rampenwerte und Speicher-Energie ab.

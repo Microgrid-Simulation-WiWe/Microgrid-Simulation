@@ -13,14 +13,6 @@
 		"min_load": 50,
 		"ramp_per_tick": 1
 	},
-	"input": {
-		"key": "cooling_water",
-		"curve": [[0, 0], [1, 1]]
-	},
-	"variability": {
-		"amount": 0,
-		"frequency": 0.05
-	},
 	"assets": {
 		"icon": "nuclear-plant.svg",
 		"model": "",

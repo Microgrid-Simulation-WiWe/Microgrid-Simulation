@@ -7,6 +7,8 @@
 [ext_resource type="Script" uid="uid://ba6vhqsn6x2lq" path="res://plants/_base/energy_mix.gd" id="5_ppgk2"]
 [ext_resource type="Script" uid="uid://du12005ipj46s" path="res://scenes/build_wind_button.gd" id="6_wbtn"]
 [ext_resource type="Script" uid="uid://mk8jube4dact" path="res://scenes/power_display.gd" id="7_pwr"]
+[ext_resource type="Script" uid="uid://dqfv1s277kja6" path="res://scenes/setpoint_panel.gd" id="8_setp"]
+[ext_resource type="Script" uid="uid://dgjtyjbxdslbn" path="res://scenes/clock_display.gd" id="9_clk"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -127,4 +129,33 @@ grow_horizontal = 0
 text = "Erzeugung: 0.0 MW"
 horizontal_alignment = 2
 script = ExtResource("7_pwr")
+energy_mix = NodePath("../EnergyMix")
+
+[node name="ClockDisplay" type="Label" parent="." unique_id=1980054321 node_paths=PackedStringArray("energy_mix")]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -60.0
+offset_top = 16.0
+offset_right = 60.0
+offset_bottom = 39.0
+grow_horizontal = 2
+text = "12:00 Uhr"
+horizontal_alignment = 1
+script = ExtResource("9_clk")
+energy_mix = NodePath("../EnergyMix")
+
+[node name="SetpointPanel" type="PanelContainer" parent="." unique_id=1980012345 node_paths=PackedStringArray("energy_mix")]
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -216.0
+offset_top = -100.0
+offset_right = -16.0
+offset_bottom = 100.0
+grow_horizontal = 0
+grow_vertical = 2
+script = ExtResource("8_setp")
 energy_mix = NodePath("../EnergyMix")

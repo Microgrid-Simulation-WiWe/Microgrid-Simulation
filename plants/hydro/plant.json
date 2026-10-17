@@ -13,14 +13,6 @@
 		"min_load": 0,
 		"ramp_per_tick": 100
 	},
-	"input": {
-		"key": "water_flow",
-		"curve": [[0, 0], [1, 1]]
-	},
-	"variability": {
-		"amount": 0.02,
-		"frequency": 0.05
-	},
 	"assets": {
 		"icon": "water-mill.svg",
 		"model": "",

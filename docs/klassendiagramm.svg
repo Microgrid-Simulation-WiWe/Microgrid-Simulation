@@ -1,10 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2196" height="1641" viewBox="0 0 2196 1641">
 <rect width="2196" height="1641" fill="#ffffff"/>
 <text x="40" y="58" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="26" font-weight="700" fill="#1f2328">Microgrid – UML-Klassendiagramm</text>
-<text x="40" y="86" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#57606a">Alle GDScript-Klassen aus res://plants und res://scenes · Code-Stand: Commit d9cc275 (15.10.2026)</text>
+<text x="40" y="86" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#57606a">Alle GDScript-Klassen aus res://plants und res://scenes · Code-Stand: 17.10.2026 (Wetter entfernt, Zufall über noise_level)</text>
 <path d="M501.0,549.0 L95.0,549.0 L95.0,211.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M95.0,198.0 L102.5,211.0 L87.5,211.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M190,230 H95.0" fill="none" stroke="#3d4450" stroke-width="1.4"/>
 <path d="M1316.0,286.0 L1343.0,286.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M1356.0,286.0 L1343.0,293.5 L1343.0,278.5 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M1411.0,519.0 L1411.0,323.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
@@ -20,11 +19,11 @@
 <path d="M516,1416 H531" fill="none" stroke="#3d4450" stroke-width="1.4"/>
 <path d="M516.0,1103.0 L516.0,1086.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M516.0,1073.0 L523.5,1086.0 L508.5,1086.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M1436,852 V1416" fill="none" stroke="#3d4450" stroke-width="1.4"/>
+<path d="M1436,834 V1416" fill="none" stroke="#3d4450" stroke-width="1.4"/>
 <path d="M1436,1143 H1393" fill="none" stroke="#3d4450" stroke-width="1.4"/>
 <path d="M1436,1416 H1393" fill="none" stroke="#3d4450" stroke-width="1.4"/>
-<path d="M1436.0,869.0 L1436.0,852.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M1436.0,839.0 L1443.5,852.0 L1428.5,852.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M1436.0,869.0 L1436.0,834.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M1436.0,821.0 L1443.5,834.0 L1428.5,834.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M1631,762 V1416" fill="none" stroke="#3d4450" stroke-width="1.4"/>
 <path d="M1631,1143 H1646" fill="none" stroke="#3d4450" stroke-width="1.4"/>
 <path d="M1631,1416 H1646" fill="none" stroke="#3d4450" stroke-width="1.4"/>
@@ -34,14 +33,10 @@
 <path d="M593.0,380.0 L587.0,390.0 L593.0,400.0 L599.0,390.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="585" y="430" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">_definitions</text>
 <text x="585" y="513" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0..*</text>
-<path d="M1111.0,439.0 L1111.0,519.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M1111.0,419.0 L1105.0,429.0 L1111.0,439.0 L1117.0,429.0 Z" fill="#3d4450" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M1111.0,403.0 L1111.0,519.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M1111.0,383.0 L1105.0,393.0 L1111.0,403.0 L1117.0,393.0 Z" fill="#3d4450" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="1119" y="464" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">_plants (Kind-Nodes)</text>
 <text x="1103" y="513" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0..*</text>
-<path d="M1006.0,150.0 L1006.0,122.0 L341.5,122.0 L341.5,150.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M346.5,140.2 L341.5,150.0 L336.5,140.2" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<text x="349.5" y="142" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">inputs</text>
-<text x="333.5" y="142" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">1</text>
 <path d="M1041.0,619.0 L891.0,619.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M900.8,624.0 L891.0,619.0 L900.8,614.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="966.0" y="611" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">definition</text>
@@ -62,18 +57,18 @@
 <path d="M1671.0,509.2 L1666.0,519.0 L1661.0,509.2" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="1676" y="479" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">«create»</text>
 <text x="1676" y="495" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">build(id)</text>
-<path d="M889.0,1183.0 L1011.0,1183.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
-<path d="M1001.2,1178.0 L1011.0,1183.0 L1001.2,1188.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<text x="950.0" y="1175" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">«create»</text>
+<path d="M889.0,1148.0 L1011.0,1148.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+<path d="M1001.2,1143.0 L1011.0,1148.0 L1001.2,1153.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="950.0" y="1140" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">«create»</text>
 <path d="M873.0,1456.0 L1011.0,1456.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
 <path d="M1001.2,1451.0 L1011.0,1456.0 L1001.2,1461.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="942.0" y="1448" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">«create»</text>
-<path d="M1011.0,1227.0 L889.0,1227.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
-<path d="M898.8,1232.0 L889.0,1227.0 L898.8,1222.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<text x="950.0" y="1219" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest Werte</text>
-<path d="M1011.0,1500.0 L873.0,1500.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
-<path d="M882.8,1505.0 L873.0,1500.0 L882.8,1495.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<text x="942.0" y="1492" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest Werte</text>
+<path d="M1011.0,1186.0 L889.0,1186.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+<path d="M898.8,1191.0 L889.0,1186.0 L898.8,1181.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="950.0" y="1178" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest Werte</text>
+<path d="M1011.0,1488.0 L873.0,1488.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+<path d="M882.8,1493.0 L873.0,1488.0 L882.8,1483.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="942.0" y="1480" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest Werte</text>
 <path d="M1646.0,1468.0 L1393.0,1468.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
 <path d="M1402.8,1473.0 L1393.0,1468.0 L1402.8,1463.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="1519.5" y="1460" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">liest state_of_charge</text>
@@ -111,20 +106,6 @@
 <rect x="60" y="694" width="110" height="48" rx="5" fill="none" stroke="#8c959f" stroke-width="1.4" stroke-dasharray="5 3"/>
 <text x="115.0" y="712" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="11.5" font-style="italic" fill="#57606a">«Godot»</text>
 <text x="115.0" y="730.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#57606a">SceneTree</text>
-</g>
-<g class="class">
-<rect x="190" y="150" width="303" height="161" rx="5" fill="#ffffff" stroke="#4a7fbf" stroke-width="1.4"/>
-<path d="M190,183 V155 Q190,150 195,150 H488 Q493,150 493,155 V183 Z" fill="#dbe9f8" stroke="none"/>
-<rect x="190" y="150" width="303" height="161" rx="5" fill="none" stroke="#4a7fbf" stroke-width="1.4"/>
-<text x="341.5" y="171.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">SimInputs</text>
-<line x1="190" y1="183" x2="493" y2="183" stroke="#4a7fbf" stroke-width="1.1"/>
-<line x1="190" y1="283" x2="493" y2="283" stroke="#4a7fbf" stroke-width="1.1"/>
-<text x="202.0" y="201.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ solar_irradiance: float</text>
-<text x="202.0" y="219.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ wind_speed: float</text>
-<text x="202.0" y="237.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ water_flow: float</text>
-<text x="202.0" y="255.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ cooling_water: float</text>
-<text x="202.0" y="273.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ time_of_day_h: float</text>
-<text x="202.0" y="301.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ get_value(key: StringName): float</text>
 </g>
 <g class="class">
 <rect x="533" y="150" width="374" height="230" rx="5" fill="#ffffff" stroke="#4a7fbf" stroke-width="1.4"/>
@@ -181,22 +162,17 @@
 <text x="513.0" y="1063.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _load_asset(relative_path: String): Resource</text>
 </g>
 <g class="class">
-<rect x="531" y="1123" width="358" height="233" rx="5" fill="#ffffff" stroke="#4a7fbf" stroke-width="1.4"/>
+<rect x="531" y="1123" width="358" height="143" rx="5" fill="#ffffff" stroke="#4a7fbf" stroke-width="1.4"/>
 <path d="M531,1156 V1128 Q531,1123 536,1123 H884 Q889,1123 889,1128 V1156 Z" fill="#dbe9f8" stroke="none"/>
-<rect x="531" y="1123" width="358" height="233" rx="5" fill="none" stroke="#4a7fbf" stroke-width="1.4"/>
+<rect x="531" y="1123" width="358" height="143" rx="5" fill="none" stroke="#4a7fbf" stroke-width="1.4"/>
 <text x="710.0" y="1144.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">GeneratorDefinition</text>
 <line x1="531" y1="1156" x2="889" y2="1156" stroke="#4a7fbf" stroke-width="1.1"/>
-<line x1="531" y1="1256" x2="889" y2="1256" stroke="#4a7fbf" stroke-width="1.1"/>
+<line x1="531" y1="1184" x2="889" y2="1184" stroke="#4a7fbf" stroke-width="1.1"/>
 <text x="543.0" y="1174.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ min_load: float</text>
-<text x="543.0" y="1192.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ input_key: StringName</text>
-<text x="543.0" y="1210.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ input_curve: Curve</text>
-<text x="543.0" y="1228.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ variability: float</text>
-<text x="543.0" y="1246.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ noise_frequency: float</text>
-<text x="543.0" y="1274.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ create_plant(): PowerPlant</text>
-<text x="543.0" y="1292.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _default_building_scene(): PackedScene</text>
-<text x="543.0" y="1310.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ load_from_dict(data: Dictionary,</text>
-<text x="574.8" y="1328.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">p_folder: String, source: String)</text>
-<text x="543.0" y="1346.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328" text-decoration="underline">- _curve_from_points(points: Array): Curve</text>
+<text x="543.0" y="1202.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ create_plant(): PowerPlant</text>
+<text x="543.0" y="1220.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _default_building_scene(): PackedScene</text>
+<text x="543.0" y="1238.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ load_from_dict(data: Dictionary,</text>
+<text x="574.8" y="1256.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">p_folder: String, source: String)</text>
 </g>
 <g class="class">
 <rect x="531" y="1396" width="342" height="197" rx="5" fill="#ffffff" stroke="#4a7fbf" stroke-width="1.4"/>
@@ -215,29 +191,27 @@
 <text x="574.8" y="1583.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">p_folder: String, source: String)</text>
 </g>
 <g class="class">
-<rect x="981" y="150" width="335" height="269" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="981" y="150" width="335" height="233" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
 <path d="M981,183 V155 Q981,150 986,150 H1311 Q1316,150 1316,155 V183 Z" fill="#dcf0e0" stroke="none"/>
-<rect x="981" y="150" width="335" height="269" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="981" y="150" width="335" height="233" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
 <text x="1148.5" y="171.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">EnergyMix</text>
 <line x1="981" y1="183" x2="1316" y2="183" stroke="#3f8f55" stroke-width="1.1"/>
-<line x1="981" y1="319" x2="1316" y2="319" stroke="#3f8f55" stroke-width="1.1"/>
-<text x="993.0" y="201.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ inputs: SimInputs</text>
-<text x="993.0" y="219.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick_hours: float</text>
-<text x="993.0" y="237.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ ticks_per_second: float</text>
-<text x="993.0" y="255.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ noise_seed: int</text>
-<text x="993.0" y="273.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ total_power_mw: float</text>
-<text x="993.0" y="291.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _plants: Array[PowerPlant]</text>
-<text x="993.0" y="309.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _time_since_tick: float</text>
-<text x="993.0" y="337.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _ready()</text>
-<text x="993.0" y="355.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _process(delta: float)</text>
-<text x="993.0" y="373.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick()</text>
-<text x="993.0" y="391.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ get_plant(id: StringName): PowerPlant</text>
-<text x="993.0" y="409.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ build(id: StringName): PlantBuilding</text>
+<line x1="981" y1="283" x2="1316" y2="283" stroke="#3f8f55" stroke-width="1.1"/>
+<text x="993.0" y="201.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick_hours: float</text>
+<text x="993.0" y="219.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ ticks_per_second: float</text>
+<text x="993.0" y="237.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ total_power_mw: float</text>
+<text x="993.0" y="255.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _plants: Array[PowerPlant]</text>
+<text x="993.0" y="273.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _time_since_tick: float</text>
+<text x="993.0" y="301.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _ready()</text>
+<text x="993.0" y="319.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _process(delta: float)</text>
+<text x="993.0" y="337.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick()</text>
+<text x="993.0" y="355.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ get_plant(id: StringName): PowerPlant</text>
+<text x="993.0" y="373.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ build(id: StringName): PlantBuilding</text>
 </g>
 <g class="class">
-<rect x="1041" y="519" width="410" height="320" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="1041" y="519" width="410" height="302" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
 <path d="M1041,567 V524 Q1041,519 1046,519 H1446 Q1451,519 1451,524 V567 Z" fill="#dcf0e0" stroke="none"/>
-<rect x="1041" y="519" width="410" height="320" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="1041" y="519" width="410" height="302" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
 <text x="1246.0" y="537" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="11.5" font-style="italic" fill="#57606a">«abstract»</text>
 <text x="1246.0" y="555.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" font-style="italic" fill="#1f2328">PowerPlant</text>
 <line x1="1041" y1="567" x2="1451" y2="567" stroke="#3f8f55" stroke-width="1.1"/>
@@ -252,35 +226,30 @@
 <text x="1053.0" y="711.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ available_power_mw: float</text>
 <text x="1053.0" y="729.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ actual_power_mw: float</text>
 <text x="1053.0" y="757.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ «signal» state_changed(plant: PowerPlant)</text>
-<text x="1053.0" y="775.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ setup(p_definition: PlantDefinition,</text>
-<text x="1084.8" y="793.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">_noise_seed: int)</text>
-<text x="1053.0" y="811.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328" font-style="italic">+ tick(inputs: SimInputs, tick_hours: float)</text>
-<text x="1053.0" y="829.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _ramp_towards(target_mw: float)</text>
+<text x="1053.0" y="775.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ setup(p_definition: PlantDefinition)</text>
+<text x="1053.0" y="793.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328" font-style="italic">+ tick(tick_hours: float)</text>
+<text x="1053.0" y="811.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _ramp_towards(target_mw: float)</text>
 </g>
 <g class="class">
-<rect x="1011" y="1123" width="382" height="143" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="1011" y="1123" width="382" height="91" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
 <path d="M1011,1156 V1128 Q1011,1123 1016,1123 H1388 Q1393,1123 1393,1128 V1156 Z" fill="#dcf0e0" stroke="none"/>
-<rect x="1011" y="1123" width="382" height="143" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="1011" y="1123" width="382" height="91" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
 <text x="1202.0" y="1144.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">GeneratorPlant</text>
 <line x1="1011" y1="1156" x2="1393" y2="1156" stroke="#3f8f55" stroke-width="1.1"/>
-<line x1="1011" y1="1202" x2="1393" y2="1202" stroke="#3f8f55" stroke-width="1.1"/>
-<text x="1023.0" y="1174.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _noise: FastNoiseLite</text>
-<text x="1023.0" y="1192.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _tick_index: int</text>
-<text x="1023.0" y="1220.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ setup(p_definition: PlantDefinition,</text>
-<text x="1054.8" y="1238.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">noise_seed: int)</text>
-<text x="1023.0" y="1256.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick(inputs: SimInputs, _tick_hours: float)</text>
+<text x="1023.0" y="1174.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ noise_level: float</text>
+<line x1="1011" y1="1186" x2="1393" y2="1186" stroke="#3f8f55" stroke-width="1.1"/>
+<text x="1023.0" y="1204.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick(_tick_hours: float)</text>
 </g>
 <g class="class">
-<rect x="1011" y="1396" width="382" height="125" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="1011" y="1396" width="382" height="107" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
 <path d="M1011,1429 V1401 Q1011,1396 1016,1396 H1388 Q1393,1396 1393,1401 V1429 Z" fill="#dcf0e0" stroke="none"/>
-<rect x="1011" y="1396" width="382" height="125" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
+<rect x="1011" y="1396" width="382" height="107" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
 <text x="1202.0" y="1417.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">StoragePlant</text>
 <line x1="1011" y1="1429" x2="1393" y2="1429" stroke="#3f8f55" stroke-width="1.1"/>
 <line x1="1011" y1="1457" x2="1393" y2="1457" stroke="#3f8f55" stroke-width="1.1"/>
 <text x="1023.0" y="1447.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ state_of_charge: float</text>
-<text x="1023.0" y="1475.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ setup(p_definition: PlantDefinition,</text>
-<text x="1054.8" y="1493.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">noise_seed: int)</text>
-<text x="1023.0" y="1511.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick(_inputs: SimInputs, tick_hours: float)</text>
+<text x="1023.0" y="1475.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ setup(p_definition: PlantDefinition)</text>
+<text x="1023.0" y="1493.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick(tick_hours: float)</text>
 </g>
 <g class="class">
 <rect x="1616" y="519" width="390" height="230" rx="5" fill="#ffffff" stroke="#c47f2c" stroke-width="1.4"/>
@@ -333,9 +302,9 @@
 <text x="1728.0" y="280.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _on_pressed()</text>
 </g>
 <g class="class">
-<rect x="60" y="782" width="390" height="374" rx="5" fill="#ffffff" stroke="#7d64b0" stroke-width="1.4"/>
+<rect x="60" y="782" width="390" height="356" rx="5" fill="#ffffff" stroke="#7d64b0" stroke-width="1.4"/>
 <path d="M60,830 V787 Q60,782 65,782 H445 Q450,782 450,787 V830 Z" fill="#ebe4f6" stroke="none"/>
-<rect x="60" y="782" width="390" height="374" rx="5" fill="none" stroke="#7d64b0" stroke-width="1.4"/>
+<rect x="60" y="782" width="390" height="356" rx="5" fill="none" stroke="#7d64b0" stroke-width="1.4"/>
 <text x="255.0" y="800" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="11.5" font-style="italic" fill="#57606a">«Skript»</text>
 <text x="255.0" y="818.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">run_tests.gd</text>
 <line x1="60" y1="830" x2="450" y2="830" stroke="#7d64b0" stroke-width="1.1"/>
@@ -354,9 +323,8 @@
 <text x="103.8" y="1056.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">units: int = 1): PowerPlant</text>
 <text x="72.0" y="1074.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _create_plant(definition: PlantDefinition,</text>
 <text x="103.8" y="1092.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">units: int = 1): PowerPlant</text>
-<text x="72.0" y="1110.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _run(plant: PowerPlant, inputs: SimInputs,</text>
-<text x="103.8" y="1128.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">ticks: int)</text>
-<text x="72.0" y="1146.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _check(condition: bool, description: String)</text>
+<text x="72.0" y="1110.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _run(plant: PowerPlant, ticks: int)</text>
+<text x="72.0" y="1128.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _check(condition: bool, description: String)</text>
 </g>
 <line x1="1181" y1="94" x2="1181" y2="150" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1041,30 H1364 L1374,40 V94 H1041 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
@@ -376,13 +344,6 @@
 <text x="628" y="438.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">ersten Zugriff jede res://plants/*/plant.json</text>
 <text x="628" y="454.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">(Ordner mit „.“ vorne werden übersprungen);</text>
 <text x="628" y="471.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">„type“ → Generator- oder StorageDefinition.</text>
-<line x1="340" y1="339" x2="341.5" y2="311" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
-<path d="M140,339 H470 L480,349 V419 H140 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
-<path d="M470,339 V349 H480" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
-<text x="151" y="358.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Einflussgrößen eines Ticks (Wetter, Tageszeit),</text>
-<text x="151" y="375.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">später vom Wetter-System gesetzt.</text>
-<text x="151" y="391.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">GeneratorDefinition.input_key wählt eine davon</text>
-<text x="151" y="408.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">(wird beim Laden geprüft).</text>
 <line x1="400" y1="602.5" x2="501" y2="601" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M60,579 H390 L400,589 V626 H60 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M390,579 V589 H400" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
@@ -394,19 +355,19 @@
 <text x="211" y="701.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Headless-Tests: Registry, Erzeuger,</text>
 <text x="211" y="718.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Speicher, EnergyMix + Gebäude,</text>
 <text x="211" y="734.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Ladefehler (Fixtures).</text>
-<line x1="1171" y1="865" x2="1171" y2="839" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
+<line x1="1171" y1="865" x2="1171" y2="821" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1011,865 H1334 L1344,875 V929 H1011 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1334,865 V875 H1344" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="1022" y="884.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Logik eines Anlagentyps – für alle gebauten</text>
 <text x="1022" y="901.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Einheiten zusammen. Steuerwerte setzt der</text>
 <text x="1022" y="917.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Spieler, tick() berechnet daraus die Leistung.</text>
-<line x1="1131" y1="1284" x2="1131" y2="1266" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
+<line x1="1131" y1="1284" x2="1131" y2="1196" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1011,1284 H1341 L1351,1294 V1348 H1011 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1341,1284 V1294 H1351" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="1022" y="1303.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">An: fährt per Rampe zu max(setpoint, min_load),</text>
-<text x="1022" y="1320.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">höchstens bis zur aktuellen Verfügbarkeit.</text>
+<text x="1022" y="1320.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">höchstens bis zur Verfügbarkeit (Störfaktor).</text>
 <text x="1022" y="1336.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Aus: fährt per Rampe auf 0.</text>
-<line x1="1131" y1="1539" x2="1131" y2="1521" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
+<line x1="1131" y1="1539" x2="1131" y2="1503" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1011,1539 H1300 L1310,1549 V1586 H1011 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1300,1539 V1549 H1310" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="1022" y="1558.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">setpoint &gt; 0 entlädt, &lt; 0 lädt – begrenzt</text>

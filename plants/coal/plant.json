@@ -13,14 +13,6 @@
 		"min_load": 40,
 		"ramp_per_tick": 2
 	},
-	"input": {
-		"key": "",
-		"curve": []
-	},
-	"variability": {
-		"amount": 0,
-		"frequency": 0.05
-	},
 	"assets": {
 		"icon": "coal-pile.svg",
 		"model": "",

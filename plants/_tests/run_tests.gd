@@ -37,64 +37,68 @@ func _test_registry() -> void:
 
 func _test_generators() -> void:
 	print("Erzeuger")
-	var inputs := SimInputs.new()
-
 	var wind := _make_plant(&"wind")
 	wind.setpoint = 100.0
-	inputs.wind_speed = 12.0
-	_run(wind, inputs, 1)
-	_check(wind.actual_power_mw > 1.7 and wind.actual_power_mw <= 2.0, "Wind bei 12 m/s ≈ 2 MW (%.2f)" % wind.actual_power_mw)
-	inputs.wind_speed = 30.0
-	_run(wind, inputs, 1)
-	_check(is_zero_approx(wind.actual_power_mw), "Wind bei 30 m/s → 0 MW (Sturm)")
+	_run(wind, 1)
+	_check(is_equal_approx(wind.actual_power_mw, 2.0), "Wind mit Sollwert 100 → 2 MW (%.2f)" % wind.actual_power_mw)
+	wind.setpoint = 50.0
+	_run(wind, 1)
+	_check(is_equal_approx(wind.actual_power_mw, 1.0), "Wind mit Sollwert 50 → 1 MW (%.2f)" % wind.actual_power_mw)
+	wind.availability_modifier = 0.0
+	_run(wind, 1)
+	_check(is_zero_approx(wind.actual_power_mw), "Wind mit Störfaktor 0 → 0 MW")
 	wind.free()
 
-	var solar := _make_plant(&"solar")
-	solar.setpoint = 100.0
-	inputs.solar_irradiance = 0.0
-	_run(solar, inputs, 3)
-	_check(is_zero_approx(solar.actual_power_mw), "Solar bei Einstrahlung 0 → 0 MW")
-	solar.free()
+	var noisy := _make_plant(&"wind") as GeneratorPlant
+	noisy.setpoint = 50.0
+	noisy.noise_level = 0.2
+	var low := INF
+	var high := -INF
+	for i in 200:
+		noisy.tick(1.0)
+		low = minf(low, noisy.actual_power_mw)
+		high = maxf(high, noisy.actual_power_mw)
+	_check(low >= 0.6 - 0.001 and high <= 1.4 + 0.001 and high - low > 0.1,
+		"Zufall ±20 %% um 1 MW (%.2f … %.2f MW)" % [low, high])
+	noisy.free()
 
 	var nuclear := _make_plant(&"nuclear")
 	nuclear.setpoint = 0.0
-	inputs = SimInputs.new()
-	_run(nuclear, inputs, 60)
+	_run(nuclear, 60)
 	_check(is_equal_approx(nuclear.actual_power_mw, 5.0), "Atom an mit Sollwert 0 → bleibt bei 50 %% (%.2f MW)" % nuclear.actual_power_mw)
 	nuclear.setpoint = 100.0
 	var ticks := 0
 	while not is_equal_approx(nuclear.actual_power_mw, 10.0) and ticks < 1000:
-		nuclear.tick(inputs, 1.0)
+		nuclear.tick(1.0)
 		ticks += 1
 	_check(ticks == 50, "Atom 50 → 100 %% dauert 50 Ticks (%d)" % ticks)
 	nuclear.free()
 
 	var gas := _make_plant(&"gas", 0)
 	gas.setpoint = 100.0
-	_run(gas, inputs, 5)
+	_run(gas, 5)
 	_check(is_zero_approx(gas.actual_power_mw), "unit_count 0 → 0 MW")
 	gas.unit_count = 1
-	_run(gas, inputs, 20)
+	_run(gas, 20)
 	_check(is_equal_approx(gas.actual_power_mw, 3.0), "Gas mit Sollwert 100 → 3 MW")
 	gas.enabled = false
-	_run(gas, inputs, 9)
+	_run(gas, 9)
 	_check(gas.actual_power_mw > 0.0, "Gas aus → fährt mit Rampe herunter")
-	_run(gas, inputs, 1)
+	_run(gas, 1)
 	_check(is_zero_approx(gas.actual_power_mw), "Gas aus → nach 10 Ticks bei 0 MW")
 	gas.free()
 
 
 func _test_storage() -> void:
 	print("Speicher")
-	var inputs := SimInputs.new()
 	var battery := _make_plant(&"battery") as StoragePlant
 	battery.setpoint = 100.0
-	_run(battery, inputs, 1)
+	_run(battery, 1)
 	_check(is_equal_approx(battery.actual_power_mw, 1.9), "Entladen begrenzt durch Ladestand (%.2f MW)" % battery.actual_power_mw)
-	_run(battery, inputs, 3)
+	_run(battery, 3)
 	_check(is_zero_approx(battery.actual_power_mw) and is_zero_approx(battery.state_of_charge), "Batterie leer → 0 MW")
 	battery.setpoint = -100.0
-	_run(battery, inputs, 1)
+	_run(battery, 1)
 	_check(is_equal_approx(battery.actual_power_mw, -2.0), "Laden mit -2 MW")
 	_check(is_equal_approx(battery.state_of_charge, 2.0 * 0.95 / 4.0), "Ladestand mit Wirkungsgrad (%.3f)" % battery.state_of_charge)
 	battery.free()
@@ -123,7 +127,7 @@ func _test_loading_errors() -> void:
 	print("Laden (Fixtures, Warnungen/Fehler darüber sind erwartet)")
 	PlantRegistry.scan(FIXTURES_DIR)
 	var minimal := PlantRegistry.get_by_id(&"minimal") as GeneratorDefinition
-	_check(minimal != null and minimal.ramp_per_tick == 100.0 and minimal.input_curve == null, "fehlende Felder → Standardwerte")
+	_check(minimal != null and minimal.ramp_per_tick == 100.0, "fehlende Felder → Standardwerte")
 	_check(PlantRegistry.get_all().size() == 2, "unbekannter type und doppelte id → übersprungen")
 	_check(PlantRegistry.get_by_id(&"hidden") == null, "Punkt-Ordner (.hidden) → übersprungen")
 	var missing := PlantRegistry.get_by_id(&"missing_asset")
@@ -137,14 +141,14 @@ func _make_plant(id: StringName, units := 1) -> PowerPlant:
 
 func _create_plant(definition: PlantDefinition, units := 1) -> PowerPlant:
 	var plant := definition.create_plant()
-	plant.setup(definition, 0)
+	plant.setup(definition)
 	plant.unit_count = units
 	return plant
 
 
-func _run(plant: PowerPlant, inputs: SimInputs, ticks: int) -> void:
+func _run(plant: PowerPlant, ticks: int) -> void:
 	for i in ticks:
-		plant.tick(inputs, 1.0)
+		plant.tick(1.0)
 
 
 func _check(condition: bool, description: String) -> void:

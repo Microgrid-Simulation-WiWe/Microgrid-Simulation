@@ -6,12 +6,12 @@ extends PowerPlant
 @export_custom(PROPERTY_HINT_RANGE, "0,1,0.001", READ_ONLY) var state_of_charge := 0.0
 
 
-func setup(p_definition: PlantDefinition, noise_seed: int) -> void:
-	super(p_definition, noise_seed)
+func setup(p_definition: PlantDefinition) -> void:
+	super(p_definition)
 	state_of_charge = (definition as StorageDefinition).initial_soc
 
 
-func tick(_inputs: SimInputs, tick_hours: float) -> void:
+func tick(tick_hours: float) -> void:
 	var def := definition as StorageDefinition
 	installed_power_mw = unit_count * def.unit_power_mw
 	var capacity_mwh := unit_count * def.unit_capacity_mwh

@@ -13,14 +13,6 @@
 		"min_load": 0,
 		"ramp_per_tick": 100
 	},
-	"input": {
-		"key": "wind_speed",
-		"curve": [[0, 0], [3, 0], [6, 0.11], [9, 0.41], [12, 1], [25, 1], [25.01, 0]]
-	},
-	"variability": {
-		"amount": 0.1,
-		"frequency": 0.05
-	},
 	"assets": {
 		"icon": "wind_turbine_icon.svg",
 		"model": "../../assets/meshes/windradglb.glb",

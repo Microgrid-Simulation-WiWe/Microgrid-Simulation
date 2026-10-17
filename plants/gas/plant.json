@@ -13,14 +13,6 @@
 		"min_load": 20,
 		"ramp_per_tick": 10
 	},
-	"input": {
-		"key": "",
-		"curve": []
-	},
-	"variability": {
-		"amount": 0,
-		"frequency": 0.05
-	},
 	"assets": {
 		"icon": "gas-stove.svg",
 		"model": "",

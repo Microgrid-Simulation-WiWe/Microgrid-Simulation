@@ -17,8 +17,8 @@ Die `plant.json` eines **ähnlichen** Typs in den neuen Ordner kopieren:
 
 | Neuer Typ ist … | Vorlage |
 |---|---|
-| ein **Erzeuger**, abhängig vom Wetter | `solar/`, `wind/` oder `hydro/` |
-| ein **Erzeuger**, frei steuerbar | `gas/`, `coal/` oder `nuclear/` |
+| ein **Erzeuger**, sofort regelbar | `solar/`, `wind/` oder `hydro/` |
+| ein **Erzeuger**, träge mit Mindestlast | `gas/`, `coal/` oder `nuclear/` |
 | ein **Speicher** | `battery/` oder `.pumped_hydro/` |
 
 Für Biogas nehmen wir `gas/plant.json`. Ordner mit `.` am Anfang (z. B. `.pumped_hydro/`) zeigt der Godot-Editor nicht an, solche Vorlagen also im Explorer oder in VS Code kopieren.
@@ -37,8 +37,6 @@ Die `plant.json` öffnen (Doppelklick im Godot-Editor) und mindestens diese Feld
 Danach Leistung, Mindestlast, Rampe, Baupunkte usw. setzen. Was jedes Feld bedeutet, steht in [`_base/plant_schema.md`](_base/plant_schema.md).
 
 Häufige Fragen dazu:
-- **Wetterabhängig?** Unter `input.key` die Einflussgröße eintragen (z. B. `"wind_speed"`) und die Kennlinie in `input.curve`.
-- **Frei steuerbar?** `"key": ""` und `"curve": []`.
 - **Träge wie ein Großkraftwerk?** Kleines `ramp_per_tick` (z. B. `1`–`5`) und eine Mindestlast (`min_load`).
 
 ## 4. Assets ablegen
@@ -101,7 +99,6 @@ Die Befehle sind für **PowerShell**, ausgeführt im Projektordner (der Ordner m
 |---|---|---|
 | `Feld '…' fehlt – Standardwert … wird verwendet` | Feld fehlt in der JSON | Feld ergänzen (oder bewusst `""` / `null` setzen) |
 | `Asset '…' nicht gefunden – Platzhalter wird verwendet` | Pfad stimmt nicht oder Datei fehlt | Pfad relativ zum Typ-Ordner prüfen |
-| `Unbekannte Einflussgröße '…'` | Tippfehler in `input.key` | Gültige Werte siehe `plant_schema.md` |
 | `Unbekannter type '…' – Typ wird übersprungen` | `type` ist weder `generator` noch `storage` | korrigieren |
 | `id '…' gibt es schon – Typ wird übersprungen` | Zwei Ordner mit derselben `id` | `id` ändern |
 | `Kein gültiges JSON-Objekt` | Syntaxfehler (z. B. Komma zu viel) | JSON prüfen, z. B. mit einem JSON-Validator |
