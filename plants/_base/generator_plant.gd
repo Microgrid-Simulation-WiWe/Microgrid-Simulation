@@ -18,7 +18,6 @@ func tick(_tick_hours: float) -> void:
 	_ramp_towards(target_mw)
 	# Zufallswert addieren, nur solange die Anlage Leistung liefert.
 	if actual_power_mw > 0.0:
-		print(noise_level)
 		actual_power_mw += 0.1 * randf_range(-1.0, 1.0) * noise_level * installed_power_mw
 	# Die Verfügbarkeit bleibt die Obergrenze. Fällt sie plötzlich (Störung), sinkt die Leistung sofort.
 	actual_power_mw = clampf(actual_power_mw, 0.0, available_power_mw)

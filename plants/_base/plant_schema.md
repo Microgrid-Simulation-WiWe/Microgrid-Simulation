@@ -30,6 +30,7 @@ Jeder Anlagentyp hat genau eine `plant.json` in seinem Ordner `res://plants/<id>
 | `unit_power_mw` | Zahl | `0` | alle | Nennleistung **pro gebauter Einheit** in MW. Installierte Leistung = Anzahl × diesem Wert. |
 | `ramp_per_tick` | Zahl | `100` | alle | Wie viele %-Punkte der installierten Leistung sich die Leistung pro Tick höchstens ändert. `100` = sofort, `1` = sehr träge (0 → 100 % in 100 Ticks). |
 | `min_load` | Zahl | `0` | Erzeuger | Mindestlast in %, solange die Anlage an ist. Ein kleinerer Sollwert wird darauf angehoben. |
+| `noise_level` | Zahl 0..1 | `0` | Erzeuger | Zufallsschwankung als Anteil der installierten Leistung, `0` = aus. Standardwert für alle Anlagen dieses Typs; kann pro Anlage überschrieben werden. |
 
 ## `storage` – Speicher (nur `type: "storage"`)
 
