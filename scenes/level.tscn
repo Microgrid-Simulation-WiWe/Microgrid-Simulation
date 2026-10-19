@@ -1,5 +1,6 @@
 [gd_scene format=3 uid="uid://d1rth4hee6l04"]
 
+[ext_resource type="Script" uid="uid://c46iblne25w4y" path="res://scenes/inventory/placement_drop_zone.gd" id="1_fpun6"]
 [ext_resource type="Shader" uid="uid://dlnyd0uiebpv2" path="res://assets/shader/edge_detection.gdshader" id="1_mx8sn"]
 [ext_resource type="Shader" uid="uid://d2dpqqn35sfxw" path="res://assets/shader/godot_palette_shader.gdshader" id="2_ppgk2"]
 [ext_resource type="Texture2D" uid="uid://d0645nry1qcet" path="res://assets/sprites/apollo-46-1x.png" id="3_2r41h"]
@@ -11,6 +12,8 @@
 [ext_resource type="Script" uid="uid://dqfv1s277kja6" path="res://scenes/setpoint_panel.gd" id="8_setp"]
 [ext_resource type="Script" uid="uid://dgjtyjbxdslbn" path="res://scenes/clock_display.gd" id="9_clk"]
 [ext_resource type="PackedScene" uid="uid://cwoj1iklltm2n" path="res://assets/meshes/nuclear.glb" id="10_olg7q"]
+[ext_resource type="Script" uid="uid://b15t5hvs60jqm" path="res://scenes/inventory/inventory_bar.gd" id="13_wc255"]
+[ext_resource type="Script" uid="uid://emeki7ued0vx" path="res://scenes/inventory/placement_controller.gd" id="14_arp2o"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -55,6 +58,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stretch = true
+
+[node name="PlacementDropZone" type="Control" parent="SubViewportContainer" unique_id=1703421577]
+layout_mode = 2
+script = ExtResource("1_fpun6")
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=840495631]
 handle_input_locally = false
@@ -171,3 +178,15 @@ grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("8_setp")
 energy_mix = NodePath("../EnergyMix")
+
+[node name="InventoryBar" type="PanelContainer" parent="." unique_id=1014675057]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("13_wc255")
+
+[node name="PlacementController" type="Node" parent="." unique_id=1893750462 node_paths=PackedStringArray("energy_mix", "drop_zone", "camera", "target")]
+script = ExtResource("14_arp2o")
+energy_mix = NodePath("../EnergyMix/EnergyMix")
+drop_zone = NodePath("../SubViewportContainer/PlacementDropZone")
+camera = NodePath("../SubViewportContainer/SubViewport/camera/Camera3D")
+target = NodePath("../SubViewportContainer/SubViewport/meshes")
