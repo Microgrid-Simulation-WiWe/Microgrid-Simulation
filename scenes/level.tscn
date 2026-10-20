@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://dqfv1s277kja6" path="res://scenes/setpoint_panel.gd" id="8_setp"]
 [ext_resource type="Script" uid="uid://dgjtyjbxdslbn" path="res://scenes/clock_display.gd" id="9_clk"]
 [ext_resource type="PackedScene" uid="uid://cwoj1iklltm2n" path="res://assets/meshes/nuclear.glb" id="10_olg7q"]
+[ext_resource type="Script" uid="uid://cmqs4h3ikl7s" path="res://scripts/frequency_display.gd" id="11_freq"]
 [ext_resource type="Script" uid="uid://b15t5hvs60jqm" path="res://scenes/inventory/inventory_bar.gd" id="13_wc255"]
 [ext_resource type="Script" uid="uid://emeki7ued0vx" path="res://scenes/inventory/placement_controller.gd" id="14_arp2o"]
 
@@ -162,6 +163,20 @@ grow_horizontal = 2
 text = "12:00 Uhr"
 horizontal_alignment = 1
 script = ExtResource("9_clk")
+energy_mix = NodePath("../EnergyMix")
+
+[node name="FrequencyDisplay" type="Control" parent="." unique_id=1873402219 node_paths=PackedStringArray("energy_mix")]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 44.0
+offset_right = 110.0
+offset_bottom = 90.0
+grow_horizontal = 2
+mouse_filter = 2
+script = ExtResource("11_freq")
 energy_mix = NodePath("../EnergyMix")
 
 [node name="SetpointPanel" type="PanelContainer" parent="." unique_id=1980012345 node_paths=PackedStringArray("energy_mix")]

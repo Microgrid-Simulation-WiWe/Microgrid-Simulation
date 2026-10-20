@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2196" height="1641" viewBox="0 0 2196 1641">
 <rect width="2196" height="1641" fill="#ffffff"/>
 <text x="40" y="58" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="26" font-weight="700" fill="#1f2328">Microgrid – UML-Klassendiagramm</text>
-<text x="40" y="86" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#57606a">Alle GDScript-Klassen aus res://plants und res://scenes · Code-Stand: 17.10.2026 (Wetter entfernt, Zufall über noise_level)</text>
+<text x="40" y="86" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="13.5" fill="#57606a">Alle GDScript-Klassen aus res://plants und res://scenes · Code-Stand: 17.10.2026 · EnergyMix + Tests: 20.10.2026 (Netzfrequenz)</text>
 <path d="M501.0,549.0 L95.0,549.0 L95.0,211.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M95.0,198.0 L102.5,211.0 L87.5,211.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M1316.0,286.0 L1343.0,286.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
@@ -33,9 +33,9 @@
 <path d="M593.0,380.0 L587.0,390.0 L593.0,400.0 L599.0,390.0 Z" fill="#ffffff" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <text x="585" y="430" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">_definitions</text>
 <text x="585" y="513" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0..*</text>
-<path d="M1111.0,403.0 L1111.0,519.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<path d="M1111.0,383.0 L1105.0,393.0 L1111.0,403.0 L1117.0,393.0 Z" fill="#3d4450" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
-<text x="1119" y="464" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">_plants (Kind-Nodes)</text>
+<path d="M1111.0,461.0 L1111.0,519.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M1111.0,441.0 L1105.0,451.0 L1111.0,461.0 L1117.0,451.0 Z" fill="#3d4450" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
+<text x="1119" y="490" text-anchor="start" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">_plants (Kind-Nodes)</text>
 <text x="1103" y="513" text-anchor="end" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12" fill="#1f2328" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">0..*</text>
 <path d="M1041.0,619.0 L891.0,619.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
 <path d="M900.8,624.0 L891.0,619.0 L900.8,614.0" fill="none" stroke="#3d4450" stroke-width="1.4" stroke-linejoin="round"/>
@@ -191,22 +191,28 @@
 <text x="574.8" y="1583.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">p_folder: String, source: String)</text>
 </g>
 <g class="class">
-<rect x="981" y="150" width="335" height="233" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
-<path d="M981,183 V155 Q981,150 986,150 H1311 Q1316,150 1316,155 V183 Z" fill="#dcf0e0" stroke="none"/>
-<rect x="981" y="150" width="335" height="233" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
-<text x="1148.5" y="171.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">EnergyMix</text>
-<line x1="981" y1="183" x2="1316" y2="183" stroke="#3f8f55" stroke-width="1.1"/>
-<line x1="981" y1="283" x2="1316" y2="283" stroke="#3f8f55" stroke-width="1.1"/>
-<text x="993.0" y="201.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick_hours: float</text>
-<text x="993.0" y="219.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ ticks_per_second: float</text>
-<text x="993.0" y="237.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ total_power_mw: float</text>
-<text x="993.0" y="255.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _plants: Array[PowerPlant]</text>
-<text x="993.0" y="273.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _time_since_tick: float</text>
-<text x="993.0" y="301.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _ready()</text>
-<text x="993.0" y="319.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _process(delta: float)</text>
-<text x="993.0" y="337.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick()</text>
-<text x="993.0" y="355.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ get_plant(id: StringName): PowerPlant</text>
-<text x="993.0" y="373.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ build(id: StringName): PlantBuilding</text>
+<rect x="981" y="100" width="335" height="341" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
+<path d="M981,133 V105 Q981,100 986,100 H1311 Q1316,100 1316,105 V133 Z" fill="#dcf0e0" stroke="none"/>
+<rect x="981" y="100" width="335" height="341" rx="5" fill="none" stroke="#3f8f55" stroke-width="1.4"/>
+<text x="1148.5" y="121.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">EnergyMix</text>
+<line x1="981" y1="133" x2="1316" y2="133" stroke="#3f8f55" stroke-width="1.1"/>
+<line x1="981" y1="341" x2="1316" y2="341" stroke="#3f8f55" stroke-width="1.1"/>
+<text x="993.0" y="151.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328" text-decoration="underline">+ NOMINAL_HZ: float</text>
+<text x="993.0" y="169.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick_hours: float</text>
+<text x="993.0" y="187.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ ticks_per_second: float</text>
+<text x="993.0" y="205.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ total_power_mw: float</text>
+<text x="993.0" y="223.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ demand_mw: float</text>
+<text x="993.0" y="241.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ hz_per_imbalance: float</text>
+<text x="993.0" y="259.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ frequency_response: float</text>
+<text x="993.0" y="277.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ frequency_hz: float</text>
+<text x="993.0" y="295.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick_count: int</text>
+<text x="993.0" y="313.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _plants: Array[PowerPlant]</text>
+<text x="993.0" y="331.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _time_since_tick: float</text>
+<text x="993.0" y="359.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _ready()</text>
+<text x="993.0" y="377.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328"># _process(delta: float)</text>
+<text x="993.0" y="395.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick()</text>
+<text x="993.0" y="413.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ get_plant(id: StringName): PowerPlant</text>
+<text x="993.0" y="431.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ build(id: StringName): PlantBuilding</text>
 </g>
 <g class="class">
 <rect x="1041" y="519" width="410" height="302" rx="5" fill="#ffffff" stroke="#3f8f55" stroke-width="1.4"/>
@@ -302,9 +308,9 @@
 <text x="1728.0" y="280.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _on_pressed()</text>
 </g>
 <g class="class">
-<rect x="60" y="782" width="390" height="356" rx="5" fill="#ffffff" stroke="#7d64b0" stroke-width="1.4"/>
+<rect x="60" y="782" width="390" height="374" rx="5" fill="#ffffff" stroke="#7d64b0" stroke-width="1.4"/>
 <path d="M60,830 V787 Q60,782 65,782 H445 Q450,782 450,787 V830 Z" fill="#ebe4f6" stroke="none"/>
-<rect x="60" y="782" width="390" height="356" rx="5" fill="none" stroke="#7d64b0" stroke-width="1.4"/>
+<rect x="60" y="782" width="390" height="374" rx="5" fill="none" stroke="#7d64b0" stroke-width="1.4"/>
 <text x="255.0" y="800" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="11.5" font-style="italic" fill="#57606a">«Skript»</text>
 <text x="255.0" y="818.5" text-anchor="middle" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="15" font-weight="700" fill="#1f2328">run_tests.gd</text>
 <line x1="60" y1="830" x2="450" y2="830" stroke="#7d64b0" stroke-width="1.1"/>
@@ -318,20 +324,21 @@
 <text x="72.0" y="966.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _test_generators()</text>
 <text x="72.0" y="984.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _test_storage()</text>
 <text x="72.0" y="1002.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _test_energy_mix()</text>
-<text x="72.0" y="1020.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _test_loading_errors()</text>
-<text x="72.0" y="1038.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _make_plant(id: StringName,</text>
-<text x="103.8" y="1056.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">units: int = 1): PowerPlant</text>
-<text x="72.0" y="1074.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _create_plant(definition: PlantDefinition,</text>
-<text x="103.8" y="1092.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">units: int = 1): PowerPlant</text>
-<text x="72.0" y="1110.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _run(plant: PowerPlant, ticks: int)</text>
-<text x="72.0" y="1128.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _check(condition: bool, description: String)</text>
+<text x="72.0" y="1020.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _test_frequency()</text>
+<text x="72.0" y="1038.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _test_loading_errors()</text>
+<text x="72.0" y="1056.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _make_plant(id: StringName,</text>
+<text x="103.8" y="1074.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">units: int = 1): PowerPlant</text>
+<text x="72.0" y="1092.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _create_plant(definition: PlantDefinition,</text>
+<text x="103.8" y="1110.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">units: int = 1): PowerPlant</text>
+<text x="72.0" y="1128.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _run(plant: PowerPlant, ticks: int)</text>
+<text x="72.0" y="1146.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">- _check(condition: bool, description: String)</text>
 </g>
-<line x1="1181" y1="94" x2="1181" y2="150" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
-<path d="M1041,30 H1364 L1374,40 V94 H1041 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
-<path d="M1364,30 V40 H1374" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
-<text x="1052" y="49.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Herz der Simulation: legt je Anlagentyp eine</text>
-<text x="1052" y="66.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">PowerPlant an, taktet alle mit tick() und</text>
-<text x="1052" y="82.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">summiert total_power_mw. build(id) = Bauphase.</text>
+<line x1="1181" y1="94" x2="1181" y2="100" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
+<path d="M1041,30 H1451 L1461,40 V94 H1041 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
+<path d="M1451,30 V40 H1461" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
+<text x="1052" y="49.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Herz der Simulation: legt je Anlagentyp eine PowerPlant an,</text>
+<text x="1052" y="66.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">taktet alle mit tick(), summiert total_power_mw und</text>
+<text x="1052" y="82.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">berechnet frequency_hz. build(id) = Bauphase.</text>
 <line x1="1825.0" y1="81" x2="1819.5" y2="150" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1706,34 H1934 L1944,44 V81 H1706 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1934,34 V44 H1944" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
@@ -354,7 +361,7 @@
 <path d="M449,682 V692 H459" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="211" y="701.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Headless-Tests: Registry, Erzeuger,</text>
 <text x="211" y="718.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Speicher, EnergyMix + Gebäude,</text>
-<text x="211" y="734.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Ladefehler (Fixtures).</text>
+<text x="211" y="734.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Netzfrequenz, Ladefehler (Fixtures).</text>
 <line x1="1171" y1="865" x2="1171" y2="821" stroke="#c9a93a" stroke-width="1.3" stroke-dasharray="4 3"/>
 <path d="M1011,865 H1334 L1344,875 V929 H1011 Z" fill="#fff8d6" stroke="#c9a93a" stroke-width="1.2"/>
 <path d="M1334,865 V875 H1344" fill="none" stroke="#c9a93a" stroke-width="1.2"/>

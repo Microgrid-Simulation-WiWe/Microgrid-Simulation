@@ -2,6 +2,8 @@ class_name EnergyMix
 extends Node
 ## Erzeugt beim Start je Anlagentyp eine Logik-Instanz (als Kind-Node) und taktet alle Anlagen.
 
+const NOMINAL_HZ := 50.0
+
 ## Simulierte Dauer eines Ticks. Wird nur für die Speicher-Energie gebraucht.
 @export_range(0.01, 24.0, 0.01, "suffix:h") var tick_hours := 10.0 / 60.0
 ## Ticks pro Echtzeit-Sekunde. 0 = nur manuell über tick().
@@ -9,6 +11,15 @@ extends Node
 
 ## Summe aller Anlagen: + = Einspeisung, − = Aufnahme.
 @export_custom(PROPERTY_HINT_NONE, "suffix:MW", PowerPlant.READ_ONLY) var total_power_mw := 0.0
+
+@export_group("Netzfrequenz")
+## Platzhalter-Verbrauch, bis es echte Verbraucher gibt. 0 = kein Ungleichgewicht.
+@export_range(0.0, 100.0, 0.1, "or_greater", "suffix:MW") var demand_mw := 5.0
+## Abweichung bei 100 % Ungleichgewicht (Erzeugung doppelt so groß wie Verbrauch bzw. 0).
+@export_range(0.0, 20.0, 0.1, "suffix:Hz") var hz_per_imbalance := 5.0
+## Trägheit: Anteil, um den sich die Frequenz pro Tick dem Zielwert nähert. 1 = sofort.
+@export_range(0.01, 1.0, 0.01) var frequency_response := 0.3
+@export_custom(PROPERTY_HINT_NONE, "suffix:Hz", PowerPlant.READ_ONLY) var frequency_hz := NOMINAL_HZ
 
 ## Anzahl der bisher ausgeführten Ticks.
 var tick_count := 0
@@ -44,6 +55,9 @@ func tick() -> void:
 	for plant in _plants:
 		plant.tick(tick_hours)
 		total_power_mw += plant.actual_power_mw
+	# Zu viel Erzeugung → Frequenz steigt, zu wenig → sie fällt. Träge wie eine Schwungmasse.
+	var imbalance := (total_power_mw - demand_mw) / demand_mw if demand_mw > 0.0 else 0.0
+	frequency_hz = lerpf(frequency_hz, NOMINAL_HZ + hz_per_imbalance * imbalance, frequency_response)
 
 
 func get_plant(id: StringName) -> PowerPlant:

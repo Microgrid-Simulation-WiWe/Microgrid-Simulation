@@ -18,6 +18,7 @@ func _run_all() -> void:
 	_test_generators()
 	_test_storage()
 	_test_energy_mix()
+	_test_frequency()
 	_test_loading_errors()
 	print("ALLE TESTS OK" if _failures == 0 else "%d TEST(S) FEHLGESCHLAGEN" % _failures)
 	quit(_failures)
@@ -120,6 +121,30 @@ func _test_energy_mix() -> void:
 	_check(mix.total_power_mw > 0.0, "tick() summiert die Leistung (%.2f MW)" % mix.total_power_mw)
 	building.free()
 	storage_building.free()
+	mix.free()
+
+
+func _test_frequency() -> void:
+	print("Netzfrequenz")
+	var mix := EnergyMix.new()
+	root.add_child(mix)
+	mix.demand_mw = 2.0
+	var wind := mix.get_plant(&"wind") as GeneratorPlant
+	wind.unit_count = 1
+	wind.noise_level = 0.0
+	wind.setpoint = 100.0
+	mix.tick()
+	_check(is_equal_approx(mix.frequency_hz, 50.0), "Erzeugung = Verbrauch → 50 Hz (%.2f)" % mix.frequency_hz)
+	wind.setpoint = 50.0
+	mix.tick()
+	_check(mix.frequency_hz < 50.0 and mix.frequency_hz > 47.5, "zu wenig Erzeugung → fällt träge (%.2f Hz)" % mix.frequency_hz)
+	for i in 50:
+		mix.tick()
+	_check(is_equal_approx(mix.frequency_hz, 47.5), "50 %% Unterdeckung → 47,5 Hz (%.2f)" % mix.frequency_hz)
+	mix.demand_mw = 0.0
+	for i in 50:
+		mix.tick()
+	_check(is_equal_approx(mix.frequency_hz, 50.0), "demand_mw 0 → zurück auf 50 Hz (%.2f)" % mix.frequency_hz)
 	mix.free()
 
 
