@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cwoj1iklltm2n" path="res://assets/meshes/nuclear.glb" id="10_olg7q"]
 [ext_resource type="Script" uid="uid://b15t5hvs60jqm" path="res://scenes/inventory/inventory_bar.gd" id="13_wc255"]
 [ext_resource type="Script" uid="uid://emeki7ued0vx" path="res://scenes/inventory/placement_controller.gd" id="14_arp2o"]
+[ext_resource type="PackedScene" uid="uid://c6et5v7xxatsk" path="res://assets/meshes/solar.glb" id="15_wc255"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -40,11 +41,6 @@ specular_mode = 2
 albedo_texture = ExtResource("4_klq6b")
 uv1_scale = Vector3(9, 9, 9)
 texture_filter = 0
-
-[sub_resource type="BoxMesh" id="BoxMesh_xrivr"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13qdw"]
-albedo_color = Color(0.77378815, 0.6596884, 0.34055406, 1)
 
 [sub_resource type="Environment" id="Environment_xrivr"]
 
@@ -103,10 +99,8 @@ transform = Transform3D(21.213203, 0, 21.213203, 0, 30, 0, -21.213203, 0, 21.213
 mesh = SubResource("PlaneMesh_xrivr")
 surface_material_override/0 = SubResource("StandardMaterial3D_b1lj4")
 
-[node name="test_box" type="MeshInstance3D" parent="SubViewportContainer/SubViewport/meshes" unique_id=1983583849]
-transform = Transform3D(3.4703035, 0, 0.89092577, 0, 3.5828419, 0, -0.89092577, 0, 3.4703035, 12.7238245, 1.5568535, 0)
-mesh = SubResource("BoxMesh_xrivr")
-surface_material_override/0 = SubResource("StandardMaterial3D_13qdw")
+[node name="solar" parent="SubViewportContainer/SubViewport/meshes" unique_id=992286427 instance=ExtResource("15_wc255")]
+transform = Transform3D(0.69426024, 0, -0.98728406, 0, 1.2069495, 0, 0.98728406, 0, 0.69426024, 10.361728, 1.9073486e-06, 13.428497)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=22769394]
 transform = Transform3D(-0.17364816, 0.7544065, 0.63302225, -5.619428e-08, -0.64278764, 0.76604444, 0.9848077, 0.13302216, 0.11161893, 0, 5, 50)
