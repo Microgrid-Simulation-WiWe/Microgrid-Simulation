@@ -34,3 +34,26 @@ version_control/autoload_on_startup=true
 
 rendering_device/driver.windows="d3d12"
 lights_and_shadows/directional_shadow/size=2048
+
+[shader_globals]
+
+wind_noise={
+"type": "sampler2D",
+"value": "res://assets/sprites/noise_texture_2d.tres"
+}
+wind_direction={
+"type": "vec3",
+"value": Vector3(0, 0, 1)
+}
+wind_scale={
+"type": "float",
+"value": 0.025
+}
+wind_speed={
+"type": "float",
+"value": 0.075
+}
+wind_strength={
+"type": "float",
+"value": 0.4
+}
