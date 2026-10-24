@@ -37,6 +37,7 @@ func _scatter() -> void:
 	# Von der lokalen Fläche des Bodens in den Raum dieses Nodes umrechnen.
 	var to_local := global_transform.affine_inverse() * ground.global_transform
 
+	multimesh.instance_count = 0 # transform_format lässt sich nur bei 0 Instanzen ändern
 	multimesh.transform_format = MultiMesh.TRANSFORM_3D
 	multimesh.instance_count = count
 	for i in count:

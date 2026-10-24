@@ -1,5 +1,7 @@
 shader_type spatial;
 render_mode cull_back;
+// Stencil 1 = keine Outline im Compatibility-Renderer (Forward+ nutzt dafür ROUGHNESS = 0)
+stencil_mode write, compare_always, 1;
 
 global uniform float wind_scale;
 global uniform float wind_speed;

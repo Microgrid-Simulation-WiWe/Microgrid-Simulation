@@ -18,6 +18,8 @@
 [ext_resource type="Script" uid="uid://b15t5hvs60jqm" path="res://scenes/inventory/inventory_bar.gd" id="13_wc255"]
 [ext_resource type="Script" uid="uid://emeki7ued0vx" path="res://scenes/inventory/placement_controller.gd" id="14_arp2o"]
 [ext_resource type="PackedScene" uid="uid://c6et5v7xxatsk" path="res://assets/meshes/solar.glb" id="15_wc255"]
+[ext_resource type="Script" path="res://scripts/edge_detection_switch.gd" id="16_edgesw"]
+[ext_resource type="Shader" path="res://assets/shader/edge_detection_compat.gdshader" id="17_edgecp"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -86,6 +88,8 @@ cast_shadow = 0
 extra_cull_margin = 16384.0
 mesh = SubResource("QuadMesh_13qdw")
 surface_material_override/0 = SubResource("ShaderMaterial_b121j")
+script = ExtResource("16_edgesw")
+compatibility_shader = ExtResource("17_edgecp")
 
 [node name="ColorRect" type="ColorRect" parent="SubViewportContainer/SubViewport/camera" unique_id=1610680427]
 material = SubResource("ShaderMaterial_8c41q")
@@ -111,13 +115,13 @@ count = 4000
 scale_range = Vector2(1, 3)
 
 [node name="nuclear2" parent="SubViewportContainer/SubViewport/meshes" unique_id=1438042282 instance=ExtResource("10_olg7q")]
-transform = Transform3D(0.9099199, 0, -0.414784, 0, 1, 0, 0.414784, 0, 0.9099199, -26.78398, -0.08408594, 0.6793728)
+transform = Transform3D(0.6761403, 0, -0.7367729, 0, 1, 0, 0.7367729, 0, 0.6761403, -29.335264, -0.08408594, -2.1822567)
 
 [node name="windrad" parent="SubViewportContainer/SubViewport/meshes" unique_id=1096361103 instance=ExtResource("5_t1rx8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4403267, 0, 6.873726)
+transform = Transform3D(0.69209707, 0, -0.72180444, 0, 1, 0, 0.72180444, 0, 0.69209707, 20.25402, -1.9073486e-06, 7.300579)
 
 [node name="solar" parent="SubViewportContainer/SubViewport/meshes" unique_id=992286427 instance=ExtResource("15_wc255")]
-transform = Transform3D(0.69426024, 0, -0.98728406, 0, 1.2069495, 0, 0.98728406, 0, 0.69426024, 10.361728, 1.9073486e-06, 13.428497)
+transform = Transform3D(0.46479052, 0, 0.13120157, 0, 0.48295346, 0, -0.13120157, 0, 0.46479052, -3.0376072, 1.9073486e-06, 4.9101486)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="SubViewportContainer/SubViewport" unique_id=22769394]
 transform = Transform3D(-0.17364816, 0.7544065, 0.63302225, -5.619428e-08, -0.64278764, 0.76604444, 0.9848077, 0.13302216, 0.11161893, 0, 5, 50)
