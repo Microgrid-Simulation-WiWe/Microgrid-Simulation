@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://d1rth4hee6l04"]
 
 [ext_resource type="Script" uid="uid://c46iblne25w4y" path="res://scenes/inventory/placement_drop_zone.gd" id="1_fpun6"]
-[ext_resource type="Shader" uid="uid://dlnyd0uiebpv2" path="res://assets/shader/edge_detection.gdshader" id="1_mx8sn"]
 [ext_resource type="Shader" uid="uid://d2dpqqn35sfxw" path="res://assets/shader/godot_palette_shader.gdshader" id="2_ppgk2"]
 [ext_resource type="Texture2D" uid="uid://d0645nry1qcet" path="res://assets/sprites/apollo-46-1x.png" id="3_2r41h"]
 [ext_resource type="Script" uid="uid://ba6vhqsn6x2lq" path="res://plants/_base/energy_mix.gd" id="5_ppgk2"]
@@ -18,8 +17,8 @@
 [ext_resource type="Script" uid="uid://b15t5hvs60jqm" path="res://scenes/inventory/inventory_bar.gd" id="13_wc255"]
 [ext_resource type="Script" uid="uid://emeki7ued0vx" path="res://scenes/inventory/placement_controller.gd" id="14_arp2o"]
 [ext_resource type="PackedScene" uid="uid://c6et5v7xxatsk" path="res://assets/meshes/solar.glb" id="15_wc255"]
-[ext_resource type="Script" path="res://scripts/edge_detection_switch.gd" id="16_edgesw"]
-[ext_resource type="Shader" path="res://assets/shader/edge_detection_compat.gdshader" id="17_edgecp"]
+[ext_resource type="Script" uid="uid://dybubusxrfk6r" path="res://scripts/edge_detection_switch.gd" id="16_edgesw"]
+[ext_resource type="Shader" uid="uid://m2i8b8jeagos" path="res://assets/shader/edge_detection_compat.gdshader" id="17_edgecp"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -27,12 +26,13 @@ size = Vector2(2, 2)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_b121j"]
 render_priority = 0
-shader = ExtResource("1_mx8sn")
+shader = ExtResource("17_edgecp")
 shader_parameter/lightIntensity = 1.25
 shader_parameter/lineAlpha = 0.7
 shader_parameter/useLighting = false
-shader_parameter/lineHighlight = 0.2
+shader_parameter/lineHighlight = 0.075
 shader_parameter/lineShadow = 0.55
+shader_parameter/normalEdgeThreshold = 0.5
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8c41q"]
 shader = ExtResource("2_ppgk2")

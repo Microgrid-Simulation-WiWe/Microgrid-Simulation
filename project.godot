@@ -33,6 +33,7 @@ version_control/autoload_on_startup=true
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+renderer/rendering_method="gl_compatibility"
 lights_and_shadows/directional_shadow/size=2048
 
 [shader_globals]
