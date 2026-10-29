@@ -1,0 +1,36 @@
+{
+	"schema_version": 1,
+	"id": "diesel",
+	"display_name": "Dieselgenerator",
+	"type": "generator",
+	"sort_order": 9,
+	"build": {
+		"cost": 1,
+		"area_usage": [1, 1]
+	},
+	"power": {
+		"unit_power_mw": 1.0,
+		"min_load": 10,
+		"noise_level": 0,
+		"ramp_per_tick": 50
+	},
+	"assets": {
+		"icon": "",
+		"model": "",
+		"textures": {
+			"albedo": ""
+		},
+		"animation": "",
+		"sounds": {
+			"loop": ""
+		},
+		"effects": [],
+		"scene": null
+	},
+	"visual": {
+		"scale": 1.0,
+		"offset": [0, 0, 0],
+		"anim_speed": [0.2, 1.5],
+		"volume_db": [-30, -6]
+	}
+}
