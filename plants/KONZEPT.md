@@ -62,16 +62,25 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
 
 - **Zwei Logik-Klassen reichen für alle Typen.** Die Unterschiede stecken nur in den Werten der `plant.json`.
 - `type` in der JSON entscheidet über die Definitions-Klasse. `create_plant()` liefert dann die passende Logik.
-- **`EnergyMix`** (Node) hat vier Aufgaben:
+- **`EnergyMix`** (Node) hat fünf Aufgaben:
   - Er legt beim Start je Typ eine Logik-Instanz als Kind an.
   - Er taktet alle Anlagen mit `tick()`, entweder manuell oder über `ticks_per_second`.
   - Er summiert `total_power_mw`.
-  - Er berechnet die Netzfrequenz `frequency_hz`.
+  - Er summiert die Energiebilanz `energy_balance_kwh`.
+  - Er berechnet die Netzfrequenz `frequency_hz` (nur noch intern).
 - **Bauphase:** `EnergyMix.build(id)` erhöht `unit_count` und liefert das passende Gebäude.
-- **Netzfrequenz:** Nach jedem Tick läuft `frequency_hz` um den Anteil `frequency_response` auf `50 Hz + hz_per_imbalance · (total_power_mw − demand_mw) / demand_mw` zu.
+- **Energiebilanz:** Nach jedem Tick kommt `(total_power_mw · 1000 − demand_kw) · tick_hours` zu `energy_balance_kwh` dazu.
+  - Plus heißt, es wurde mehr erzeugt als verbraucht. Minus heißt Unterdeckung. Ziel ist eine Bilanz nahe 0.
+  - Ein ladender Speicher hat negative Leistung und senkt die Bilanz. Einen Überschuss kann man also einspeichern und später wieder abgeben.
+  - `demand_kw` ist ein Platzhalter-Verbrauch in kW (Standard 20 kW), bis es Verbraucher gibt.
+  - Die Bilanz wird nur intern mitgeführt und ist im Inspector sichtbar. Später kann sie z. B. für das Spielende oder eine Auswertung genutzt werden.
+- **Anzeige der Leistungsbilanz:** `scripts/power_balance_display.gd` zeigt Erzeugung − `demand_kw` mit Vorzeichen, unter 1 MW in kW, darüber in MW. Der Wert reagiert beim nächsten Tick, anders als die aufsummierte kWh-Bilanz.
+  - Dazu kommt ein Balken von −`demand_kw` bis +`demand_kw`: grün bis ±10 % des Verbrauchs, gelb bis ±30 %, sonst rot. Die Stufen sind Platzhalter-Exports (`green_band`, `yellow_band`).
+  - Bei `demand_kw` 0 bleibt die Markierung in der Mitte.
+- **Netzfrequenz:** Sie entscheidet nicht mehr über den Spielablauf, wird aber weiter mitgeführt und ist im Inspector sichtbar. Nach jedem Tick läuft `frequency_hz` um den Anteil `frequency_response` auf `50 Hz + hz_per_imbalance · (total_power_mw · 1000 − demand_kw) / demand_kw` zu.
   - Bei zu viel Erzeugung steigt sie, bei zu wenig fällt sie. Sie reagiert träge wie eine Schwungmasse.
-  - `demand_mw` ist ein Platzhalter-Verbrauch, bis es Verbraucher gibt. Bei 0 gibt es kein Ungleichgewicht.
-  - Die Anzeige `scripts/frequency_display.gd` zeigt den Wert mit einem Balken von 48 bis 52 Hz: grün bis ±0,2 Hz, gelb bis ±1 Hz, sonst rot.
+  - Bei `demand_kw` 0 gibt es kein Ungleichgewicht.
+  - Die frühere Hz-Anzeige `scripts/frequency_display.gd` (Balken 48–52 Hz) wurde am 29.10.2026 entfernt. Der Code steht in der Git-History.
 
 ## 3. Steuerschnittstelle `PowerPlant`
 
@@ -140,7 +149,8 @@ res://plants/
 - **Zur Laufzeit** sind Definitionen und Anlagen im **Remote-Inspector** sichtbar und live änderbar. Das wird nicht gespeichert.
 - **Im Inspector** gepflegt werden:
   - die globalen Simulationswerte am `EnergyMix`: `tick_hours`, `ticks_per_second`
-  - die Netzfrequenz am `EnergyMix`: `demand_mw`, `hz_per_imbalance`, `frequency_response`
+  - der Verbrauch am `EnergyMix`: `demand_kw` (Energiebilanz `energy_balance_kwh` nur lesbar)
+  - die Netzfrequenz am `EnergyMix`: `hz_per_imbalance`, `frequency_response`
   - die Basis-Szenen
 
 ## 7. Tests
@@ -159,7 +169,8 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - Gas Ein/Aus mit Rampe
 - Speicher: Entladen bis leer, Laden mit Wirkungsgrad
 - `EnergyMix`, `build()` und Gebäude mit Platzhalter
-- Netzfrequenz: 50 Hz bei Gleichgewicht, träges Fallen bei Unterdeckung, `demand_mw` 0
+- Netzfrequenz: 50 Hz bei Gleichgewicht, träges Fallen bei Unterdeckung, `demand_kw` 0
+- Energiebilanz: 0 kWh bei Gleichgewicht, −166,67 kWh bei 1 MW Unterdeckung über 10 min, bei `demand_kw` 0 zählt die ganze Erzeugung als Plus
 - Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets, Punkt-Ordner
 
 ## 8. Stand der Umsetzung
@@ -174,8 +185,9 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - automatisches Anwenden von `assets.textures`
 - Debug-Szene mit Schiebereglern
 - `co2_t_per_mwh` und `cost_per_mwh` für eine spätere Bewertung
-- Netzzusammenbruch und Spielende beim Verlassen von 48–52 Hz, Hz-Grenzen je Schwierigkeitsgrad
-- echte Verbraucher statt des Platzhalters `demand_mw`
+- Netzzusammenbruch und Spielende über eine Grenze der Energiebilanz (kWh) statt über 48–52 Hz, Grenzen je Schwierigkeitsgrad
+- Zurücksetzen der Energiebilanz (z. B. pro Tag)
+- echte Verbraucher statt des Platzhalters `demand_kw`
 
 **Vorerst wieder entfernt** (17.10.2026; der Code steht in der Git-History):
 - Einflussgrößen `SimInputs` und Kennlinien `input.key`/`input.curve` (Sonne, Wind mit Sturmabschaltung, Wasser, Kühlwasser)

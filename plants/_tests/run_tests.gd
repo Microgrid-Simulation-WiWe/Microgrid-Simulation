@@ -19,6 +19,7 @@ func _run_all() -> void:
 	_test_storage()
 	_test_energy_mix()
 	_test_frequency()
+	_test_energy_balance()
 	_test_loading_errors()
 	print("ALLE TESTS OK" if _failures == 0 else "%d TEST(S) FEHLGESCHLAGEN" % _failures)
 	quit(_failures)
@@ -128,7 +129,7 @@ func _test_frequency() -> void:
 	print("Netzfrequenz")
 	var mix := EnergyMix.new()
 	root.add_child(mix)
-	mix.demand_mw = 2.0
+	mix.demand_kw = 2000.0
 	var wind := mix.get_plant(&"wind") as GeneratorPlant
 	wind.unit_count = 1
 	wind.noise_level = 0.0
@@ -141,10 +142,31 @@ func _test_frequency() -> void:
 	for i in 50:
 		mix.tick()
 	_check(is_equal_approx(mix.frequency_hz, 47.5), "50 %% Unterdeckung → 47,5 Hz (%.2f)" % mix.frequency_hz)
-	mix.demand_mw = 0.0
+	mix.demand_kw = 0.0
 	for i in 50:
 		mix.tick()
-	_check(is_equal_approx(mix.frequency_hz, 50.0), "demand_mw 0 → zurück auf 50 Hz (%.2f)" % mix.frequency_hz)
+	_check(is_equal_approx(mix.frequency_hz, 50.0), "demand_kw 0 → zurück auf 50 Hz (%.2f)" % mix.frequency_hz)
+	mix.free()
+
+
+func _test_energy_balance() -> void:
+	print("Energiebilanz")
+	var mix := EnergyMix.new()
+	root.add_child(mix)
+	mix.tick_hours = 10.0 / 60.0
+	mix.demand_kw = 2000.0
+	var wind := mix.get_plant(&"wind") as GeneratorPlant
+	wind.unit_count = 1
+	wind.noise_level = 0.0
+	wind.setpoint = 100.0
+	mix.tick()
+	_check(is_equal_approx(mix.energy_balance_kwh, 0.0), "Erzeugung = Verbrauch → 0 kWh (%.2f)" % mix.energy_balance_kwh)
+	wind.setpoint = 50.0
+	mix.tick()
+	_check(is_equal_approx(mix.energy_balance_kwh, -1000.0 / 6.0), "1 MW Unterdeckung, 10 min → −166,67 kWh (%.2f)" % mix.energy_balance_kwh)
+	mix.demand_kw = 0.0
+	mix.tick()
+	_check(is_equal_approx(mix.energy_balance_kwh, 0.0), "demand_kw 0 → Erzeugung zählt als Plus (%.2f)" % mix.energy_balance_kwh)
 	mix.free()
 
 

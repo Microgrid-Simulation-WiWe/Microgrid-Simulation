@@ -12,9 +12,14 @@ const NOMINAL_HZ := 50.0
 ## Summe aller Anlagen: + = Einspeisung, − = Aufnahme.
 @export_custom(PROPERTY_HINT_NONE, "suffix:MW", PowerPlant.READ_ONLY) var total_power_mw := 0.0
 
-@export_group("Netzfrequenz")
+@export_group("Verbrauch")
 ## Platzhalter-Verbrauch, bis es echte Verbraucher gibt. 0 = kein Ungleichgewicht.
-@export_range(0.0, 100.0, 0.1, "or_greater", "suffix:MW") var demand_mw := 5.0
+@export_range(0.0, 1000.0, 1.0, "or_greater", "suffix:kW") var demand_kw := 20.0
+## Aufsummierte Energiebilanz: + = mehr erzeugt als verbraucht, − = Unterdeckung. Ziel: nahe 0.
+@export_custom(PROPERTY_HINT_NONE, "suffix:kWh", PowerPlant.READ_ONLY) var energy_balance_kwh := 0.0
+
+@export_group("Netzfrequenz")
+## Wird nur noch mitgeführt, für den Spielablauf zählt energy_balance_kwh.
 ## Abweichung bei 100 % Ungleichgewicht (Erzeugung doppelt so groß wie Verbrauch bzw. 0).
 @export_range(0.0, 20.0, 0.1, "suffix:Hz") var hz_per_imbalance := 5.0
 ## Trägheit: Anteil, um den sich die Frequenz pro Tick dem Zielwert nähert. 1 = sofort.
@@ -55,8 +60,10 @@ func tick() -> void:
 	for plant in _plants:
 		plant.tick(tick_hours)
 		total_power_mw += plant.actual_power_mw
+	var balance_kw := total_power_mw * 1000.0 - demand_kw
+	energy_balance_kwh += balance_kw * tick_hours
 	# Zu viel Erzeugung → Frequenz steigt, zu wenig → sie fällt. Träge wie eine Schwungmasse.
-	var imbalance := (total_power_mw - demand_mw) / demand_mw if demand_mw > 0.0 else 0.0
+	var imbalance := balance_kw / demand_kw if demand_kw > 0.0 else 0.0
 	frequency_hz = lerpf(frequency_hz, NOMINAL_HZ + hz_per_imbalance * imbalance, frequency_response)
 
 
