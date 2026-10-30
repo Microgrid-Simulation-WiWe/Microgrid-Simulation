@@ -19,6 +19,7 @@
 [ext_resource type="PackedScene" uid="uid://c6et5v7xxatsk" path="res://assets/meshes/solar.glb" id="15_wc255"]
 [ext_resource type="Script" uid="uid://dybubusxrfk6r" path="res://scripts/edge_detection_switch.gd" id="16_edgesw"]
 [ext_resource type="Shader" uid="uid://m2i8b8jeagos" path="res://assets/shader/edge_detection_compat.gdshader" id="17_edgecp"]
+[ext_resource type="Script" uid="uid://c12pf5ar1ic4s" path="res://scenes/game_flow/game_flow.gd" id="18_flow"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -135,11 +136,8 @@ environment = SubResource("Environment_xrivr")
 
 [node name="EnergyMix" type="Node" parent="." unique_id=1527151300]
 script = ExtResource("5_ppgk2")
+tick_hours = 0.05
 demand_kw = 100.0
-metadata/_custom_type_script = "uid://ba6vhqsn6x2lq"
-
-[node name="EnergyMix" type="Node" parent="EnergyMix" unique_id=367442591]
-script = ExtResource("5_ppgk2")
 metadata/_custom_type_script = "uid://ba6vhqsn6x2lq"
 
 [node name="BuildWindButton" type="Button" parent="." unique_id=1742385061 node_paths=PackedStringArray("energy_mix", "target")]
@@ -216,7 +214,29 @@ script = ExtResource("13_wc255")
 
 [node name="PlacementController" type="Node" parent="." unique_id=1893750462 node_paths=PackedStringArray("energy_mix", "drop_zone", "camera", "target")]
 script = ExtResource("14_arp2o")
-energy_mix = NodePath("../EnergyMix/EnergyMix")
+energy_mix = NodePath("../EnergyMix")
 drop_zone = NodePath("../SubViewportContainer/PlacementDropZone")
 camera = NodePath("../SubViewportContainer/SubViewport/camera/Camera3D")
 target = NodePath("../SubViewportContainer/SubViewport/meshes")
+
+[node name="PhaseButton" type="Button" parent="." unique_id=1286451937]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -196.0
+offset_top = -56.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Simulation starten"
+
+[node name="GameFlow" type="Node" parent="." unique_id=702938415 node_paths=PackedStringArray("energy_mix", "phase_button", "build_ui", "simulation_ui")]
+script = ExtResource("18_flow")
+energy_mix = NodePath("../EnergyMix")
+phase_button = NodePath("../PhaseButton")
+build_ui = [NodePath("../InventoryBar"), NodePath("../BuildWindButton")]
+simulation_ui = [NodePath("../PowerDisplay"), NodePath("../ClockDisplay"), NodePath("../PowerBalanceDisplay"), NodePath("../SetpointPanel")]
+metadata/_custom_type_script = "uid://c12pf5ar1ic4s"

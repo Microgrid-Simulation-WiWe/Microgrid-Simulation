@@ -8,6 +8,8 @@ const NOMINAL_HZ := 50.0
 @export_range(0.01, 24.0, 0.01, "suffix:h") var tick_hours := 10.0 / 60.0
 ## Ticks pro Echtzeit-Sekunde. 0 = nur manuell über tick().
 @export_range(0.0, 60.0, 0.1) var ticks_per_second := 1.0
+## Aus = Simulation angehalten (Bauphase). tick() von Hand geht trotzdem.
+@export var running := true
 
 ## Summe aller Anlagen: + = Einspeisung, − = Aufnahme.
 @export_custom(PROPERTY_HINT_NONE, "suffix:MW", PowerPlant.READ_ONLY) var total_power_mw := 0.0
@@ -45,7 +47,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if ticks_per_second <= 0.0:
+	if not running or ticks_per_second <= 0.0:
 		return
 	_time_since_tick += delta
 	while _time_since_tick >= 1.0 / ticks_per_second:
@@ -65,6 +67,18 @@ func tick() -> void:
 	# Zu viel Erzeugung → Frequenz steigt, zu wenig → sie fällt. Träge wie eine Schwungmasse.
 	var imbalance := balance_kw / demand_kw if demand_kw > 0.0 else 0.0
 	frequency_hz = lerpf(frequency_hz, NOMINAL_HZ + hz_per_imbalance * imbalance, frequency_response)
+
+
+## Zurück auf den Rundenstart: Uhr, Bilanz, Frequenz und Anlagenzustand.
+## Gebaute Einheiten (unit_count) und Sollwerte bleiben.
+func reset() -> void:
+	tick_count = 0
+	_time_since_tick = 0.0
+	total_power_mw = 0.0
+	energy_balance_kwh = 0.0
+	frequency_hz = NOMINAL_HZ
+	for plant in _plants:
+		plant.reset()
 
 
 func get_plant(id: StringName) -> PowerPlant:

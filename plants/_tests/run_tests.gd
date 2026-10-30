@@ -20,6 +20,7 @@ func _run_all() -> void:
 	_test_energy_mix()
 	_test_frequency()
 	_test_energy_balance()
+	_test_pause_and_reset()
 	_test_loading_errors()
 	print("ALLE TESTS OK" if _failures == 0 else "%d TEST(S) FEHLGESCHLAGEN" % _failures)
 	quit(_failures)
@@ -167,6 +168,37 @@ func _test_energy_balance() -> void:
 	mix.demand_kw = 0.0
 	mix.tick()
 	_check(is_equal_approx(mix.energy_balance_kwh, 0.0), "demand_kw 0 → Erzeugung zählt als Plus (%.2f)" % mix.energy_balance_kwh)
+	mix.free()
+
+
+func _test_pause_and_reset() -> void:
+	print("Anhalten + Zurücksetzen")
+	var mix := EnergyMix.new()
+	root.add_child(mix)
+	mix.running = false
+	mix._process(5.0)
+	_check(mix.tick_count == 0, "running aus → kein Tick")
+	mix.running = true
+	mix._process(2.0)
+	_check(mix.tick_count == 2, "running an → Ticks laufen (%d)" % mix.tick_count)
+
+	var wind := mix.get_plant(&"wind")
+	wind.unit_count = 1
+	wind.setpoint = 100.0
+	wind.availability_modifier = 0.5
+	var battery := mix.get_plant(&"battery") as StoragePlant
+	battery.unit_count = 1
+	battery.setpoint = 100.0
+	for i in 3:
+		mix.tick()
+	var soc_before := battery.state_of_charge
+	mix.reset()
+	_check(mix.tick_count == 0 and is_zero_approx(mix.energy_balance_kwh) and is_zero_approx(mix.total_power_mw)
+		and is_equal_approx(mix.frequency_hz, 50.0), "reset() → Uhr, Bilanz, Leistung und Frequenz auf Start")
+	_check(is_zero_approx(wind.actual_power_mw) and wind.availability_modifier == 1.0, "reset() → Anlage bei 0 MW, keine Störung")
+	_check(soc_before < 0.5 and is_equal_approx(battery.state_of_charge, 0.5),
+		"reset() → Ladestand zurück auf initial_soc (vorher %.2f)" % soc_before)
+	_check(wind.unit_count == 1 and wind.setpoint == 100.0, "reset() → unit_count und Sollwert bleiben")
 	mix.free()
 
 

@@ -11,6 +11,11 @@ func setup(p_definition: PlantDefinition) -> void:
 	state_of_charge = (definition as StorageDefinition).initial_soc
 
 
+func reset() -> void:
+	state_of_charge = (definition as StorageDefinition).initial_soc
+	super()
+
+
 func tick(tick_hours: float) -> void:
 	var def := definition as StorageDefinition
 	installed_power_mw = unit_count * def.unit_power_mw

@@ -36,6 +36,13 @@ func setup(p_definition: PlantDefinition) -> void:
 @abstract func tick(tick_hours: float) -> void
 
 
+## Rundenstart: Leistung 0, keine Störung. unit_count, Sollwert und Ein/Aus bleiben.
+func reset() -> void:
+	availability_modifier = 1.0
+	actual_power_mw = 0.0
+	state_changed.emit(self)
+
+
 ## Fährt die Leistung um höchstens ramp_per_tick %-Punkte der installierten Leistung Richtung Ziel.
 func _ramp_towards(target_mw: float) -> void:
 	var max_step := definition.ramp_per_tick / 100.0 * installed_power_mw

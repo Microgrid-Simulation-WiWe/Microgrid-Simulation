@@ -62,13 +62,19 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
 
 - **Zwei Logik-Klassen reichen für alle Typen.** Die Unterschiede stecken nur in den Werten der `plant.json`.
 - `type` in der JSON entscheidet über die Definitions-Klasse. `create_plant()` liefert dann die passende Logik.
-- **`EnergyMix`** (Node) hat fünf Aufgaben:
+- **`EnergyMix`** (Node) hat sechs Aufgaben:
   - Er legt beim Start je Typ eine Logik-Instanz als Kind an.
-  - Er taktet alle Anlagen mit `tick()`, entweder manuell oder über `ticks_per_second`.
+  - Er taktet alle Anlagen mit `tick()`, entweder manuell oder über `ticks_per_second`. Ist `running` aus, steht die Simulation still.
   - Er summiert `total_power_mw`.
   - Er summiert die Energiebilanz `energy_balance_kwh`.
   - Er berechnet die Netzfrequenz `frequency_hz` (nur noch intern).
+  - `reset()` setzt ihn auf den Rundenstart zurück: Uhr (`tick_count`), Energiebilanz, Frequenz und den Zustand aller Anlagen. Gebaute Einheiten und Sollwerte bleiben.
 - **Bauphase:** `EnergyMix.build(id)` erhöht `unit_count` und liefert das passende Gebäude.
+- **Bauen und Simulation** sind getrennt. Das steuert `scenes/game_flow/game_flow.gd` (`GameFlow`) in der Level-Szene:
+  - In der Bauphase ist `running` aus. Sichtbar sind nur die Knoten in `build_ui` (Inventarleiste).
+  - Der Knopf „Simulation starten“ schaltet `running` an und zeigt `simulation_ui` (Sollwerte, Uhr, Erzeugung, Leistungsbilanz).
+  - Eine Runde ist ein simulierter Tag (`round_hours`, Standard 24 h). Danach oder über „Simulation beenden“ kommt das Signal `round_finished(completed)`, anschließend `reset()` und zurück in die Bauphase. Jede Runde beginnt also von vorne.
+  - `round_finished` ist der Anknüpfpunkt für das Dashboard nach jeder Runde und für ein späteres Spielende.
 - **Energiebilanz:** Nach jedem Tick kommt `(total_power_mw · 1000 − demand_kw) · tick_hours` zu `energy_balance_kwh` dazu.
   - Plus heißt, es wurde mehr erzeugt als verbraucht. Minus heißt Unterdeckung. Ziel ist eine Bilanz nahe 0.
   - Ein ladender Speicher hat negative Leistung und senkt die Bilanz. Einen Überschuss kann man also einspeichern und später wieder abgeben.
@@ -93,6 +99,7 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
 | `installed_power_mw`, `available_power_mw`, `actual_power_mw` | Zustand, im Inspector schreibgeschützt. `actual` ist + bei Einspeisung und − bei Aufnahme. |
 | `state_of_charge` | Nur Speicher: Ladestand 0..1. |
 | Signal `state_changed(plant)` | Nach jedem Tick, z. B. für UI und Gebäude. |
+| `reset()` | Rundenstart: Leistung 0, `availability_modifier` 1, Speicher-Ladestand auf `initial_soc`. `unit_count`, `setpoint` und `enabled` bleiben. |
 
 **Ein Tick beim Erzeuger:**
 1. `P_inst = unit_count · unit_power_mw`
@@ -149,6 +156,8 @@ res://plants/
 - **Zur Laufzeit** sind Definitionen und Anlagen im **Remote-Inspector** sichtbar und live änderbar. Das wird nicht gespeichert.
 - **Im Inspector** gepflegt werden:
   - die globalen Simulationswerte am `EnergyMix`: `tick_hours`, `ticks_per_second`
+    - In `scenes/level.tscn` ist `tick_hours` 0,05 h (3 min). Bei 1 Tick pro Sekunde dauert ein simulierter Tag (480 Ticks) 8 min, passend zu den 5–10 min pro Runde aus dem Sprint Review vom 26.10.2026.
+  - die Rundenlänge am `GameFlow`: `round_hours`
   - der Verbrauch am `EnergyMix`: `demand_kw` (Energiebilanz `energy_balance_kwh` nur lesbar)
   - die Netzfrequenz am `EnergyMix`: `hz_per_imbalance`, `frequency_response`
   - die Basis-Szenen
@@ -171,6 +180,7 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - `EnergyMix`, `build()` und Gebäude mit Platzhalter
 - Netzfrequenz: 50 Hz bei Gleichgewicht, träges Fallen bei Unterdeckung, `demand_kw` 0
 - Energiebilanz: 0 kWh bei Gleichgewicht, −166,67 kWh bei 1 MW Unterdeckung über 10 min, bei `demand_kw` 0 zählt die ganze Erzeugung als Plus
+- Anhalten und Zurücksetzen: kein Tick bei `running` aus; `reset()` setzt Uhr, Bilanz, Frequenz, Leistung, Störung und Ladestand zurück, `unit_count` und Sollwert bleiben
 - Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets, Punkt-Ordner
 
 ## 8. Stand der Umsetzung
@@ -186,7 +196,6 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - Debug-Szene mit Schiebereglern
 - `co2_t_per_mwh` und `cost_per_mwh` für eine spätere Bewertung
 - Netzzusammenbruch und Spielende über eine Grenze der Energiebilanz (kWh) statt über 48–52 Hz, Grenzen je Schwierigkeitsgrad
-- Zurücksetzen der Energiebilanz (z. B. pro Tag)
 - echte Verbraucher statt des Platzhalters `demand_kw`
 
 **Vorerst wieder entfernt** (17.10.2026; der Code steht in der Git-History):
@@ -194,6 +203,6 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - Zufall über `variability` in der `plant.json` (`FastNoiseLite`, `EnergyMix.noise_seed`). Ersetzt durch einen einfachen Zufallswert mit `noise_level` (siehe Abschnitt 3).
 
 **Noch offen (Team / Product Owner):**
-1. **Tick-Länge und Rundendauer:** Wie viel Sim-Zeit ist ein Tick? Davon hängen Rampenwerte und Speicher-Energie ab.
-2. **Konkrete Werte:** Leistungen, Baupunkte und `area_usage`.
+1. **Konkrete Werte:** Leistungen, Baupunkte und `area_usage`.
+2. **Rampenwerte:** Sie gelten pro Tick. Mit den kürzeren 3-min-Ticks fährt z. B. Kohle in Sim-Zeit schneller hoch als vorher, in Echtzeit gleich schnell.
 3. **Export:** Im exportierten Build prüfen, dass alle `plant.json` gefunden werden. Gegebenenfalls `*.json` im Export-Filter „Nicht-Ressourcen-Dateien“ ergänzen.
