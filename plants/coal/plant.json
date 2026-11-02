@@ -15,6 +15,11 @@
 		"noise_level": 0,
 		"ramp_per_tick": 2
 	},
+	"impact": {
+		"cost_ct_per_kwh": 23,
+		"co2_g_per_kwh": 820,
+		"nuclear_waste_mg_per_kwh": 0
+	},
 	"assets": {
 		"icon": "coal-pile.svg",
 		"model": "",

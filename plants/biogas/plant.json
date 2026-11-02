@@ -15,6 +15,11 @@
 		"noise_level": 0,
 		"ramp_per_tick": 5
 	},
+	"impact": {
+		"cost_ct_per_kwh": 26,
+		"co2_g_per_kwh": 230,
+		"nuclear_waste_mg_per_kwh": 0
+	},
 	"assets": {
 		"icon": "",
 		"model": "",

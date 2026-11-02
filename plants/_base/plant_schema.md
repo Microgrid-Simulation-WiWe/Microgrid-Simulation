@@ -33,6 +33,16 @@ Jeder Anlagentyp hat genau eine `plant.json` in seinem Ordner `res://plants/<id>
 | `min_load` | Zahl | `0` | Erzeuger | Mindestlast in %, solange die Anlage an ist. Ein kleinerer Sollwert wird darauf angehoben. |
 | `noise_level` | Zahl 0..1 | `0` | Erzeuger | Zufallsschwankung als Anteil der installierten Leistung, `0` = aus. Standardwert für alle Anlagen dieses Typs; kann pro Anlage überschrieben werden. |
 
+## `impact` – Auswirkungen (nur `type: "generator"`)
+
+Werte **je erzeugter kWh**, für die Auswertung nach jeder Runde. Die aktuellen Zahlen sind grobe Platzhalter: CO₂ als Lebenszyklus-Mediane nach IPCC, Kosten ungefähr nach den Stromgestehungskosten von Fraunhofer ISE.
+
+| Feld | Typ | Standard | Bedeutung |
+|---|---|---|---|
+| `cost_ct_per_kwh` | Zahl | `0` | Kosten in Cent je kWh. |
+| `co2_g_per_kwh` | Zahl | `0` | CO₂-Ausstoß in Gramm je kWh (Lebenszyklus, also auch Bau und Brennstoff). |
+| `nuclear_waste_mg_per_kwh` | Zahl | `0` | Hochradioaktiver Abfall in Milligramm je kWh. Wird nur angezeigt, wenn er anfällt. |
+
 ## `storage` – Speicher (nur `type: "storage"`)
 
 | Feld | Typ | Standard | Bedeutung |

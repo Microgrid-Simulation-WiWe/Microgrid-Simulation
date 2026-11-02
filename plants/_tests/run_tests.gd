@@ -21,6 +21,7 @@ func _run_all() -> void:
 	_test_frequency()
 	_test_energy_balance()
 	_test_pause_and_reset()
+	_test_round_stats()
 	_test_random()
 	_test_loading_errors()
 	_test_grid_occupancy()
@@ -210,6 +211,45 @@ func _test_pause_and_reset() -> void:
 	_check(soc_before < 0.5 and is_equal_approx(battery.state_of_charge, 0.5),
 		"reset() → Ladestand zurück auf initial_soc (vorher %.2f)" % soc_before)
 	_check(wind.unit_count == 1 and wind.setpoint == 100.0, "reset() → unit_count und Sollwert bleiben")
+	mix.free()
+
+
+func _test_round_stats() -> void:
+	print("Rundenauswertung")
+	var nuclear_def := PlantRegistry.get_by_id(&"nuclear") as GeneratorDefinition
+	var coal_def := PlantRegistry.get_by_id(&"coal") as GeneratorDefinition
+	_check(nuclear_def.nuclear_waste_mg_per_kwh > 0.0 and coal_def.co2_g_per_kwh > 0.0 and coal_def.cost_ct_per_kwh > 0.0,
+		"impact-Felder aus plant.json geladen")
+
+	var mix := EnergyMix.new()
+	root.add_child(mix)
+	mix.tick_hours = 10.0 / 60.0
+	mix.demand_kw = 2000.0
+	var stats := RoundStats.new()
+	stats.energy_mix = mix
+	root.add_child(stats)
+	var wind := mix.get_plant(&"wind") as GeneratorPlant
+	var wind_def := wind.definition as GeneratorDefinition
+	wind.unit_count = 1
+	wind.noise_level = 0.0
+	wind.setpoint = 100.0
+	for i in 6:
+		mix.tick()
+	_check(is_equal_approx(stats.energy_kwh[wind], 2000.0), "2 MW für 1 h → 2000 kWh (%.1f)" % stats.energy_kwh[wind])
+	_check(is_equal_approx(stats.total_co2_g(), 2000.0 * wind_def.co2_g_per_kwh), "CO₂ = kWh × co2_g_per_kwh")
+	_check(is_equal_approx(stats.total_cost_eur(), 20.0 * wind_def.cost_ct_per_kwh), "Kosten = kWh × ct / 100")
+	_check(is_equal_approx(stats.average_cost_ct_per_kwh(), wind_def.cost_ct_per_kwh), "nur Wind → Durchschnitt = ct/kWh von Wind")
+	_check(is_zero_approx(stats.total_nuclear_waste_mg()), "ohne Atom kein Atommüll")
+	_check(stats.stability() == 1.0 and is_zero_approx(stats.shortfall_kwh), "Erzeugung = Verbrauch → immer im grünen Bereich")
+	wind.setpoint = 50.0
+	for i in 6:
+		mix.tick()
+	_check(is_equal_approx(stats.stability(), 0.5), "halbe Runde zu wenig → 50 %% stabil (%.2f)" % stats.stability())
+	_check(is_equal_approx(stats.shortfall_kwh, 1000.0), "1 MW Unterdeckung für 1 h → 1000 kWh (%.1f)" % stats.shortfall_kwh)
+	mix.reset()
+	mix.tick()
+	_check(stats.ticks == 1 and is_equal_approx(stats.energy_kwh[wind], 1000.0 / 6.0), "neue Runde → zählt von vorne")
+	stats.free()
 	mix.free()
 
 
