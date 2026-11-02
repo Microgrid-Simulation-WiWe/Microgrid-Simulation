@@ -4,9 +4,10 @@
 	"display_name": "Atomkraftwerk",
 	"type": "generator",
 	"sort_order": 6,
+	"category": "conventional",
 	"build": {
 		"cost": 5,
-		"area_usage": [2, 2]
+		"area_usage": [16, 16]
 	},
 	"power": {
 		"unit_power_mw": 10.0,
@@ -28,8 +29,8 @@
 		"scene": null
 	},
 	"visual": {
-		"scale": 1.0,
-		"offset": [0, 0, 0],
+		"scale": 0.8,
+		"offset": [-5.16, 0, 4.34],
 		"anim_speed": [0.2, 1.5],
 		"volume_db": [-30, -6]
 	}

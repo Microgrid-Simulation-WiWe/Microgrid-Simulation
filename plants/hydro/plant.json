@@ -4,9 +4,10 @@
 	"display_name": "Wasserkraftwerk",
 	"type": "generator",
 	"sort_order": 3,
+	"category": "renewable",
 	"build": {
 		"cost": 3,
-		"area_usage": [1, 1]
+		"area_usage": [6, 6]
 	},
 	"power": {
 		"unit_power_mw": 1.0,

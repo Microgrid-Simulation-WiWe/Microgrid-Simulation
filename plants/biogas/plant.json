@@ -4,9 +4,10 @@
 	"display_name": "Biogasanlage",
 	"type": "generator",
 	"sort_order": 10,
+	"category": "renewable",
 	"build": {
 		"cost": 2,
-		"area_usage": [2, 1]
+		"area_usage": [6, 6]
 	},
 	"power": {
 		"unit_power_mw": 1.0,

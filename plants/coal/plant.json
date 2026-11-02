@@ -4,9 +4,10 @@
 	"display_name": "Kohlekraftwerk",
 	"type": "generator",
 	"sort_order": 4,
+	"category": "conventional",
 	"build": {
 		"cost": 2,
-		"area_usage": [2, 2]
+		"area_usage": [10, 10]
 	},
 	"power": {
 		"unit_power_mw": 5.0,

@@ -32,7 +32,10 @@ Die `plant.json` öffnen (Doppelklick im Godot-Editor) und mindestens diese Feld
 "display_name": "Biogasanlage",
 "type": "generator",
 "sort_order": 9,
+"category": "renewable",
 ```
+
+`category` legt fest, unter welchem Reiter der Inventarleiste der Typ erscheint. Die möglichen Werte stehen in `plants/categories.json`.
 
 Danach Leistung, Mindestlast, Rampe, Baupunkte usw. setzen. Was jedes Feld bedeutet, steht in [`_base/plant_schema.md`](_base/plant_schema.md).
 

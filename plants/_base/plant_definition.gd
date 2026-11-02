@@ -7,6 +7,8 @@ extends Resource
 @export var id: StringName
 @export var display_name: String
 @export var sort_order: int
+## id einer Kategorie aus res://plants/categories.json (Reiter in der Inventarleiste).
+@export var category: StringName
 @export var folder: String
 
 @export_group("Bau")
@@ -50,6 +52,7 @@ func load_from_dict(data: Dictionary, p_folder: String, source: String) -> void:
 	id = StringName(_value(data, "id", folder.get_file()))
 	display_name = _value(data, "display_name", String(id))
 	sort_order = int(_value(data, "sort_order", 0))
+	category = StringName(_value(data, "category", ""))
 	build_cost = int(_value(data, "build.cost", 0))
 	var area: Array = _value(data, "build.area_usage", [1, 1])
 	area_usage = Vector2i(int(area[0]), int(area[1]))

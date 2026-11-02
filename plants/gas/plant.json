@@ -4,9 +4,10 @@
 	"display_name": "Gaskraftwerk",
 	"type": "generator",
 	"sort_order": 5,
+	"category": "conventional",
 	"build": {
 		"cost": 2,
-		"area_usage": [1, 1]
+		"area_usage": [6, 6]
 	},
 	"power": {
 		"unit_power_mw": 3.0,

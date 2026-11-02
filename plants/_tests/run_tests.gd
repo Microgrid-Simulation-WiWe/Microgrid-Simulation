@@ -22,6 +22,7 @@ func _run_all() -> void:
 	_test_energy_balance()
 	_test_pause_and_reset()
 	_test_loading_errors()
+	_test_grid_occupancy()
 	print("ALLE TESTS OK" if _failures == 0 else "%d TEST(S) FEHLGESCHLAGEN" % _failures)
 	quit(_failures)
 
@@ -36,6 +37,13 @@ func _test_registry() -> void:
 	_check(PlantRegistry.get_by_id(&"wind") is GeneratorDefinition, "wind ist ein Generator")
 	_check(PlantRegistry.get_by_id(&"battery") is StorageDefinition, "battery ist ein Speicher")
 	_check(PlantRegistry.get_by_id(&"wind").building_scene != null, "Standard-Gebäudeszene gesetzt")
+	var categories := PlantRegistry.get_categories()
+	var categories_sorted := range(1, categories.size()).all(
+		func(i: int) -> bool: return categories[i - 1].sort_order <= categories[i].sort_order)
+	_check(not categories.is_empty() and categories_sorted, "Kategorien geladen und sortiert (%d)" % categories.size())
+	_check(PlantRegistry.get_by_id(&"wind").category == &"renewable", "wind ist erneuerbar")
+	_check(PlantRegistry.get_in_category(&"conventional").has(PlantRegistry.get_by_id(&"coal")), "coal liegt in conventional")
+	_check(PlantRegistry.get_uncategorized().is_empty(), "jeder Grundtyp hat eine gültige Kategorie")
 
 
 func _test_generators() -> void:
@@ -118,6 +126,8 @@ func _test_energy_mix() -> void:
 	_check(building.get_node("Model").get_child_count() == 1, "Platzhalter-Modell ohne Asset")
 	var storage_building := mix.build(&"battery")
 	_check(storage_building is StorageBuilding, "build() liefert StorageBuilding")
+	mix.demolish(storage_building)
+	_check(mix.get_plant(&"battery").unit_count == 0, "demolish() senkt unit_count")
 	mix.get_plant(&"wind").setpoint = 100.0
 	mix.tick()
 	_check(mix.total_power_mw > 0.0, "tick() summiert die Leistung (%.2f MW)" % mix.total_power_mw)
@@ -211,7 +221,21 @@ func _test_loading_errors() -> void:
 	_check(PlantRegistry.get_by_id(&"hidden") == null, "Punkt-Ordner (.hidden) → übersprungen")
 	var missing := PlantRegistry.get_by_id(&"missing_asset")
 	_check(missing is StorageDefinition and missing.icon == null, "fehlendes Asset → kein Absturz, icon leer")
+	_check(PlantRegistry.get_categories().is_empty() and PlantRegistry.get_uncategorized().size() == 2,
+		"ohne categories.json → keine Kategorien, alle Typen ohne Kategorie")
 	PlantRegistry.scan()
+
+
+func _test_grid_occupancy() -> void:
+	print("Rasterbelegung")
+	var grid := GridOccupancy.new()
+	var owner := RefCounted.new()
+	grid.occupy(Rect2i(0, 0, 2, 2), owner)
+	_check(not grid.can_place(Rect2i(1, 1, 2, 2)), "überlappende Fläche → belegt")
+	_check(grid.can_place(Rect2i(2, 0, 2, 2)), "angrenzende Fläche → frei")
+	_check(grid.get_occupant(Vector2i(1, 1)) == owner, "Feld kennt seinen Beleger")
+	grid.release(owner)
+	_check(grid.can_place(Rect2i(0, 0, 2, 2)) and grid.get_occupant(Vector2i(1, 1)) == null, "release() → wieder frei")
 
 
 func _make_plant(id: StringName, units := 1) -> PowerPlant:

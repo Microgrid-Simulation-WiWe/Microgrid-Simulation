@@ -99,3 +99,9 @@ func build(id: StringName) -> PlantBuilding:
 	var building := plant.definition.building_scene.instantiate() as PlantBuilding
 	building.setup(plant.definition, plant)
 	return building
+
+
+## Bauphase: Gegenstück zu build(), zählt die Einheit des Gebäudes wieder ab.
+## Entfernen aus der Welt (queue_free()) übernimmt der Aufrufer.
+func demolish(building: PlantBuilding) -> void:
+	building.plant.unit_count = maxi(building.plant.unit_count - 1, 0)

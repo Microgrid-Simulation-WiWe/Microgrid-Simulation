@@ -4,6 +4,7 @@
 	"display_name": "Pumpspeicherkraftwerk",
 	"type": "storage",
 	"sort_order": 8,
+	"category": "storage",
 	"build": {
 		"cost": 4,
 		"area_usage": [2, 2]

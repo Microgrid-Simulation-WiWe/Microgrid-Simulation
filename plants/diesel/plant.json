@@ -4,9 +4,10 @@
 	"display_name": "Dieselgenerator",
 	"type": "generator",
 	"sort_order": 9,
+	"category": "conventional",
 	"build": {
 		"cost": 1,
-		"area_usage": [1, 1]
+		"area_usage": [3, 3]
 	},
 	"power": {
 		"unit_power_mw": 1.0,

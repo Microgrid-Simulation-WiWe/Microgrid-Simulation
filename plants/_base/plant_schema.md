@@ -15,13 +15,14 @@ Jeder Anlagentyp hat genau eine `plant.json` in seinem Ordner `res://plants/<id>
 | `display_name` | Text | `id` | Name im Spiel (z. B. „Pumpspeicherkraftwerk“). |
 | `type` | Text | – | **Pflichtfeld.** `"generator"` (Erzeuger) oder `"storage"` (Speicher). Bestimmt die Logik-Klasse. |
 | `sort_order` | Zahl | `0` | Reihenfolge im Baumenü, aufsteigend. |
+| `category` | Text | `""` | `id` einer Kategorie aus `res://plants/categories.json` (z. B. `"renewable"`). Bestimmt den Reiter in der Inventarleiste. Leer oder unbekannt = Reiter „Sonstige“. |
 
 ## `build` – Bauphase
 
 | Feld | Typ | Standard | Bedeutung |
 |---|---|---|---|
 | `cost` | Zahl | `0` | Baupunkte pro Einheit. |
-| `area_usage` | [x, y] | `[1, 1]` | Belegte Felder auf dem Raster. |
+| `area_usage` | [x, y] | `[1, 1]` | Belegte Felder auf dem Raster (1 Feld = 1 Welteinheit). Gebäude dürfen sich nicht überlappen und müssen ganz auf dem Spielfeld liegen. |
 
 ## `power` – Leistung und Dynamik
 
@@ -61,3 +62,14 @@ Jeder Anlagentyp hat genau eine `plant.json` in seinem Ordner `res://plants/<id>
 | `offset` | [x, y, z] | `[0, 0, 0]` | Verschiebung des Modells. |
 | `anim_speed` | [min, max] | `[0.2, 1.5]` | Animationstempo bei geringer bzw. voller Auslastung. Bei 0 % steht die Animation. |
 | `volume_db` | [min, max] | `[-30, -6]` | Lautstärke in dB bei geringer bzw. voller Auslastung. Bei 0 % ist der Ton pausiert. |
+
+# Kategorien `categories.json`
+
+Die Reiter der Inventarleiste stehen in `res://plants/categories.json`, einer Liste von Einträgen. Reiter ohne Anlagentyp werden nicht angezeigt.
+
+| Feld | Typ | Standard | Bedeutung |
+|---|---|---|---|
+| `id` | Text | – | Wird in `plant.json` unter `category` angegeben. |
+| `display_name` | Text | `id` | Beschriftung des Reiters. |
+| `sort_order` | Zahl | `0` | Reihenfolge der Reiter, aufsteigend. |
+| `icon` | Pfad | `""` | Optionales Icon, relativ zu `res://plants/`. |
