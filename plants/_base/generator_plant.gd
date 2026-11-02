@@ -16,9 +16,11 @@ func tick(_tick_hours: float) -> void:
 	if enabled:
 		target_mw = minf(maxf(setpoint, def.min_load) / 100.0 * installed_power_mw, available_power_mw)
 	_ramp_towards(target_mw)
+	# Immer ziehen, damit die Zahlenfolge nicht davon abhängt, welche Anlagen gerade laufen.
+	var noise := rng.randf_range(-1.0, 1.0)
 	# Zufallswert addieren, nur solange die Anlage Leistung liefert.
 	if actual_power_mw > 0.0:
-		actual_power_mw += 0.1 * randf_range(-1.0, 1.0) * noise_level * installed_power_mw
+		actual_power_mw += 0.1 * noise * noise_level * installed_power_mw
 	# Die Verfügbarkeit bleibt die Obergrenze. Fällt sie plötzlich (Störung), sinkt die Leistung sofort.
 	actual_power_mw = clampf(actual_power_mw, 0.0, available_power_mw)
 	state_changed.emit(self)

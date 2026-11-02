@@ -26,6 +26,9 @@ const READ_ONLY := PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_READ_ONLY
 ## Tatsächliche Leistung: + = Einspeisung, − = Aufnahme (Speicher lädt).
 @export_custom(PROPERTY_HINT_NONE, "suffix:MW", READ_ONLY) var actual_power_mw := 0.0
 
+## Zahlenfolge für Zufallswerte. Im Spiel setzt sie der EnergyMix (zentraler Seed + fester Wert).
+var rng := RandomNumberGenerator.new()
+
 
 func setup(p_definition: PlantDefinition) -> void:
 	definition = p_definition

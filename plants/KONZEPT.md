@@ -108,7 +108,7 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
    - Ist die Anlage aus, ist das Ziel 0.
    - Sonst `min(max(setpoint, min_load) · P_inst, P_avail)`.
 4. Rampe: höchstens `ramp_per_tick` %-Punkte von `P_inst` Richtung Ziel.
-5. Zufall (nur Erzeuger): Ist die Leistung > 0, wird `noise_level · P_inst · Zufallswert` addiert, Zufallswert gleichverteilt in −1..1. `noise_level` 0 = aus.
+5. Zufall (nur Erzeuger): In jedem Tick wird ein Zufallswert gleichverteilt in −1..1 gezogen, auch wenn die Anlage aus ist. Ist die Leistung > 0, wird `noise_level · P_inst · Zufallswert` addiert. `noise_level` 0 = aus.
 6. Harte Grenze `0..P_avail`. Sinkt die Verfügbarkeit (Störung), sinkt die Leistung sofort.
 
 Atom bleibt mindestens bei 50 %, solange es an ist.
@@ -121,6 +121,21 @@ Atom bleibt mindestens bei 50 %, solange es an ist.
 - Leer oder voll heißt 0 MW. Das ist Physik und keine automatische Regelung.
 
 **Wetter** ist vorerst entfernt (siehe Abschnitt 8). Die Zufallsschwankung wird pro Anlage von außen gesetzt (`noise_level`, Standard 0).
+
+**Zufall und Seed:**
+- Alle Zufallswerte des Spiels kommen aus dem zentralen Seed `random_seed` am `EnergyMix` (Inspector, Gruppe „Zufall“, Standard 1). Gleicher Seed und gleiche Programmversion heißt: auf jedem Rechner dieselben Ereignisse.
+- Jede Zufallsfunktion addiert ihren festen Wert auf den Seed und bekommt so ihre eigene Zahlenfolge. Die Werte stehen als `SEED_OFFSET_*` im `EnergyMix`. `create_rng(offset)` liefert den passenden Zufallsgenerator.
+- Bei jedem Rundenstart (`reset()`) beginnen alle Folgen von vorne, jede Runde hat also dieselben Zufallswerte. Eine Änderung am Seed wirkt ab dem nächsten Rundenstart.
+- Erzeuger ziehen in jedem Tick einen Wert, auch wenn sie aus sind. Sonst würden sich die Werte verschieben, je nachdem welche Anlagen der Spieler laufen lässt.
+
+| Zufallsfunktion | Fester Wert | Datei |
+|---|---|---|
+| Leistungsrauschen aller Erzeuger (eine gemeinsame Folge) | `SEED_OFFSET_GENERATOR_NOISE` = 1000 | `plants/_base/generator_plant.gd` |
+| Position beim Test-Knopf „Windrad bauen“ | `SEED_OFFSET_BUILD_POSITION` = 2000 | `scripts/build_wind_button.gd` |
+
+Neue Zufallsfunktion (z. B. Störungen): einen neuen festen Wert im `EnergyMix` anlegen und den Generator über `create_rng()` holen. Nicht verwenden: die globalen Funktionen `randf()`, `randi()`, `randf_range()`, `randi_range()`, `randomize()` und `seed()` sowie `Array.shuffle()` und `Array.pick_random()`. Sie nutzen den globalen Generator, den Godot bei jedem Start neu würfelt.
+
+Die Gras-Verteilung (`scripts/grass_scatter.gd`) ist reine Optik und behält ihren eigenen Seed.
 
 ## 4. Ordnerstruktur
 
@@ -159,6 +174,7 @@ res://plants/
     - In `scenes/level.tscn` ist `tick_hours` 0,05 h (3 min). Bei 1 Tick pro Sekunde dauert ein simulierter Tag (480 Ticks) 8 min, passend zu den 5–10 min pro Runde aus dem Sprint Review vom 26.10.2026.
   - die Rundenlänge am `GameFlow`: `round_hours`
   - der Verbrauch am `EnergyMix`: `demand_kw` (Energiebilanz `energy_balance_kwh` nur lesbar)
+  - der zentrale Seed am `EnergyMix`: `random_seed` (siehe Abschnitt 3)
   - die Netzfrequenz am `EnergyMix`: `hz_per_imbalance`, `frequency_response`
   - die Basis-Szenen
 
@@ -181,6 +197,7 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - Netzfrequenz: 50 Hz bei Gleichgewicht, träges Fallen bei Unterdeckung, `demand_kw` 0
 - Energiebilanz: 0 kWh bei Gleichgewicht, −166,67 kWh bei 1 MW Unterdeckung über 10 min, bei `demand_kw` 0 zählt die ganze Erzeugung als Plus
 - Anhalten und Zurücksetzen: kein Tick bei `running` aus; `reset()` setzt Uhr, Bilanz, Frequenz, Leistung, Störung und Ladestand zurück, `unit_count` und Sollwert bleiben
+- Zufall: nach `reset()` dieselben Werte, gleicher Seed → gleiche Werte, anderer Seed → andere Werte, unabhängig davon welche Anlagen laufen, eigener fester Wert → eigene Zahlenfolge. Einzeln erzeugte Test-Anlagen bekommen Seed 0, damit jeder Testlauf gleich ist.
 - Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets, Punkt-Ordner
 
 ## 8. Stand der Umsetzung
@@ -200,7 +217,7 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 
 **Vorerst wieder entfernt** (17.10.2026; der Code steht in der Git-History):
 - Einflussgrößen `SimInputs` und Kennlinien `input.key`/`input.curve` (Sonne, Wind mit Sturmabschaltung, Wasser, Kühlwasser)
-- Zufall über `variability` in der `plant.json` (`FastNoiseLite`, `EnergyMix.noise_seed`). Ersetzt durch einen einfachen Zufallswert mit `noise_level` (siehe Abschnitt 3).
+- Zufall über `variability` in der `plant.json` (`FastNoiseLite`, `EnergyMix.noise_seed`). Ersetzt durch einen einfachen Zufallswert mit `noise_level` (siehe Abschnitt 3). Den zentralen Seed gibt es seit 02.11.2026 wieder, jetzt als `EnergyMix.random_seed`.
 
 **Noch offen (Team / Product Owner):**
 1. **Konkrete Werte:** Leistungen, Baupunkte und `area_usage`.

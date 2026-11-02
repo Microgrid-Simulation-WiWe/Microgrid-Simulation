@@ -6,7 +6,10 @@ extends Button
 ## Hier werden die Gebäude eingehängt (muss in der Welt der Kamera liegen).
 @export var target: Node3D
 
+var _rng: RandomNumberGenerator
+
 func _ready() -> void:
+	_rng = energy_mix.create_rng(EnergyMix.SEED_OFFSET_BUILD_POSITION)
 	pressed.connect(_on_pressed)
 
 
@@ -14,5 +17,5 @@ func _on_pressed() -> void:
 	var building := energy_mix.build(&"wind")
 	if building == null:
 		return
-	building.position = Vector3(randi_range(-20,20), 0.0, randi_range(-20,20))
+	building.position = Vector3(_rng.randi_range(-20,20), 0.0, _rng.randi_range(-20,20))
 	target.add_child(building)
