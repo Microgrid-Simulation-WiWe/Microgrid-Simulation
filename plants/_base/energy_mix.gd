@@ -3,6 +3,10 @@ extends Node
 ## Erzeugt beim Start je Anlagentyp eine Logik-Instanz (als Kind-Node) und taktet alle Anlagen.
 
 const NOMINAL_HZ := 50.0
+## Feste Werte je Zufallsfunktion. Sie werden auf random_seed addiert, damit jede Funktion ihre eigene Zahlenfolge hat.
+## Neue Zufallsfunktion → neuer Wert hier.
+const SEED_OFFSET_GENERATOR_NOISE := 1000
+const SEED_OFFSET_BUILD_POSITION := 2000
 
 ## Simulierte Dauer eines Ticks. Wird nur für die Speicher-Energie gebraucht.
 @export_range(0.01, 24.0, 0.01, "suffix:h") var tick_hours := 10.0 / 60.0
@@ -28,6 +32,11 @@ const NOMINAL_HZ := 50.0
 @export_range(0.01, 1.0, 0.01) var frequency_response := 0.3
 @export_custom(PROPERTY_HINT_NONE, "suffix:Hz", PowerPlant.READ_ONLY) var frequency_hz := NOMINAL_HZ
 
+@export_group("Zufall")
+## Zentraler Seed für alle Zufallswerte im Spiel. Gleicher Seed → auf jedem Rechner dieselben Ereignisse.
+## Wirkt ab dem nächsten Rundenstart (reset).
+@export var random_seed := 1
+
 ## Anzahl der bisher ausgeführten Ticks.
 var tick_count := 0
 
@@ -41,7 +50,8 @@ func _ready() -> void:
 		plant.setup(definition)
 		add_child(plant)
 		_plants.append(plant)
-		
+	_reset_random()
+
 	print("Plants:")
 	print("\n".join(_plants))
 
@@ -69,7 +79,7 @@ func tick() -> void:
 	frequency_hz = lerpf(frequency_hz, NOMINAL_HZ + hz_per_imbalance * imbalance, frequency_response)
 
 
-## Zurück auf den Rundenstart: Uhr, Bilanz, Frequenz und Anlagenzustand.
+## Zurück auf den Rundenstart: Uhr, Bilanz, Frequenz, Anlagenzustand und Zufall.
 ## Gebaute Einheiten (unit_count) und Sollwerte bleiben.
 func reset() -> void:
 	tick_count = 0
@@ -79,6 +89,7 @@ func reset() -> void:
 	frequency_hz = NOMINAL_HZ
 	for plant in _plants:
 		plant.reset()
+	_reset_random()
 
 
 func get_plant(id: StringName) -> PowerPlant:
@@ -105,3 +116,17 @@ func build(id: StringName) -> PlantBuilding:
 ## Entfernen aus der Welt (queue_free()) übernimmt der Aufrufer.
 func demolish(building: PlantBuilding) -> void:
 	building.plant.unit_count = maxi(building.plant.unit_count - 1, 0)
+
+
+## Neuer Zufallsgenerator für eine Zufallsfunktion: zentraler Seed plus ihr fester Wert (SEED_OFFSET_*).
+func create_rng(offset: int) -> RandomNumberGenerator:
+	var rng := RandomNumberGenerator.new()
+	rng.seed = random_seed + offset
+	return rng
+
+
+## Jede Zufallsfunktion der Simulation beginnt ihre Zahlenfolge von vorne.
+func _reset_random() -> void:
+	var noise_rng := create_rng(SEED_OFFSET_GENERATOR_NOISE)
+	for plant in _plants:
+		plant.rng = noise_rng

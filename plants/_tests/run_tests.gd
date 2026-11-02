@@ -21,6 +21,7 @@ func _run_all() -> void:
 	_test_frequency()
 	_test_energy_balance()
 	_test_pause_and_reset()
+	_test_random()
 	_test_loading_errors()
 	_test_grid_occupancy()
 	print("ALLE TESTS OK" if _failures == 0 else "%d TEST(S) FEHLGESCHLAGEN" % _failures)
@@ -212,6 +213,54 @@ func _test_pause_and_reset() -> void:
 	mix.free()
 
 
+func _test_random() -> void:
+	print("Zufall")
+	var mix := _make_noisy_mix(1)
+	var first := _record_wind(mix, 20)
+	mix.reset()
+	_check(_record_wind(mix, 20) == first, "reset() → Runde hat dieselben Zufallswerte")
+
+	var same := _make_noisy_mix(1)
+	_check(_record_wind(same, 20) == first, "gleicher Seed → gleiche Werte")
+	same.free()
+
+	var other := _make_noisy_mix(2)
+	_check(_record_wind(other, 20) != first, "anderer Seed → andere Werte")
+	other.free()
+
+	var with_coal := _make_noisy_mix(1)
+	var coal := with_coal.get_plant(&"coal")
+	coal.unit_count = 1
+	coal.setpoint = 100.0
+	_check(_record_wind(with_coal, 20) == first, "Zufallswerte hängen nicht davon ab, welche Anlagen laufen")
+	with_coal.free()
+
+	_check(mix.create_rng(EnergyMix.SEED_OFFSET_GENERATOR_NOISE).randi() == mix.create_rng(EnergyMix.SEED_OFFSET_GENERATOR_NOISE).randi()
+		and mix.create_rng(EnergyMix.SEED_OFFSET_GENERATOR_NOISE).randi() != mix.create_rng(EnergyMix.SEED_OFFSET_BUILD_POSITION).randi(),
+		"fester Wert je Funktion → eigene Zahlenfolge")
+	mix.free()
+
+
+## EnergyMix mit einem verrauschten Windrad bei 50 %.
+func _make_noisy_mix(random_seed: int) -> EnergyMix:
+	var mix := EnergyMix.new()
+	mix.random_seed = random_seed
+	root.add_child(mix)
+	var wind := mix.get_plant(&"wind") as GeneratorPlant
+	wind.unit_count = 1
+	wind.noise_level = 0.5
+	wind.setpoint = 50.0
+	return mix
+
+
+func _record_wind(mix: EnergyMix, ticks: int) -> Array[float]:
+	var values: Array[float] = []
+	for i in ticks:
+		mix.tick()
+		values.append(mix.get_plant(&"wind").actual_power_mw)
+	return values
+
+
 func _test_loading_errors() -> void:
 	print("Laden (Fixtures, Warnungen/Fehler darüber sind erwartet)")
 	PlantRegistry.scan(FIXTURES_DIR)
@@ -246,6 +295,7 @@ func _create_plant(definition: PlantDefinition, units := 1) -> PowerPlant:
 	var plant := definition.create_plant()
 	plant.setup(definition)
 	plant.unit_count = units
+	plant.rng.seed = 0 # fester Seed, damit die Tests bei jedem Lauf gleich sind
 	return plant
 
 
