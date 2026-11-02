@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://ba6vhqsn6x2lq" path="res://plants/_base/energy_mix.gd" id="5_ppgk2"]
 [ext_resource type="PackedScene" uid="uid://cbbqqer2n1103" path="res://assets/meshes/windrad.glb" id="5_t1rx8"]
 [ext_resource type="Shader" uid="uid://d3s75xsbqltc1" path="res://assets/shader/ground_shader.gdshader" id="5_ux5qa"]
-[ext_resource type="ArrayMesh" uid="uid://b3je40xqkfu2w" path="res://assets/meshes/grass.res" id="6_ux5qa"]
+[ext_resource type="ArrayMesh" uid="uid://bdotocna2w4yb" path="res://assets/meshes/grass.res" id="6_ux5qa"]
 [ext_resource type="Script" uid="uid://du12005ipj46s" path="res://scripts/build_wind_button.gd" id="6_wbtn"]
 [ext_resource type="Script" uid="uid://cbpm1denma0ne" path="res://scripts/grass_scatter.gd" id="7_82cfe"]
 [ext_resource type="Script" uid="uid://mk8jube4dact" path="res://scripts/power_display.gd" id="7_pwr"]
