@@ -27,8 +27,9 @@ func _test_example() -> void:
 		return
 	_check(ravensburg.display_name == "Ravensburg", "Name Ravensburg")
 	_check(ravensburg.round_hours == 24.0 and ravensburg.start_hour == 12.0, "24-h-Runde ab 12:00 Uhr")
-	_check(is_equal_approx(ravensburg.tick_hours, 0.05) and ravensburg.ticks_per_second == 1.0 and ravensburg.random_seed == 1,
-		"Tick 0,05 h, 1 Tick/s, Seed 1 (wie bisher in level.tscn)")
+	_check(is_equal_approx(ravensburg.tick_hours, 0.05) and ravensburg.round_minutes == 8.0 and ravensburg.random_seed == 1,
+		"Tick 0,05 h, Runde 8 min, Seed 1 (wie bisher in level.tscn)")
+	_check(ravensburg.get_ticks_per_second() == 1.0, "8 min bei 0,05 h Tick und 24 h Runde = 1 Tick/s")
 	var all_allowed := PlantRegistry.get_all().all(
 		func(definition: PlantDefinition) -> bool: return ravensburg.is_plant_allowed(definition.id))
 	_check(all_allowed and ravensburg.power_factors.values().all(func(factor: float) -> bool: return factor == 1.0),
@@ -64,7 +65,8 @@ func _test_loading() -> void:
 
 	var forbid := ScenarioRegistry.get_by_id(&"forbid")
 	_check(forbid.round_hours == 48.0 and forbid.start_hour == 6.5 and forbid.tick_hours == 0.25
-		and forbid.ticks_per_second == 2.0 and forbid.random_seed == 7, "Simulationswerte gelesen")
+		and forbid.round_minutes == 1.6 and forbid.random_seed == 7, "Simulationswerte gelesen")
+	_check(is_equal_approx(forbid.get_ticks_per_second(), 2.0), "48 h in 0,25-h-Ticks (192) in 1,6 min = 2 Tick/s")
 	_check(forbid.info == PackedStringArray(["wenig Wasser"]), "Hinweise gelesen")
 	_check(not forbid.is_plant_allowed(&"nuclear"), "allowed false → verboten")
 	_check(is_equal_approx(forbid.get_power_factor(&"hydro"), 0.5), "power_factor 0.5 gelesen")

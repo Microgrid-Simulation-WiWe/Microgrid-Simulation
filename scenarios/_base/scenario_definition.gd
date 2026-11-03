@@ -17,8 +17,8 @@ extends Resource
 @export_range(0.0, 24.0, 0.25, "suffix:h") var start_hour := 12.0
 ## → EnergyMix.tick_hours
 @export_range(0.01, 24.0, 0.01, "suffix:h") var tick_hours := 0.05
-## → EnergyMix.ticks_per_second
-@export_range(0.0, 60.0, 0.1) var ticks_per_second := 1.0
+## Dauer einer Runde in Echtzeit. Daraus ergibt sich EnergyMix.ticks_per_second (siehe get_ticks_per_second).
+@export_range(0.1, 120.0, 0.1, "suffix:min") var round_minutes := 8.0
 ## → EnergyMix.random_seed
 @export var random_seed := 1
 
@@ -51,6 +51,11 @@ func get_power_factor(plant_id: StringName) -> float:
 	return power_factors.get(plant_id, 1.0)
 
 
+## Ticks pro Echtzeit-Sekunde, damit die Runde round_minutes dauert → EnergyMix.ticks_per_second.
+func get_ticks_per_second() -> float:
+	return roundi(round_hours / tick_hours) / maxf(round_minutes * 60.0, 1.0)
+
+
 ## Füllt den Steckbrief aus dem JSON-Inhalt. Asset-Pfade sind relativ zum Ordner der Datei.
 func load_from_dict(data: Dictionary, folder: String, source: String) -> void:
 	_folder = folder
@@ -64,7 +69,7 @@ func load_from_dict(data: Dictionary, folder: String, source: String) -> void:
 	round_hours = float(_value(data, "simulation.round_hours", 24.0))
 	start_hour = float(_value(data, "simulation.start_hour", 12.0))
 	tick_hours = float(_value(data, "simulation.tick_hours", 0.05))
-	ticks_per_second = float(_value(data, "simulation.ticks_per_second", 1.0))
+	round_minutes = float(_value(data, "simulation.round_minutes", 8.0))
 	random_seed = int(_value(data, "simulation.random_seed", 1))
 
 	var plants: Dictionary = _value(data, "plants", {})

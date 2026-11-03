@@ -9,7 +9,7 @@
 		"round_hours": 48,
 		"start_hour": 6.5,
 		"tick_hours": 0.25,
-		"ticks_per_second": 2,
+		"round_minutes": 1.6,
 		"random_seed": 7
 	},
 	"plants": {

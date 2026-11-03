@@ -27,10 +27,10 @@ Diese Werte überschreiben beim Spielstart die Werte aus `scenes/level.tscn`.
 | `round_hours` | Zahl | `24` | Simulierte Dauer einer Runde in Stunden (→ `GameFlow.round_hours`). |
 | `start_hour` | Zahl | `12` | Uhrzeit beim Rundenstart, z. B. `6.5` = 06:30 Uhr (→ `ClockDisplay.start_hour`). |
 | `tick_hours` | Zahl | `0.05` | Simulierte Dauer eines Ticks in Stunden, `0.05` = 3 min (→ `EnergyMix.tick_hours`). |
-| `ticks_per_second` | Zahl | `1` | Ticks pro Echtzeit-Sekunde (→ `EnergyMix.ticks_per_second`). |
+| `round_minutes` | Zahl | `8` | Dauer einer Runde in Echtzeit-Minuten, ohne Pausen. Daraus wird `EnergyMix.ticks_per_second` berechnet. |
 | `random_seed` | Zahl | `1` | Zentraler Seed für alle Zufallswerte (→ `EnergyMix.random_seed`). |
 
-Echtzeit einer Runde = `round_hours / tick_hours / ticks_per_second` Sekunden, mit den Standardwerten also 480 s = 8 min.
+`tick_hours` legt fest, wie fein gerechnet wird, `round_minutes`, wie lange die Runde in Echtzeit dauert. Das Spieltempo wird daraus berechnet: `ticks_per_second = (round_hours / tick_hours) / (round_minutes * 60)`. Mit den Standardwerten sind das 480 Ticks in 480 s = 1 Tick pro Sekunde. Ein kleineres `tick_hours` rechnet genauer, ändert die Rundendauer aber nicht.
 
 ## `plants` – Anlagentypen
 

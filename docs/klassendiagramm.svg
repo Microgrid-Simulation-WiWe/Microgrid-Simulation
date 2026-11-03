@@ -495,7 +495,7 @@
 <text x="2242.0" y="1301.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ round_hours: float</text>
 <text x="2242.0" y="1319.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ start_hour: float</text>
 <text x="2242.0" y="1337.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ tick_hours: float</text>
-<text x="2242.0" y="1355.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ ticks_per_second: float</text>
+<text x="2242.0" y="1355.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ round_minutes: float</text>
 <text x="2242.0" y="1373.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ random_seed: int</text>
 <text x="2242.0" y="1391.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ forbidden_plants: Array[StringName]</text>
 <text x="2242.0" y="1409.5" font-family="Consolas, 'Cascadia Mono', Menlo, 'DejaVu Sans Mono', 'Liberation Mono', monospace" font-size="13" fill="#1f2328">+ power_factors: Dictionary[StringName, float]</text>
@@ -611,7 +611,7 @@
 <path d="M2076,530 V540 H2086" fill="none" stroke="#c9a93a" stroke-width="1.2"/>
 <text x="1697" y="549.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Auswahl oben in der Mitte, nur in der Bauphase sichtbar.</text>
 <text x="1697" y="566.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">_apply() überträgt das Szenario: round_hours → GameFlow;</text>
-<text x="1697" y="582.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">tick_hours, ticks_per_second, random_seed → EnergyMix;</text>
+<text x="1697" y="582.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">tick_hours, random_seed, round_minutes → EnergyMix;</text>
 <text x="1697" y="599.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">start_hour → ClockDisplay.start_hour;</text>
 <text x="1697" y="615.5" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">forbidden_plants → InventoryBar.hidden_plants.</text>
 <text x="1697" y="632.0" font-family="'Segoe UI', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif" font-size="12.5" fill="#3b3418">Nach dem ersten Bau oder Tick gesperrt.</text>

@@ -57,7 +57,7 @@ func _apply(scenario: ScenarioDefinition) -> void:
 	game_flow.round_hours = scenario.round_hours
 	clock_display.start_hour = scenario.start_hour
 	energy_mix.tick_hours = scenario.tick_hours
-	energy_mix.ticks_per_second = scenario.ticks_per_second
+	energy_mix.ticks_per_second = scenario.get_ticks_per_second()
 	energy_mix.random_seed = scenario.random_seed
 	energy_mix.reset()  # Der Seed wirkt erst ab dem Rundenstart.
 	inventory_bar.hidden_plants = scenario.forbidden_plants
