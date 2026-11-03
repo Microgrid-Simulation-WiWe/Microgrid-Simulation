@@ -1,0 +1,33 @@
+{
+	"schema_version": 1,
+	"id": "ravensburg",
+	"display_name": "Ravensburg",
+	"sort_order": 1,
+	"description": "Beispielszenario. Die Werte entsprechen dem bisherigen Spiel und sind noch nicht abgestimmt.",
+	"info": [],
+	"simulation": {
+		"round_hours": 24,
+		"start_hour": 12,
+		"tick_hours": 0.05,
+		"ticks_per_second": 1,
+		"random_seed": 1
+	},
+	"plants": {
+		"solar": { "allowed": true, "power_factor": 1.0 },
+		"wind": { "allowed": true, "power_factor": 1.0 },
+		"hydro": { "allowed": true, "power_factor": 1.0 },
+		"biogas": { "allowed": true, "power_factor": 1.0 },
+		"coal": { "allowed": true, "power_factor": 1.0 },
+		"gas": { "allowed": true, "power_factor": 1.0 },
+		"diesel": { "allowed": true, "power_factor": 1.0 },
+		"nuclear": { "allowed": true, "power_factor": 1.0 },
+		"battery": { "allowed": true, "power_factor": 1.0 }
+	},
+	"build_area": [60, 60],
+	"landscape": {
+		"ground_color": "#00ff00",
+		"grass": "../assets/meshes/grass.res",
+		"background": null
+	},
+	"weather": {}
+}

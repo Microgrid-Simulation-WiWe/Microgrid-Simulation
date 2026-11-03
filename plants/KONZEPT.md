@@ -177,6 +177,7 @@ res://plants/
   - der zentrale Seed am `EnergyMix`: `random_seed` (siehe Abschnitt 3)
   - die Netzfrequenz am `EnergyMix`: `hz_per_imbalance`, `frequency_response`
   - die Basis-Szenen
+- **Szenario:** `tick_hours`, `ticks_per_second`, `round_hours` und `random_seed` überschreibt beim Spielstart das gewählte Szenario (siehe `res://scenarios/KONZEPT.md`). Die Werte im Inspector gelten nur, wenn es kein Szenario gibt.
 
 ## 7. Tests
 

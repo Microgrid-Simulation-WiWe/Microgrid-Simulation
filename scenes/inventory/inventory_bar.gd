@@ -8,6 +8,9 @@ extends PanelContainer
 ## Reiter für Typen ohne oder mit unbekannter Kategorie.
 @export var other_tab_name := "Sonstige"
 
+## Typen, die nicht angeboten werden (z. B. vom Szenario verboten). Danach refresh() aufrufen.
+var hidden_plants: Array[StringName] = []
+
 var _tabs: HBoxContainer
 var _slots: HBoxContainer
 var _tab_group := ButtonGroup.new()
@@ -44,10 +47,14 @@ func refresh() -> void:
 	_select(clampi(_selected, 0, maxi(_categories.size() - 1, 0)))
 
 
+## Typen der Kategorie ohne die ausgeblendeten (hidden_plants).
 func _definitions_of(category: PlantCategory) -> Array[PlantDefinition]:
-	if category == _other:
-		return PlantRegistry.get_uncategorized()
-	return PlantRegistry.get_in_category(category.id)
+	var definitions := PlantRegistry.get_uncategorized() if category == _other else PlantRegistry.get_in_category(category.id)
+	var result: Array[PlantDefinition] = []
+	for definition in definitions:
+		if not hidden_plants.has(definition.id):
+			result.append(definition)
+	return result
 
 
 func _make_tab(index: int) -> Button:

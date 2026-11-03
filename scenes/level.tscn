@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://h46ll05suj7m" path="res://scenes/inventory/building_action_panel.gd" id="19_bact"]
 [ext_resource type="Script" uid="uid://cvsqqyxnrs1us" path="res://scenes/round_summary/round_stats.gd" id="20_rstats"]
 [ext_resource type="Script" uid="uid://cjuoar7pyqxvx" path="res://scenes/round_summary/round_summary_panel.gd" id="21_rsum"]
+[ext_resource type="Script" uid="uid://0yborav7c3wn" path="res://scenes/scenario/scenario_selector.gd" id="22_scen"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -227,7 +228,7 @@ text = "Simulation starten"
 script = ExtResource("18_flow")
 energy_mix = NodePath("../EnergyMix")
 phase_button = NodePath("../PhaseButton")
-build_ui = [NodePath("../InventoryBar"), NodePath("../PlacementDropZone")]
+build_ui = [NodePath("../InventoryBar"), NodePath("../PlacementDropZone"), NodePath("../ScenarioSelector")]
 simulation_ui = [NodePath("../PowerDisplay"), NodePath("../ClockDisplay"), NodePath("../PowerBalanceDisplay"), NodePath("../SetpointPanel")]
 metadata/_custom_type_script = "uid://c12pf5ar1ic4s"
 
@@ -239,3 +240,11 @@ energy_mix = NodePath("../EnergyMix")
 script = ExtResource("21_rsum")
 game_flow = NodePath("../GameFlow")
 round_stats = NodePath("../RoundStats")
+
+[node name="ScenarioSelector" type="PanelContainer" parent="." unique_id=1938475620 node_paths=PackedStringArray("energy_mix", "game_flow", "clock_display", "inventory_bar", "placement")]
+script = ExtResource("22_scen")
+energy_mix = NodePath("../EnergyMix")
+game_flow = NodePath("../GameFlow")
+clock_display = NodePath("../ClockDisplay")
+inventory_bar = NodePath("../InventoryBar")
+placement = NodePath("../PlacementController")
