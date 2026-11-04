@@ -70,6 +70,8 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
   - Er berechnet die Netzfrequenz `frequency_hz` (nur noch intern).
   - `reset()` setzt ihn auf den Rundenstart zurück: Uhr (`tick_count`), Energiebilanz, Frequenz und den Zustand aller Anlagen. Gebaute Einheiten und Sollwerte bleiben.
 - **Bauphase:** `EnergyMix.build(id)` erhöht `unit_count` und liefert das passende Gebäude.
+  - Bedienung (`scenes/inventory/`): Typ aus der Inventarleiste aufs Spielfeld ziehen = bauen. Gebautes Gebäude ziehen = verschieben (`unit_count` bleibt, Signal `PlacementController.building_moved`). Klick auf ein Gebäude → „Kraftwerk abreißen“ (`EnergyMix.demolish()`).
+  - Gebäude belegen `area_usage` Rasterfelder, dürfen sich nicht überlappen und müssen ganz auf dem Spielfeld liegen. Beim Ziehen zeigt eine Fläche grün (frei) oder rot (belegt/außerhalb).
 - **Bauen und Simulation** sind getrennt. Das steuert `scenes/game_flow/game_flow.gd` (`GameFlow`) in der Level-Szene:
   - In der Bauphase ist `running` aus. Sichtbar sind nur die Knoten in `build_ui` (Inventarleiste).
   - Der Knopf „Simulation starten“ schaltet `running` an und zeigt `simulation_ui` (Sollwerte, Uhr, Erzeugung, Leistungsbilanz).
@@ -197,6 +199,7 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - `EnergyMix`, `build()` und Gebäude mit Platzhalter
 - Netzfrequenz: 50 Hz bei Gleichgewicht, träges Fallen bei Unterdeckung, `demand_kw` 0
 - Energiebilanz: 0 kWh bei Gleichgewicht, −166,67 kWh bei 1 MW Unterdeckung über 10 min, bei `demand_kw` 0 zählt die ganze Erzeugung als Plus
+- Rasterbelegung: Überlappung, angrenzende Flächen, Freigeben; beim Verschieben zählt die eigene Fläche als frei, fremde nicht
 - Anhalten und Zurücksetzen: kein Tick bei `running` aus; `reset()` setzt Uhr, Bilanz, Frequenz, Leistung, Störung und Ladestand zurück, `unit_count` und Sollwert bleiben
 - Zufall: nach `reset()` dieselben Werte, gleicher Seed → gleiche Werte, anderer Seed → andere Werte, unabhängig davon welche Anlagen laufen, eigener fester Wert → eigene Zahlenfolge. Einzeln erzeugte Test-Anlagen bekommen Seed 0, damit jeder Testlauf gleich ist.
 - Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets, Punkt-Ordner

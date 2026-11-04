@@ -323,6 +323,8 @@ func _test_grid_occupancy() -> void:
 	_check(not grid.can_place(Rect2i(1, 1, 2, 2)), "überlappende Fläche → belegt")
 	_check(grid.can_place(Rect2i(2, 0, 2, 2)), "angrenzende Fläche → frei")
 	_check(grid.get_occupant(Vector2i(1, 1)) == owner, "Feld kennt seinen Beleger")
+	_check(grid.can_place(Rect2i(1, 1, 2, 2), owner), "eigene Fläche zählt beim Verschieben als frei")
+	_check(not grid.can_place(Rect2i(1, 1, 2, 2), RefCounted.new()), "fremde Fläche bleibt beim Verschieben belegt")
 	grid.release(owner)
 	_check(grid.can_place(Rect2i(0, 0, 2, 2)) and grid.get_occupant(Vector2i(1, 1)) == null, "release() → wieder frei")
 
