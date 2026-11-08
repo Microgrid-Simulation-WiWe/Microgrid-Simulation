@@ -171,7 +171,7 @@ res://plants/
 - **Zur Laufzeit** sind Definitionen und Anlagen im **Remote-Inspector** sichtbar und live änderbar. Das wird nicht gespeichert.
 - **Im Inspector** gepflegt werden:
   - die globalen Simulationswerte am `EnergyMix`: `tick_hours`, `ticks_per_second`
-    - In `scenes/level.tscn` ist `tick_hours` 0,05 h (3 min). Bei 1 Tick pro Sekunde dauert ein simulierter Tag (480 Ticks) 8 min, passend zu den 5–10 min pro Runde aus dem Sprint Review vom 26.10.2026.
+	- In `scenes/level.tscn` ist `tick_hours` 0,05 h (3 min). Bei 1 Tick pro Sekunde dauert ein simulierter Tag (480 Ticks) 8 min, passend zu den 5–10 min pro Runde aus dem Sprint Review vom 26.10.2026.
   - die Rundenlänge am `GameFlow`: `round_hours`
   - der Verbrauch am `EnergyMix`: `demand_kw` (Energiebilanz `energy_balance_kwh` nur lesbar)
   - der zentrale Seed am `EnergyMix`: `random_seed` (siehe Abschnitt 3)
