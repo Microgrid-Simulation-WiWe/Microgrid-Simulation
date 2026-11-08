@@ -6,10 +6,10 @@ var _occupants: Dictionary[Vector2i, Object] = {}
 var _areas: Dictionary[Object, Rect2i] = {}
 
 
-## true, wenn alle Felder der Fläche frei sind.
-func can_place(area: Rect2i) -> bool:
+## true, wenn alle Felder der Fläche frei sind. Felder von ignore zählen als frei (beim Verschieben).
+func can_place(area: Rect2i, ignore: Object = null) -> bool:
 	for cell: Vector2i in _cells(area):
-		if _occupants.has(cell):
+		if _occupants.has(cell) and _occupants[cell] != ignore:
 			return false
 	return true
 

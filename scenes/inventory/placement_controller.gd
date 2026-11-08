@@ -1,9 +1,11 @@
 class_name PlacementController
 extends Node
-## Setzt Drops in die 3D-Welt um (Mausposition → Rasterfläche → prüfen → bauen)
+## Setzt Drops in die 3D-Welt um (Mausposition → Rasterfläche → prüfen → bauen oder verschieben)
 ## und verwaltet das per Klick ausgewählte Gebäude (z. B. zum Abreißen).
 
 signal building_placed(building: PlantBuilding)
+## Ein schon gebautes Gebäude steht jetzt woanders. unit_count ändert sich dabei nicht.
+signal building_moved(building: PlantBuilding)
 signal building_demolished(building: PlantBuilding)
 signal placement_rejected(plant_id: StringName, reason: String)
 ## building = null heißt: nichts mehr ausgewählt.
@@ -27,6 +29,7 @@ var _selected: PlantBuilding
 
 func _ready() -> void:
 	drop_zone.placement_check = _can_place_at
+	drop_zone.drag_source = _drag_data_at
 	drop_zone.plant_hovered.connect(_on_plant_hovered)
 	drop_zone.hover_ended.connect(_ghost.hide)
 	drop_zone.plant_dropped.connect(_on_plant_dropped)
@@ -45,32 +48,40 @@ func demolish(building: PlantBuilding) -> void:
 	building.queue_free()
 
 
-func _on_plant_hovered(plant_id: StringName, screen_position: Vector2) -> void:
+func _on_plant_hovered(data: PlantDragData, screen_position: Vector2) -> void:
 	if _selected:
 		_select(null, Vector2.ZERO)
-	var area: Variant = _area_at(plant_id, screen_position)
+	var area: Variant = _area_at(data.plant_id, screen_position)
 	if area == null:
 		_ghost.hide()
 		return
-	_ghost.show_area(_area_center(area), Vector2(area.size) * grid_size, _mode_for(area))
+	_ghost.show_area(_area_center(area), Vector2(area.size) * grid_size, _mode_for(area, _moving(data)))
 
 
-func _can_place_at(plant_id: StringName, screen_position: Vector2) -> bool:
-	var area: Variant = _area_at(plant_id, screen_position)
-	return area != null and _check_area(area).is_empty()
+func _can_place_at(data: PlantDragData, screen_position: Vector2) -> bool:
+	var area: Variant = _area_at(data.plant_id, screen_position)
+	return area != null and _check_area(area, _moving(data)).is_empty()
 
 
-func _on_plant_dropped(plant_id: StringName, drop_position: Vector2) -> void:
-	var area: Variant = _area_at(plant_id, drop_position)
+func _on_plant_dropped(data: PlantDragData, drop_position: Vector2) -> void:
+	var area: Variant = _area_at(data.plant_id, drop_position)
 	if area == null:
 		return  # Maus zeigt nicht auf den Boden → nichts bauen
 
 	# Erst prüfen, dann bauen – sonst steigt unit_count trotz Ablehnung.
-	var reason: String = _check_area(area)
+	var moving: PlantBuilding = _moving(data)
+	var reason: String = _check_area(area, moving)
 	if not reason.is_empty():
-		placement_rejected.emit(plant_id, reason)
+		placement_rejected.emit(data.plant_id, reason)
 		return
 
+	if moving:
+		_move(moving, area)
+	else:
+		_build(data.plant_id, area)
+
+
+func _build(plant_id: StringName, area: Rect2i) -> void:
 	var building: PlantBuilding = energy_mix.build(plant_id)
 	if building == null:
 		return
@@ -80,15 +91,37 @@ func _on_plant_dropped(plant_id: StringName, drop_position: Vector2) -> void:
 	building_placed.emit(building)
 
 
+func _move(building: PlantBuilding, area: Rect2i) -> void:
+	_occupancy.release(building)
+	_occupancy.occupy(area, building)
+	building.position = target.to_local(_area_center(area))
+	building_moved.emit(building)
+
+
+## Gebäude, das gerade verschoben wird, oder null bei einem neuen Typ aus der Inventarleiste.
+func _moving(data: PlantDragData) -> PlantBuilding:
+	return (data as BuildingDragData).building if data is BuildingDragData else null
+
+
+## Ziehen auf dem Spielfeld startet: Liegt dort ein Gebäude, wird es verschoben.
+func _drag_data_at(screen_position: Vector2) -> PlantDragData:
+	var building: PlantBuilding = _building_at(screen_position)
+	return BuildingDragData.new(building) if building else null
+
+
 ## Klick auf ein Gebäude wählt es aus, Klick daneben hebt die Auswahl auf.
 func _on_clicked(screen_position: Vector2) -> void:
-	var building: PlantBuilding = null
+	_select(_building_at(screen_position), screen_position)
+
+
+## Gebäude auf dem Rasterfeld unter dem Mauszeiger, oder null.
+func _building_at(screen_position: Vector2) -> PlantBuilding:
 	var hit: Variant = _mouse_to_ground(screen_position)
-	if hit != null:
-		var point: Vector3 = hit
-		var cell: Vector2i = Vector2i(floori(point.x / grid_size), floori(point.z / grid_size))
-		building = _occupancy.get_occupant(cell) as PlantBuilding
-	_select(building, screen_position)
+	if hit == null:
+		return null
+	var point: Vector3 = hit
+	var cell: Vector2i = Vector2i(floori(point.x / grid_size), floori(point.z / grid_size))
+	return _occupancy.get_occupant(cell) as PlantBuilding
 
 
 func _select(building: PlantBuilding, screen_position: Vector2) -> void:
@@ -103,15 +136,15 @@ func _select(building: PlantBuilding, screen_position: Vector2) -> void:
 	selection_changed.emit(building, screen_position)
 
 
-func _mode_for(area: Rect2i) -> PlacementGhost.Mode:
-	return PlacementGhost.Mode.VALID if _check_area(area).is_empty() else PlacementGhost.Mode.INVALID
+func _mode_for(area: Rect2i, moving: PlantBuilding = null) -> PlacementGhost.Mode:
+	return PlacementGhost.Mode.VALID if _check_area(area, moving).is_empty() else PlacementGhost.Mode.INVALID
 
 
-## Leer, wenn gebaut werden darf, sonst der Grund.
-func _check_area(area: Rect2i) -> String:
+## Leer, wenn gebaut werden darf, sonst der Grund. Die alte Fläche von moving zählt als frei.
+func _check_area(area: Rect2i, moving: PlantBuilding = null) -> String:
 	if not _is_on_field(area):
 		return "Außerhalb des Spielfelds"
-	if not _occupancy.can_place(area):
+	if not _occupancy.can_place(area, moving):
 		return "Feld ist belegt"
 	return ""
 

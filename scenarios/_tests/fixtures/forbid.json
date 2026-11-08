@@ -1,0 +1,28 @@
+{
+	"schema_version": 1,
+	"id": "forbid",
+	"display_name": "Verbot",
+	"sort_order": 5,
+	"description": "Testszenario mit Verbot und Leistungsfaktor.",
+	"info": ["wenig Wasser"],
+	"simulation": {
+		"round_hours": 48,
+		"start_hour": 6.5,
+		"tick_hours": 0.25,
+		"round_minutes": 1.6,
+		"random_seed": 7
+	},
+	"plants": {
+		"nuclear": { "allowed": false },
+		"hydro": { "allowed": true, "power_factor": 0.5 },
+		"wind": { "allowed": null, "power_factor": null },
+		"unknown_type": { "allowed": false }
+	},
+	"build_area": [20, 30],
+	"landscape": {
+		"ground_color": "#ff0000",
+		"grass": null,
+		"background": "missing.png"
+	},
+	"weather": { "sun": 0.8 }
+}

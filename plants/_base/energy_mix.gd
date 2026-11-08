@@ -2,6 +2,9 @@ class_name EnergyMix
 extends Node
 ## Erzeugt beim Start je Anlagentyp eine Logik-Instanz (als Kind-Node) und taktet alle Anlagen.
 
+## Nach jedem Simulationsschritt, wenn alle Werte aktuell sind.
+signal ticked
+
 const NOMINAL_HZ := 50.0
 ## Feste Werte je Zufallsfunktion. Sie werden auf random_seed addiert, damit jede Funktion ihre eigene Zahlenfolge hat.
 ## Neue Zufallsfunktion → neuer Wert hier.
@@ -77,6 +80,7 @@ func tick() -> void:
 	# Zu viel Erzeugung → Frequenz steigt, zu wenig → sie fällt. Träge wie eine Schwungmasse.
 	var imbalance := balance_kw / demand_kw if demand_kw > 0.0 else 0.0
 	frequency_hz = lerpf(frequency_hz, NOMINAL_HZ + hz_per_imbalance * imbalance, frequency_response)
+	ticked.emit()
 
 
 ## Zurück auf den Rundenstart: Uhr, Bilanz, Frequenz, Anlagenzustand und Zufall.

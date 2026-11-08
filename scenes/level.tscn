@@ -6,7 +6,6 @@
 [ext_resource type="Script" uid="uid://ba6vhqsn6x2lq" path="res://plants/_base/energy_mix.gd" id="5_ppgk2"]
 [ext_resource type="Shader" uid="uid://d3s75xsbqltc1" path="res://assets/shader/ground_shader.gdshader" id="5_ux5qa"]
 [ext_resource type="ArrayMesh" uid="uid://b3je40xqkfu2w" path="res://assets/meshes/grass.res" id="6_ux5qa"]
-[ext_resource type="Script" uid="uid://h46ll05suj7m" path="res://scenes/inventory/building_action_panel.gd" id="19_bact"]
 [ext_resource type="Script" uid="uid://cbpm1denma0ne" path="res://scripts/grass_scatter.gd" id="7_82cfe"]
 [ext_resource type="Script" uid="uid://mk8jube4dact" path="res://scripts/power_display.gd" id="7_pwr"]
 [ext_resource type="Script" uid="uid://dqfv1s277kja6" path="res://scenes/setpoint_panel.gd" id="8_setp"]
@@ -17,6 +16,10 @@
 [ext_resource type="Script" uid="uid://dybubusxrfk6r" path="res://scripts/edge_detection_switch.gd" id="16_edgesw"]
 [ext_resource type="Shader" uid="uid://m2i8b8jeagos" path="res://assets/shader/edge_detection_compat.gdshader" id="17_edgecp"]
 [ext_resource type="Script" uid="uid://c12pf5ar1ic4s" path="res://scenes/game_flow/game_flow.gd" id="18_flow"]
+[ext_resource type="Script" uid="uid://h46ll05suj7m" path="res://scenes/inventory/building_action_panel.gd" id="19_bact"]
+[ext_resource type="Script" uid="uid://cvsqqyxnrs1us" path="res://scenes/round_summary/round_stats.gd" id="20_rstats"]
+[ext_resource type="Script" uid="uid://cjuoar7pyqxvx" path="res://scenes/round_summary/round_summary_panel.gd" id="21_rsum"]
+[ext_resource type="Script" uid="uid://0yborav7c3wn" path="res://scenes/scenario/scenario_selector.gd" id="22_scen"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -119,6 +122,7 @@ directional_shadow_mode = 1
 environment = SubResource("Environment_xrivr")
 
 [node name="PlacementDropZone" type="Control" parent="." unique_id=1703421577]
+layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -224,6 +228,23 @@ text = "Simulation starten"
 script = ExtResource("18_flow")
 energy_mix = NodePath("../EnergyMix")
 phase_button = NodePath("../PhaseButton")
-build_ui = [NodePath("../InventoryBar"), NodePath("../PlacementDropZone")]
+build_ui = [NodePath("../InventoryBar"), NodePath("../PlacementDropZone"), NodePath("../ScenarioSelector")]
 simulation_ui = [NodePath("../PowerDisplay"), NodePath("../ClockDisplay"), NodePath("../PowerBalanceDisplay"), NodePath("../SetpointPanel")]
 metadata/_custom_type_script = "uid://c12pf5ar1ic4s"
+
+[node name="RoundStats" type="Node" parent="." unique_id=1420958731 node_paths=PackedStringArray("energy_mix")]
+script = ExtResource("20_rstats")
+energy_mix = NodePath("../EnergyMix")
+
+[node name="RoundSummaryPanel" type="PanelContainer" parent="." unique_id=584302917 node_paths=PackedStringArray("game_flow", "round_stats")]
+script = ExtResource("21_rsum")
+game_flow = NodePath("../GameFlow")
+round_stats = NodePath("../RoundStats")
+
+[node name="ScenarioSelector" type="PanelContainer" parent="." unique_id=1938475620 node_paths=PackedStringArray("energy_mix", "game_flow", "clock_display", "inventory_bar", "placement")]
+script = ExtResource("22_scen")
+energy_mix = NodePath("../EnergyMix")
+game_flow = NodePath("../GameFlow")
+clock_display = NodePath("../ClockDisplay")
+inventory_bar = NodePath("../InventoryBar")
+placement = NodePath("../PlacementController")

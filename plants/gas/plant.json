@@ -15,6 +15,11 @@
 		"noise_level": 0,
 		"ramp_per_tick": 10
 	},
+	"impact": {
+		"cost_ct_per_kwh": 15,
+		"co2_g_per_kwh": 490,
+		"nuclear_waste_mg_per_kwh": 0
+	},
 	"assets": {
 		"icon": "gas-stove.svg",
 		"model": "",

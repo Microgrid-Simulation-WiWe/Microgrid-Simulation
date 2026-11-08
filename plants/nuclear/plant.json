@@ -15,6 +15,11 @@
 		"noise_level": 0,
 		"ramp_per_tick": 1
 	},
+	"impact": {
+		"cost_ct_per_kwh": 30,
+		"co2_g_per_kwh": 12,
+		"nuclear_waste_mg_per_kwh": 3
+	},
 	"assets": {
 		"icon": "nuclear-plant.svg",
 		"model": "../../assets/meshes/nuclear.glb",

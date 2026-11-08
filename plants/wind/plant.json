@@ -15,6 +15,11 @@
 		"noise_level": 0.02,
 		"ramp_per_tick": 100
 	},
+	"impact": {
+		"cost_ct_per_kwh": 7,
+		"co2_g_per_kwh": 11,
+		"nuclear_waste_mg_per_kwh": 0
+	},
 	"assets": {
 		"icon": "wind_turbine_icon.svg",
 		"model": "../../assets/meshes/windrad.glb",
