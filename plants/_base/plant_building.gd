@@ -24,7 +24,8 @@ func _build() -> void:
 	var model_root: Node3D = $Model
 	model_root.add_child(definition.model.instantiate() if definition.model else _create_placeholder())
 	model_root.scale = Vector3.ONE * definition.visual_scale
-	model_root.position = definition.visual_offset
+	model_root.position = definition.visual_offset - definition.model_center
+	model_root.rotation_degrees = definition.visual_rotation
 
 	for effect in definition.effects:
 		$Effects.add_child(effect.instantiate())
