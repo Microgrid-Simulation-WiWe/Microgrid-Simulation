@@ -17,17 +17,25 @@ signal selection_changed(building: PlantBuilding, screen_position: Vector2)
 ## Hier werden die Gebäude eingehängt (muss in der Welt der Kamera liegen).
 @export var target: Node3D
 ## Spielfeld. Gebaut wird nur, wenn die ganze Fläche des Gebäudes darauf liegt. Leer = keine Grenze.
+## Das Raster übernimmt seine Drehung um die Hochachse, Gebäude stehen also parallel zu den Feldrändern.
 @export var field: MeshInstance3D
 ## Kantenlänge eines Rasterfelds in Welteinheiten. Die Felder pro Gebäude stehen in area_usage der plant.json.
 @export var grid_size: float = 1.0
 
+const EDGE_TOLERANCE := 0.001
+
 var _ground: Plane = Plane(Vector3.UP, 0.0)
+## Lage des Rasters in der Welt: Ursprung und Drehung des Spielfelds (nur um die Hochachse).
+var _grid: Transform3D = Transform3D.IDENTITY
 var _occupancy: GridOccupancy = GridOccupancy.new()
 var _ghost: PlacementGhost = PlacementGhost.new()
 var _selected: PlantBuilding
 
 
 func _ready() -> void:
+	if field:
+		var origin: Vector3 = field.global_position
+		_grid = Transform3D(Basis(Vector3.UP, field.global_rotation.y), Vector3(origin.x, 0.0, origin.z))
 	drop_zone.placement_check = _can_place_at
 	drop_zone.drag_source = _drag_data_at
 	drop_zone.plant_hovered.connect(_on_plant_hovered)
@@ -55,7 +63,7 @@ func _on_plant_hovered(data: PlantDragData, screen_position: Vector2) -> void:
 	if area == null:
 		_ghost.hide()
 		return
-	_ghost.show_area(_area_center(area), Vector2(area.size) * grid_size, _mode_for(area, _moving(data)))
+	_ghost.show_area(_area_transform(area), Vector2(area.size) * grid_size, _mode_for(area, _moving(data)))
 
 
 func _can_place_at(data: PlantDragData, screen_position: Vector2) -> bool:
@@ -86,7 +94,7 @@ func _build(plant_id: StringName, area: Rect2i) -> void:
 	if building == null:
 		return
 	_occupancy.occupy(area, building)
-	building.position = target.to_local(_area_center(area))
+	building.transform = target.global_transform.affine_inverse() * _area_transform(area)
 	target.add_child(building)
 	building_placed.emit(building)
 
@@ -94,7 +102,7 @@ func _build(plant_id: StringName, area: Rect2i) -> void:
 func _move(building: PlantBuilding, area: Rect2i) -> void:
 	_occupancy.release(building)
 	_occupancy.occupy(area, building)
-	building.position = target.to_local(_area_center(area))
+	building.transform = target.global_transform.affine_inverse() * _area_transform(area)
 	building_moved.emit(building)
 
 
@@ -119,7 +127,7 @@ func _building_at(screen_position: Vector2) -> PlantBuilding:
 	var hit: Variant = _mouse_to_ground(screen_position)
 	if hit == null:
 		return null
-	var point: Vector3 = hit
+	var point: Vector3 = _grid.affine_inverse() * (hit as Vector3)
 	var cell: Vector2i = Vector2i(floori(point.x / grid_size), floori(point.z / grid_size))
 	return _occupancy.get_occupant(cell) as PlantBuilding
 
@@ -130,7 +138,7 @@ func _select(building: PlantBuilding, screen_position: Vector2) -> void:
 	_selected = building
 	if building:
 		var area: Rect2i = _occupancy.get_area(building)
-		_ghost.show_area(_area_center(area), Vector2(area.size) * grid_size, PlacementGhost.Mode.SELECTED)
+		_ghost.show_area(_area_transform(area), Vector2(area.size) * grid_size, PlacementGhost.Mode.SELECTED)
 	else:
 		_ghost.hide()
 	selection_changed.emit(building, screen_position)
@@ -157,7 +165,7 @@ func _area_at(plant_id: StringName, screen_position: Vector2) -> Variant:
 	var hit: Variant = _mouse_to_ground(screen_position)
 	if hit == null:
 		return null
-	var point: Vector3 = hit
+	var point: Vector3 = _grid.affine_inverse() * (hit as Vector3)
 	var size: Vector2i = definition.area_usage
 	var origin: Vector2i = Vector2i(
 		roundi(point.x / grid_size - size.x / 2.0),
@@ -166,10 +174,10 @@ func _area_at(plant_id: StringName, screen_position: Vector2) -> Variant:
 	return Rect2i(origin, size)
 
 
-## Mittelpunkt der Fläche in Weltkoordinaten.
-func _area_center(area: Rect2i) -> Vector3:
+## Mittelpunkt der Fläche in Weltkoordinaten, gedreht wie das Raster. So werden Gebäude und Ghost gesetzt.
+func _area_transform(area: Rect2i) -> Transform3D:
 	var center: Vector2 = (Vector2(area.position) + Vector2(area.size) / 2.0) * grid_size
-	return Vector3(center.x, 0.0, center.y)
+	return _grid * Transform3D(Basis.IDENTITY, Vector3(center.x, 0.0, center.y))
 
 
 ## Liegen alle vier Ecken auf dem Spielfeld? Reicht, weil das Spielfeld konvex ist (auch gedreht).
@@ -182,8 +190,9 @@ func _is_on_field(area: Rect2i) -> bool:
 		area.position, Vector2i(area.end.x, area.position.y), area.end, Vector2i(area.position.x, area.end.y)
 	]
 	for corner: Vector2i in corners:
-		var local: Vector3 = to_local * (Vector3(corner.x, 0.0, corner.y) * grid_size)
-		if local.x < bounds.position.x or local.x > bounds.end.x or local.z < bounds.position.z or local.z > bounds.end.z:
+		var local: Vector3 = to_local * (_grid * (Vector3(corner.x, 0.0, corner.y) * grid_size))
+		# Toleranz: Liegt das Raster genau auf dem Feldrand, sollen Rundungsfehler nicht zählen.
+		if local.x < bounds.position.x - EDGE_TOLERANCE or local.x > bounds.end.x + EDGE_TOLERANCE 				or local.z < bounds.position.z - EDGE_TOLERANCE or local.z > bounds.end.z + EDGE_TOLERANCE:
 			return false
 	return true
 

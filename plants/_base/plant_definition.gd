@@ -31,8 +31,13 @@ extends Resource
 @export_group("Darstellung")
 @export var visual_scale := 1.0
 @export var visual_offset := Vector3.ZERO
+## Drehung in Grad (x, y, z).
+@export var visual_rotation := Vector3.ZERO
 @export var anim_speed := Vector2(0.2, 1.5)
 @export var volume_db := Vector2(-30.0, -6.0)
+## Mitte der Modell-Grundfläche nach scale und rotation. Wird aus dem Modell berechnet;
+## PlantBuilding schiebt das Modell um diesen Wert zurück, damit es mittig auf seiner Fläche steht.
+var model_center := Vector3.ZERO
 
 var _source := ""
 
@@ -82,10 +87,46 @@ func load_from_dict(data: Dictionary, p_folder: String, source: String) -> void:
 	visual_scale = float(_value(data, "visual.scale", 1.0))
 	var offset: Array = _value(data, "visual.offset", [0, 0, 0])
 	visual_offset = Vector3(offset[0], offset[1], offset[2])
+	var rotation: Array = _value(data, "visual.rotation", [0, 0, 0])
+	visual_rotation = Vector3(rotation[0], rotation[1], rotation[2])
 	var speed: Array = _value(data, "visual.anim_speed", [0.2, 1.5])
 	anim_speed = Vector2(speed[0], speed[1])
 	var volume: Array = _value(data, "visual.volume_db", [-30, -6])
 	volume_db = Vector2(volume[0], volume[1])
+
+	if model:
+		_fit_area_to_model()
+
+
+## Mit Modell ergibt sich die belegte Fläche aus seiner Grundfläche nach scale und rotation,
+## aufgerundet auf ganze Rasterfelder (1 Feld = 1 Welteinheit). build.area_usage gilt dann nicht.
+func _fit_area_to_model() -> void:
+	var root := model.instantiate()
+	var basis := Basis.from_euler(visual_rotation * PI / 180.0).scaled(Vector3.ONE * visual_scale)
+	var footprint := _mesh_bounds(root, Transform3D(basis))
+	root.free()
+	if footprint.size == Vector3.ZERO:
+		return
+	# Kleine Toleranz, damit z. B. 4.0001 nicht zu 5 Feldern wird.
+	area_usage = Vector2i(maxi(1, ceili(footprint.size.x - 0.01)), maxi(1, ceili(footprint.size.z - 0.01)))
+	var center := footprint.get_center()
+	model_center = Vector3(center.x, 0.0, center.z)
+
+
+## Hülle aller Meshes unter root, nach der Darstellungs-Transform visual (scale, rotation).
+## Jedes Mesh wird einzeln gedreht, das ergibt bei Drehung eine knappere Hülle als das Ganze zu drehen.
+func _mesh_bounds(root: Node, visual: Transform3D) -> AABB:
+	var bounds := AABB()
+	for mesh_instance: MeshInstance3D in root.find_children("*", "MeshInstance3D", true, false):
+		var to_parent := Transform3D()
+		var node: Node = mesh_instance
+		while node != null:
+			if node is Node3D:
+				to_parent = (node as Node3D).transform * to_parent
+			node = node.get_parent()
+		var mesh_bounds := visual * to_parent * mesh_instance.get_aabb()
+		bounds = mesh_bounds if bounds.size == Vector3.ZERO else bounds.merge(mesh_bounds)
+	return bounds
 
 
 ## Liest ein Feld per Pfad ("power.unit_power_mw"). Fehlt es, gibt es eine Warnung und den Standardwert.

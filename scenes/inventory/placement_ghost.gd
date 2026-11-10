@@ -26,10 +26,10 @@ func _ready() -> void:
 	hide()
 
 
-## center in Weltkoordinaten, size in Welteinheiten (x, z).
-func show_area(center: Vector3, size: Vector2, mode: Mode) -> void:
+## area: Mitte und Drehung der Fläche in Weltkoordinaten, size in Welteinheiten (x, z).
+func show_area(area: Transform3D, size: Vector2, mode: Mode) -> void:
 	_box.size = Vector3(size.x, height, size.y)
-	global_position = center + Vector3.UP * height / 2.0
+	global_transform = area.translated(Vector3.UP * height / 2.0)
 	_material.albedo_color = _color_for(mode)
 	show()
 

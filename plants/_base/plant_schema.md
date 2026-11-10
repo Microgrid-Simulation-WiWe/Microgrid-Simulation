@@ -22,7 +22,7 @@ Jeder Anlagentyp hat genau eine `plant.json` in seinem Ordner `res://plants/<id>
 | Feld | Typ | Standard | Bedeutung |
 |---|---|---|---|
 | `cost` | Zahl | `0` | Baupunkte pro Einheit. |
-| `area_usage` | [x, y] | `[1, 1]` | Belegte Felder auf dem Raster (1 Feld = 1 Welteinheit). Gebäude dürfen sich nicht überlappen und müssen ganz auf dem Spielfeld liegen. |
+| `area_usage` | [x, y] | `[1, 1]` | Belegte Felder auf dem Raster (1 Feld = 1 Welteinheit), **nur ohne Modell** (Größe der Platzhalter-Box). Mit Modell wird die Fläche automatisch aus dessen Grundfläche nach `visual.scale` und `visual.rotation` berechnet und auf ganze Felder aufgerundet. Gebäude dürfen sich nicht überlappen und müssen ganz auf dem Spielfeld liegen. |
 
 ## `power` – Leistung und Dynamik
 
@@ -69,7 +69,8 @@ Werte **je erzeugter kWh**, für die Auswertung nach jeder Runde. Die aktuellen 
 | Feld | Typ | Standard | Bedeutung |
 |---|---|---|---|
 | `scale` | Zahl | `1.0` | Skalierung des Modells. |
-| `offset` | [x, y, z] | `[0, 0, 0]` | Verschiebung des Modells. |
+| `offset` | [x, y, z] | `[0, 0, 0]` | Verschiebung des Modells. Es wird bereits automatisch mittig auf seine Fläche gesetzt; `offset` ist nur noch Feinkorrektur (z. B. y, wenn es im Boden versinkt). |
+| `rotation` | [x, y, z] | `[0, 0, 0]` | Drehung des Modells in Grad. Meist reicht y, z. B. `[0, 90, 0]` dreht es um 90° um die Hochachse. |
 | `anim_speed` | [min, max] | `[0.2, 1.5]` | Animationstempo bei geringer bzw. voller Auslastung. Bei 0 % steht die Animation. |
 | `volume_db` | [min, max] | `[-30, -6]` | Lautstärke in dB bei geringer bzw. voller Auslastung. Bei 0 % ist der Ton pausiert. |
 

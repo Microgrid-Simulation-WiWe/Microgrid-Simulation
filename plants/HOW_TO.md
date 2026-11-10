@@ -73,7 +73,7 @@ Dann die Pfade in der `plant.json` eintragen. Sie sind **relativ zum Ordner**:
 - Felder **ohne** Datei leer lassen (`""`). Dann zeigt das Spiel eine **graue Platzhalter-Box** in der Größe von `area_usage`.
 - `animation` ist der Name der Animation im `.glb`. Sie läuft in Schleife, ihr Tempo folgt der Auslastung (Spanne in `visual.anim_speed`).
 - `sounds.loop` ist der Dauerton der Anlage, seine Lautstärke folgt der Auslastung (`visual.volume_db`).
-- Passen Größe oder Position des Modells nicht, korrigiert man das über `visual.scale` und `visual.offset`.
+- Passen Größe, Position oder Ausrichtung des Modells nicht, korrigiert man das über `visual.scale`, `visual.offset` und `visual.rotation` (in Grad). Die belegte Fläche passt sich mit einem Modell automatisch an dessen Größe an, `build.area_usage` gilt nur für die Platzhalter-Box.
 - `scene` bleibt `null`. Eine eigene Gebäude-Szene braucht man nur in Sonderfällen (siehe „Eigene Gebäude-Szene“ unten).
 - `.png`, `.jpg`, `.glb`, `.ogg` und `.wav` landen über **Git LFS** im Repo (siehe `.gitattributes`). Dafür muss man nichts extra tun.
 
