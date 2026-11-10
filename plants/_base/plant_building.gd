@@ -38,7 +38,12 @@ func _build() -> void:
 	var players := model_root.find_children("*", "AnimationPlayer", true, false)
 	_animation_player = players[0] if not players.is_empty() else $AnimationPlayer
 	if _animation_player.has_animation(definition.animation):
+		# Aus Blender kommen Animationen meist ohne Schleife, laut Schema läuft sie aber immer.
+		_animation_player.get_animation(definition.animation).loop_mode = Animation.LOOP_LINEAR
 		_animation_player.play(definition.animation)
+	elif definition.animation != &"":
+		push_warning("%s: Animation '%s' nicht im Modell gefunden, vorhanden: %s"
+				% [definition.id, definition.animation, _animation_player.get_animation_list()])
 
 
 ## Zeigt die Aktivität (0..1) über Animationstempo und Lautstärke.
