@@ -1,6 +1,6 @@
 # Konzept: Anlagentypen (Erzeuger und Speicher)
 
-Stand: 12.10.2026, erste Umsetzung in `res://plants/`. Ein Ablauf, wie ein neuer Typ angelegt wird, steht in [`HOW_TO.md`](HOW_TO.md), die Feldreferenz in [`_base/plant_schema.md`](_base/plant_schema.md).
+Stand: 10.11.2026 (erste Umsetzung 12.10.2026) in `res://plants/`. Ein Ablauf, wie ein neuer Typ angelegt wird, steht in [`HOW_TO.md`](HOW_TO.md), die Feldreferenz in [`_base/plant_schema.md`](_base/plant_schema.md).
 
 ## Ziel
 
@@ -11,9 +11,13 @@ Das Microgrid-Planspiel (Godot 4.7, 3D, GDScript) braucht ein einheitliches, erw
 | Windrad | Batteriespeicher |
 | Solar | Pumpspeicher |
 | Wasser (Laufwasser) | |
+| Biogas | |
 | Kohle | |
 | Gas | |
+| Diesel (Notstrom) | |
 | Atom | |
+
+Biogas ist laut Sprint Review vom 26.10.2026 Pflicht. In der Inventarleiste sind die Typen in Reiter sortiert (Konventionell, Erneuerbar, Speicher), siehe `categories.json` in Abschnitt 4.
 
 **Anforderungen:**
 - Jede Anlage hat eine Leistungsgrenze.
@@ -76,11 +80,15 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
   - In der Bauphase ist `running` aus. Sichtbar sind nur die Knoten in `build_ui` (Inventarleiste).
   - Der Knopf „Simulation starten“ schaltet `running` an und zeigt `simulation_ui` (Sollwerte, Uhr, Erzeugung, Leistungsbilanz).
   - Eine Runde ist ein simulierter Tag (`round_hours`, Standard 24 h). Danach oder über „Simulation beenden“ kommt das Signal `round_finished(completed)`, anschließend `reset()` und zurück in die Bauphase. Jede Runde beginnt also von vorne.
-  - `round_finished` ist der Anknüpfpunkt für das Dashboard nach jeder Runde und für ein späteres Spielende.
+  - `round_finished` ist der Anknüpfpunkt für die Auswertung nach jeder Runde (siehe unten) und für ein späteres Spielende.
+- **Auswertung nach jeder Runde** (`scenes/round_summary/`):
+  - `RoundStats` zählt ab dem ersten Tick einer Runde mit: Ticks im grünen Bereich (Netzstabilität), Unterdeckung und Überschuss in kWh, kleinste und größte Netzfrequenz und die erzeugte Energie je Erzeuger.
+  - Aus der Energie je Erzeuger und den `impact`-Werten der `plant.json` berechnet es CO₂, Kosten und Atommüll, gesamt und je Erzeuger, dazu die durchschnittlichen Kosten je kWh.
+  - `RoundSummaryPanel` zeigt das in der Bildschirmmitte, wenn die Runde endet oder abgebrochen wird. Bei einem Abbruch steht dabei, nach wie vielen Stunden. Atommüll erscheint nur, wenn er angefallen ist. Das Panel verschwindet mit „Weiter“ oder beim nächsten Rundenstart.
 - **Energiebilanz:** Nach jedem Tick kommt `(total_power_mw · 1000 − demand_kw) · tick_hours` zu `energy_balance_kwh` dazu.
   - Plus heißt, es wurde mehr erzeugt als verbraucht. Minus heißt Unterdeckung. Ziel ist eine Bilanz nahe 0.
   - Ein ladender Speicher hat negative Leistung und senkt die Bilanz. Einen Überschuss kann man also einspeichern und später wieder abgeben.
-  - `demand_kw` ist ein Platzhalter-Verbrauch in kW (Standard 20 kW), bis es Verbraucher gibt.
+  - `demand_kw` ist ein Platzhalter-Verbrauch in kW (Standard 20 kW, in `scenes/level.tscn` 100 kW), bis es Verbraucher gibt. Er passt noch nicht zu den Leistungen der Anlagen: Schon ein Windrad liefert 2 MW (siehe „Noch offen“).
   - Die Bilanz wird nur intern mitgeführt und ist im Inspector sichtbar. Später kann sie z. B. für das Spielende oder eine Auswertung genutzt werden.
 - **Anzeige der Leistungsbilanz:** `scripts/power_balance_display.gd` zeigt Erzeugung − `demand_kw` mit Vorzeichen, unter 1 MW in kW, darüber in MW. Der Wert reagiert beim nächsten Tick, anders als die aufsummierte kWh-Bilanz.
   - Dazu kommt ein Balken von −`demand_kw` bis +`demand_kw`: grün bis ±10 % des Verbrauchs, gelb bis ±30 %, sonst rot. Die Stufen sind Platzhalter-Exports (`green_band`, `yellow_band`).
@@ -110,7 +118,8 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
    - Ist die Anlage aus, ist das Ziel 0.
    - Sonst `min(max(setpoint, min_load) · P_inst, P_avail)`.
 4. Rampe: höchstens `ramp_per_tick` %-Punkte von `P_inst` Richtung Ziel.
-5. Zufall (nur Erzeuger): In jedem Tick wird ein Zufallswert gleichverteilt in −1..1 gezogen, auch wenn die Anlage aus ist. Ist die Leistung > 0, wird `noise_level · P_inst · Zufallswert` addiert. `noise_level` 0 = aus.
+5. Zufall (nur Erzeuger): In jedem Tick wird ein Zufallswert gleichverteilt in −1..1 gezogen, auch wenn die Anlage aus ist. Ist die Leistung > 0, wird `0,1 · noise_level · P_inst · Zufallswert` addiert. `noise_level` 0 = aus.
+   - Der Faktor 0,1 steht so im Code (`generator_plant.gd`). `noise_level` 0,2 bedeutet damit ±2 % und nicht ±20 %, wie es der Kommentar am Export und der Test „Zufall ±20 %“ annehmen. Siehe „Noch offen“.
 6. Harte Grenze `0..P_avail`. Sinkt die Verfügbarkeit (Störung), sinkt die Leistung sofort.
 
 Atom bleibt mindestens bei 50 %, solange es an ist.
@@ -133,7 +142,7 @@ Atom bleibt mindestens bei 50 %, solange es an ist.
 | Zufallsfunktion | Fester Wert | Datei |
 |---|---|---|
 | Leistungsrauschen aller Erzeuger (eine gemeinsame Folge) | `SEED_OFFSET_GENERATOR_NOISE` = 1000 | `plants/_base/generator_plant.gd` |
-| Position beim Test-Knopf „Windrad bauen“ | `SEED_OFFSET_BUILD_POSITION` = 2000 | `scripts/build_wind_button.gd` |
+| Position beim früheren Test-Knopf „Windrad bauen“ | `SEED_OFFSET_BUILD_POSITION` = 2000 | derzeit ungenutzt: `scripts/build_wind_button.gd` wurde mit der Inventarleiste entfernt |
 
 Neue Zufallsfunktion (z. B. Störungen): einen neuen festen Wert im `EnergyMix` anlegen und den Generator über `create_rng()` holen. Nicht verwenden: die globalen Funktionen `randf()`, `randi()`, `randf_range()`, `randi_range()`, `randomize()` und `seed()` sowie `Array.shuffle()` und `Array.pick_random()`. Sie nutzen den globalen Generator, den Godot bei jedem Start neu würfelt.
 
@@ -144,28 +153,55 @@ Die Gras-Verteilung (`scripts/grass_scatter.gd`) ist reine Optik und behält ihr
 ```
 res://plants/
 ├─ KONZEPT.md  HOW_TO.md
+├─ categories.json Reiter der Inventarleiste (Konventionell, Erneuerbar, Speicher)
 ├─ _base/          Basisklassen, Basis-Szenen, plant_schema.md
 ├─ _tests/         run_tests.gd + fixtures/ (absichtlich fehlerhafte plant.json)
-├─ solar/ wind/ hydro/ coal/ gas/ nuclear/ battery/   .pumped_hydro/ (ausgeblendet)
-│    └─ plant.json (+ später icon.png, models/, textures/, sounds/, effects/)
+├─ solar/ wind/ hydro/ biogas/ coal/ gas/ diesel/ nuclear/ battery/   .pumped_hydro/ (ausgeblendet)
+│    └─ plant.json + Icon (später auch models/, textures/, sounds/, effects/)
 ```
 
 - Ordner, die mit `_` beginnen, enthalten keine `plant.json` direkt und werden deshalb nicht als Typ erkannt.
 - Ordner, die mit `.` beginnen, überspringt die Registry. So ist ein Typ vorerst ausgeblendet, aktuell `.pumped_hydro`. Der Godot-Editor zeigt solche Ordner nicht an und exportiert sie nicht.
-- Die Asset-Pfade in den `plant.json` sind noch leer, weil es noch keine Grafiken und Sounds gibt. Bis dahin zeigt ein Gebäude eine graue Platzhalter-Box.
+- Jeder Typ nennt in der `plant.json` seine `category`. Ein Typ ohne gültige Kategorie landet im Reiter „Sonstige“. Felder siehe [`_base/plant_schema.md`](_base/plant_schema.md).
+- **Assets, Stand 10.11.2026:**
+  - Ein 3D-Modell eingetragen haben Solar, Wind und Atom (`res://assets/meshes/`).
+  - Für Batterie und Kohle liegen die Modelle schon in `res://assets/meshes/`, sind aber noch nicht in der `plant.json` eingetragen.
+  - Wasser, Biogas, Gas und Diesel haben noch kein Modell. Biogas und Diesel haben auch noch kein Icon.
+  - Ohne Modell zeigt ein Gebäude eine graue Platzhalter-Box. Sounds gibt es keine (laut Sprint Review vom 26.10.2026 nicht gewünscht).
 
 ## 5. Startwerte (Platzhalter, Balancing später)
 
-| Typ | `type` | MW/Einheit | Mindestlast | Rampe %/Tick | Wirkungsgrad | Baupunkte | Felder |
-|---|---|---|---|---|---|---|---|
-| Solar | generator | 1 | 0 | 100 | – | 2 | 2×1 |
-| Wind | generator | 2 | 0 | 100 | – | 3 | 1×1 |
-| Wasser | generator | 1 | 0 | 100 | – | 3 | 1×1 |
-| Kohle | generator | 5 | 40 % | 2 | – | 2 | 2×2 |
-| Gas | generator | 3 | 20 % | 10 | – | 2 | 1×1 |
-| Atom | generator | 10 | 50 % | 1 | – | 5 | 2×2 |
-| Batterie | storage | 2 MW / 4 MWh | – | 100 | η 95 %/95 % | 2 | 1×1 |
-| Pumpspeicher (ausgeblendet) | storage | 5 MW / 40 MWh | – | 100 | η 88 %/88 % | 4 | 2×2 |
+Stand 10.11.2026, Werte aus den `plant.json`. Die `plant.json` bleibt die einzige Quelle. Bei Abweichungen gilt sie.
+
+| Typ | `type` | Reiter | MW/Einheit | Mindestlast | Rampe %/Tick | Rauschen | Wirkungsgrad | Baupunkte | Felder |
+|---|---|---|---|---|---|---|---|---|---|
+| Solar | generator | Erneuerbar | 1 | 0 | 100 | 0 | – | 2 | 6×10 |
+| Wind | generator | Erneuerbar | 2 | 0 | 100 | 0,02 | – | 1 | 4×4 |
+| Wasser | generator | Erneuerbar | 1 | 0 | 100 | 0 | – | 3 | 6×6 |
+| Biogas | generator | Erneuerbar | 1 | 30 % | 5 | 0 | – | 2 | 6×6 |
+| Kohle | generator | Konventionell | 5 | 40 % | 2 | 0 | – | 2 | 10×10 |
+| Gas | generator | Konventionell | 3 | 20 % | 10 | 0 | – | 2 | 6×6 |
+| Diesel | generator | Konventionell | 1 | 10 % | 50 | 0 | – | 1 | 3×3 |
+| Atom | generator | Konventionell | 10 | 50 % | 1 | 0 | – | 5 | 16×16 |
+| Batterie | storage | Speicher | 2 MW / 4 MWh | – | 100 | – | η 95 %/95 % | 2 | 3×3 |
+| Pumpspeicher (ausgeblendet) | storage | Speicher | 5 MW / 40 MWh | – | 100 | – | η 88 %/88 % | 4 | 2×2 |
+
+- **Baupunkte** (`build.cost`) stehen noch in den `plant.json` und im Tooltip der Inventarleiste, begrenzen aber nichts. Laut Sprint Review vom 26.10.2026 werden Anlagen über den Platz begrenzt und nicht über Baupunkte (Kanban-Karte „Platzbegrenzung Plants“).
+
+**Auswirkungen je erzeugter kWh** (`impact`, für die Auswertung nach jeder Runde; grobe Platzhalter, Quellen in [`_base/plant_schema.md`](_base/plant_schema.md)):
+
+| Typ | Kosten ct/kWh | CO₂ g/kWh | Atommüll mg/kWh |
+|---|---|---|---|
+| Solar | 5 | 48 | 0 |
+| Wind | 7 | 11 | 0 |
+| Wasser | 8 | 24 | 0 |
+| Biogas | 26 | 230 | 0 |
+| Kohle | 23 | 820 | 0 |
+| Gas | 15 | 490 | 0 |
+| Diesel | 35 | 750 | 0 |
+| Atom | 30 | 12 | 3 |
+
+Speicher haben keine `impact`-Werte. Sie erzeugen selbst keine Energie.
 
 ## 6. Inspector und JSON
 
@@ -189,8 +225,14 @@ Aufruf im Projektordner:
 godot --headless --path . --script res://plants/_tests/run_tests.gd
 ```
 
+**Stand 10.11.2026:** 3 Tests schlagen fehl:
+- „Wind mit Sollwert 100 → 2 MW“ und „Wind mit Sollwert 50 → 1 MW“. Die Wind-`plant.json` hat inzwischen `noise_level` 0,02, die Tests erwarten aber exakte Werte ohne Rauschen.
+- „Zufall ±20 %“. Der Code rechnet mit dem zusätzlichen Faktor 0,1 (siehe Abschnitt 3).
+
+Siehe „Noch offen“.
+
 **Was geprüft wird:**
-- Registry und Sortierung
+- Registry und Sortierung, Kategorien: jeder Grundtyp hat eine gültige Kategorie, ohne `categories.json` sind alle Typen ohne Kategorie
 - Wind folgt dem Sollwert (100 % / 50 %) und dem Störfaktor
 - Atom-Mindestlast und -Rampe (50 → 100 % in 50 Ticks)
 - `unit_count` 0
@@ -201,6 +243,7 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - Energiebilanz: 0 kWh bei Gleichgewicht, −166,67 kWh bei 1 MW Unterdeckung über 10 min, bei `demand_kw` 0 zählt die ganze Erzeugung als Plus
 - Rasterbelegung: Überlappung, angrenzende Flächen, Freigeben; beim Verschieben zählt die eigene Fläche als frei, fremde nicht
 - Anhalten und Zurücksetzen: kein Tick bei `running` aus; `reset()` setzt Uhr, Bilanz, Frequenz, Leistung, Störung und Ladestand zurück, `unit_count` und Sollwert bleiben
+- Rundenauswertung: `impact`-Felder aus der `plant.json`, Energie je Erzeuger (2 MW für 1 h → 2000 kWh), CO₂, Kosten, Durchschnittskosten, Atommüll nur mit Atom, Netzstabilität und Unterdeckung, neue Runde zählt von vorne
 - Zufall: nach `reset()` dieselben Werte, gleicher Seed → gleiche Werte, anderer Seed → andere Werte, unabhängig davon welche Anlagen laufen, eigener fester Wert → eigene Zahlenfolge. Einzeln erzeugte Test-Anlagen bekommen Seed 0, damit jeder Testlauf gleich ist.
 - Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets, Punkt-Ordner
 
@@ -208,6 +251,7 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 
 **Umgesetzt:**
 - alles aus den Abschnitten 1–7
+- seit der ersten Umsetzung dazugekommen: Biogas und Diesel, Kategorien und Reiter in der Inventarleiste, Bauen per Drag & Drop mit Verschieben und Abriss, Trennung von Bau- und Simulationsphase, Leistungsbilanz in kW statt Hz-Anzeige, zentraler Seed, Auswertung nach jeder Runde mit CO₂, Kosten und Atommüll
 
 **Bewusst noch nicht umgesetzt** (abgestimmt, kommt bei Bedarf):
 - Editor-Vorschau eines Typs ohne Spielstart (`preview_json`, bräuchte `@tool` in den Basisskripten)
@@ -215,7 +259,6 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - eigene Rechenlogik pro Typ (`"script"`-Feld in der JSON)
 - automatisches Anwenden von `assets.textures`
 - Debug-Szene mit Schiebereglern
-- `co2_t_per_mwh` und `cost_per_mwh` für eine spätere Bewertung
 - Netzzusammenbruch und Spielende über eine Grenze der Energiebilanz (kWh) statt über 48–52 Hz, Grenzen je Schwierigkeitsgrad
 - echte Verbraucher statt des Platzhalters `demand_kw`
 
@@ -224,6 +267,8 @@ godot --headless --path . --script res://plants/_tests/run_tests.gd
 - Zufall über `variability` in der `plant.json` (`FastNoiseLite`, `EnergyMix.noise_seed`). Ersetzt durch einen einfachen Zufallswert mit `noise_level` (siehe Abschnitt 3). Den zentralen Seed gibt es seit 02.11.2026 wieder, jetzt als `EnergyMix.random_seed`.
 
 **Noch offen (Team / Product Owner):**
-1. **Konkrete Werte:** Leistungen, Baupunkte und `area_usage`.
+1. **Konkrete Werte:** Leistungen und `area_usage`, dazu der Verbrauch. `demand_kw` liegt bei 100 kW, die kleinsten Anlagen liefern 1 MW, also das Zehnfache.
 2. **Rampenwerte:** Sie gelten pro Tick. Mit den kürzeren 3-min-Ticks fährt z. B. Kohle in Sim-Zeit schneller hoch als vorher, in Echtzeit gleich schnell.
-3. **Export:** Im exportierten Build prüfen, dass alle `plant.json` gefunden werden. Gegebenenfalls `*.json` im Export-Filter „Nicht-Ressourcen-Dateien“ ergänzen.
+3. **Export:** Im exportierten Build prüfen, dass alle `plant.json` gefunden werden. Gegebenenfalls `*.json` im Export-Filter „Nicht-Ressourcen-Dateien“ ergänzen. Ein `export_presets.cfg` gibt es noch nicht.
+4. **Zufall:** Soll `noise_level` direkt der Anteil der installierten Leistung sein (wie hier ursprünglich beschrieben und von den Tests erwartet) oder mit dem Faktor 0,1 gerechnet werden (wie im Code)? Danach den Code oder die Tests und den Export-Kommentar in `generator_plant.gd` angleichen. Die Wind-Tests sollten `noise_level` auf 0 setzen.
+5. **Baupunkte:** `build.cost` aus den `plant.json`, der Feldreferenz und dem Tooltip (`scenes/inventory/inventory_slot.gd`) entfernen, sobald die Platzbegrenzung umgesetzt ist.
