@@ -100,7 +100,9 @@ void fragment() {
 
 
 	ALBEDO = texture(SCREEN_TEXTURE, SCREEN_UV).rgb;
-	lineMask = clamp(0.1, lineAlpha, (depthDifference + normalDifference * 5.0));
+	// Reihenfolge ist clamp(wert, min, max). Mit vertauschten Argumenten (min > max) ist das
+	// Ergebnis undefiniert: NVIDIA-OpenGL lieferte 0.7 statt 0 und dunkelte so den Boden zwischen dem Gras ab.
+	lineMask = clamp(depthDifference + normalDifference * 5.0, 0.0, lineAlpha);
 
 
 	if (!useLighting){
