@@ -9,6 +9,7 @@ extends PanelContainer
 @export var clock_display: ClockDisplay
 @export var inventory_bar: InventoryBar
 @export var placement: PlacementController
+@export var weather_display: WeatherDisplay
 @export var screen_margin: int = 16
 @export var label_text := "Szenario:"
 @export var locked_text := "Das Szenario steht nach dem ersten Bau fest."
@@ -63,6 +64,8 @@ func _apply(scenario: ScenarioDefinition) -> void:
 	inventory_bar.hidden_plants = scenario.forbidden_plants
 	inventory_bar.refresh()
 	_options.tooltip_text = _describe(scenario)
+	if weather_display != null:
+		weather_display.set_scenario(scenario)
 
 
 func _on_item_selected(index: int) -> void:

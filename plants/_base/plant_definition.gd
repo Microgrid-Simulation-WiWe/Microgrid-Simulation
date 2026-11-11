@@ -35,6 +35,8 @@ extends Resource
 @export var visual_rotation := Vector3.ZERO
 @export var anim_speed := Vector2(0.2, 1.5)
 @export var volume_db := Vector2(-30.0, -6.0)
+@export var anim_driver: StringName = &"load"
+@export var wind_speed_range := Vector2(1.0, 8.0)
 ## Mitte der Modell-Grundfläche nach scale und rotation. Wird aus dem Modell berechnet;
 ## PlantBuilding schiebt das Modell um diesen Wert zurück, damit es mittig auf seiner Fläche steht.
 var model_center := Vector3.ZERO
@@ -91,6 +93,9 @@ func load_from_dict(data: Dictionary, p_folder: String, source: String) -> void:
 	visual_rotation = Vector3(rotation[0], rotation[1], rotation[2])
 	var speed: Array = _value(data, "visual.anim_speed", [0.2, 1.5])
 	anim_speed = Vector2(speed[0], speed[1])
+	anim_driver = StringName(_value(data, "visual.anim_driver", "load"))
+	var wind_range: Array = _value(data, "visual.wind_speed_range", [1.0, 8.0])
+	wind_speed_range = Vector2(wind_range[0], wind_range[1])
 	var volume: Array = _value(data, "visual.volume_db", [-30, -6])
 	volume_db = Vector2(volume[0], volume[1])
 

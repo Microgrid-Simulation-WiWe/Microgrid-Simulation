@@ -28,6 +28,8 @@ const READ_ONLY := PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_READ_ONLY
 
 ## Zahlenfolge für Zufallswerte. Im Spiel setzt sie der EnergyMix (zentraler Seed + fester Wert).
 var rng := RandomNumberGenerator.new()
+var wind_speed_ms := 0.0
+var weather_factor := 1.0
 
 
 func setup(p_definition: PlantDefinition) -> void:

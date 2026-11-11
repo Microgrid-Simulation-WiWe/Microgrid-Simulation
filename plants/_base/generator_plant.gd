@@ -10,7 +10,7 @@ extends PowerPlant
 func tick(_tick_hours: float) -> void:
 	var def := definition as GeneratorDefinition
 	installed_power_mw = unit_count * def.unit_power_mw
-	available_power_mw = clampf(availability_modifier, 0.0, 1.0) * installed_power_mw
+	available_power_mw = clampf(availability_modifier, 0.0, 1.0) * weather_factor * installed_power_mw
 
 	var target_mw := 0.0
 	if enabled:

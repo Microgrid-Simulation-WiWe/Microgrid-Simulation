@@ -42,6 +42,10 @@ const SEED_OFFSET_BUILD_POSITION := 2000
 
 ## Anzahl der bisher ausgeführten Ticks.
 var tick_count := 0
+## Windgeschwindigkeit der aktuellen Stunde in m/s. Setzt die Wetter-Anzeige.
+var wind_speed_ms := 0.0
+## Wetter der aktuellen Stunde (Schlüssel wie im WeatherGenerator). Leer = kein Wettereinfluss.
+var weather_hour: Dictionary = {}
 
 var _plants: Array[PowerPlant] = []
 var _time_since_tick := 0.0
@@ -68,11 +72,24 @@ func _process(delta: float) -> void:
 		tick()
 
 
+func _weather_factor(plant: PowerPlant) -> float:
+	var def := plant.definition as GeneratorDefinition
+	if def == null or weather_hour.is_empty():
+		return 1.0
+	match def.weather_model:
+		&"solar":
+			return RenewableModels.solar_factor(weather_hour.solar_radiation, weather_hour.temperature)
+		&"wind":
+			return RenewableModels.wind_factor(weather_hour.wind_speed)
+	return 1.0
+
 ## Ein Simulationsschritt für alle Anlagen.
 func tick() -> void:
 	tick_count += 1
 	total_power_mw = 0.0
 	for plant in _plants:
+		plant.wind_speed_ms = wind_speed_ms
+		plant.weather_factor = _weather_factor(plant)
 		plant.tick(tick_hours)
 		total_power_mw += plant.actual_power_mw
 	var balance_kw := total_power_mw * 1000.0 - demand_kw

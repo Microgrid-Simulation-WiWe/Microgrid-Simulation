@@ -18,8 +18,14 @@
 [ext_resource type="Script" uid="uid://c12pf5ar1ic4s" path="res://scenes/game_flow/game_flow.gd" id="18_flow"]
 [ext_resource type="Script" uid="uid://h46ll05suj7m" path="res://scenes/inventory/building_action_panel.gd" id="19_bact"]
 [ext_resource type="Script" uid="uid://cvsqqyxnrs1us" path="res://scenes/round_summary/round_stats.gd" id="20_rstats"]
+[ext_resource type="Script" uid="uid://b0rv2ggll0oe6" path="res://scenes/weather/weather_display.gd" id="21_h6wmr"]
 [ext_resource type="Script" uid="uid://cjuoar7pyqxvx" path="res://scenes/round_summary/round_summary_panel.gd" id="21_rsum"]
+[ext_resource type="Texture2D" uid="uid://bveqvd58rw6l" path="res://assets/sprites/sun_dispaly.jpeg" id="22_3ies3"]
 [ext_resource type="Script" uid="uid://0yborav7c3wn" path="res://scenes/scenario/scenario_selector.gd" id="22_scen"]
+[ext_resource type="Texture2D" uid="uid://cjtika6u1nkdj" path="res://assets/sprites/cloud_display.png" id="23_xy2fk"]
+[ext_resource type="Texture2D" uid="uid://bug3guml8lpkj" path="res://assets/sprites/rain_display.jpeg" id="24_cmcjb"]
+[ext_resource type="Texture2D" uid="uid://csdf8r6bikwrw" path="res://assets/sprites/moon_display.webp" id="25_556r4"]
+[ext_resource type="Script" uid="uid://cyi8sp6ne20s1" path="res://scenes/weather/weather_data_display.gd" id="26_xy2fk"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -241,10 +247,35 @@ script = ExtResource("21_rsum")
 game_flow = NodePath("../GameFlow")
 round_stats = NodePath("../RoundStats")
 
-[node name="ScenarioSelector" type="PanelContainer" parent="." unique_id=1938475620 node_paths=PackedStringArray("energy_mix", "game_flow", "clock_display", "inventory_bar", "placement")]
+[node name="ScenarioSelector" type="PanelContainer" parent="." unique_id=1938475620 node_paths=PackedStringArray("energy_mix", "game_flow", "clock_display", "inventory_bar", "placement", "weather_display")]
 script = ExtResource("22_scen")
 energy_mix = NodePath("../EnergyMix")
 game_flow = NodePath("../GameFlow")
 clock_display = NodePath("../ClockDisplay")
 inventory_bar = NodePath("../InventoryBar")
 placement = NodePath("../PlacementController")
+weather_display = NodePath("../WeatherPanel/VBoxContainer/WeatherDisplay")
+
+[node name="WeatherPanel" type="PanelContainer" parent="." unique_id=720998239]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 56.0
+offset_bottom = 56.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="WeatherPanel" unique_id=1740830534]
+layout_mode = 2
+
+[node name="WeatherDisplay" type="TextureRect" parent="WeatherPanel/VBoxContainer" unique_id=2090816005 node_paths=PackedStringArray("energy_mix", "clock_display")]
+layout_mode = 2
+script = ExtResource("21_h6wmr")
+energy_mix = NodePath("../../../EnergyMix")
+clock_display = NodePath("../../../ClockDisplay")
+sunny = ExtResource("22_3ies3")
+cloudy = ExtResource("23_xy2fk")
+rainy = ExtResource("24_cmcjb")
+night = ExtResource("25_556r4")
+
+[node name="WeatherDataDisplay" type="Label" parent="WeatherPanel/VBoxContainer" unique_id=2077114447 node_paths=PackedStringArray("weather_display")]
+layout_mode = 2
+script = ExtResource("26_xy2fk")
+weather_display = NodePath("../WeatherDisplay")

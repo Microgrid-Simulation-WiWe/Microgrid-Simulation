@@ -10,6 +10,7 @@
 		"area_usage": [4, 4]
 	},
 	"power": {
+		"weather_model": "wind",
 		"unit_power_mw": 2.0,
 		"min_load": 0,
 		"noise_level": 0.02,
@@ -38,6 +39,8 @@
 		"offset": [0, 0, 0],
 		"rotation": [0, 0, 0],
 		"anim_speed": [0.2, 1.5],
-		"volume_db": [-30, -6]
+		"volume_db": [-30, -6],
+		"anim_driver": "wind",
+		"wind_speed_range": [1.0, 8.0]
 	}
 }
