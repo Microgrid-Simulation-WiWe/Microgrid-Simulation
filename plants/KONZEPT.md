@@ -1,6 +1,6 @@
 # Konzept: Anlagentypen (Erzeuger und Speicher)
 
-Stand: 10.11.2026 (erste Umsetzung 12.10.2026) in `res://plants/`. Ein Ablauf, wie ein neuer Typ angelegt wird, steht in [`HOW_TO.md`](HOW_TO.md), die Feldreferenz in [`_base/plant_schema.md`](_base/plant_schema.md).
+Stand: 12.11.2026 (erste Umsetzung 12.10.2026) in `res://plants/`. Ein Ablauf, wie ein neuer Typ angelegt wird, steht in [`HOW_TO.md`](HOW_TO.md), die Feldreferenz in [`_base/plant_schema.md`](_base/plant_schema.md).
 
 ## Ziel
 
@@ -84,14 +84,21 @@ DATEN (Resource)                 LOGIK (Node)                  DARSTELLUNG (Node
 - **Auswertung nach jeder Runde** (`scenes/round_summary/`):
   - `RoundStats` zählt ab dem ersten Tick einer Runde mit: Ticks im grünen Bereich (Netzstabilität), Unterdeckung und Überschuss in kWh, kleinste und größte Netzfrequenz und die erzeugte Energie je Erzeuger.
   - Aus der Energie je Erzeuger und den `impact`-Werten der `plant.json` berechnet es CO₂, Kosten und Atommüll, gesamt und je Erzeuger, dazu die durchschnittlichen Kosten je kWh.
-  - `RoundSummaryPanel` zeigt das in der Bildschirmmitte, wenn die Runde endet oder abgebrochen wird. Bei einem Abbruch steht dabei, nach wie vielen Stunden. Atommüll erscheint nur, wenn er angefallen ist. Das Panel verschwindet mit „Weiter“ oder beim nächsten Rundenstart.
+  - **Netzzusammenbruch:** War die Leistungsbilanz zu lange am Stück im roten Bereich, gilt das Netz als zusammengebrochen. Das entscheidet `GridCollapseRule` (`scenes/round_summary/grid_collapse_rule.gd`, in `RoundStats.collapse_rule`).
+    - Die Grenze steht im Szenario (`grid.max_red_minutes`, Standard 60 simulierte Minuten, 0 = nie). Der `ScenarioSelector` überträgt sie.
+    - Wird die Bilanz zwischendurch gelb oder grün, läuft die Zeit von vorne.
+    - Die Runde läuft trotzdem bis zum Ende weiter. Der Zusammenbruch erscheint nur in der Auswertung.
+    - Ein anderes Kriterium: Unterklasse von `GridCollapseRule` anlegen und `_is_critical()` bzw. `observe()` überschreiben.
+  - `RoundSummaryPanel` zeigt das in der Bildschirmmitte, wenn die Runde endet oder abgebrochen wird. Die erste Zeile „Netz“ steht immer da, in Ampelfarbe: grün „stabil, nie im roten Bereich“, gelb „nicht zusammengebrochen, bis zu x von 60 min am Stück im roten Bereich“ oder rot „zusammengebrochen nach x h“. „Netzstabilität“ zählt dagegen nur die Zeit im grünen Bereich, gelb zählt dort nicht mit. Unter dem Titel steht immer die Rundenzeit: „Runde beendet nach 24 von 24 h“ oder bei einem Abbruch „Abgebrochen nach x von 24 h“. Atommüll erscheint nur, wenn er angefallen ist. Das Panel verschwindet mit „Weiter“ oder beim nächsten Rundenstart.
+  - Das Panel erbt wie die Rückfrage beim Szenariowechsel (`ConfirmPanel`) von `CenteredPanel` (`scenes/ui/`): Rahmen, Titel, Text und Knöpfe, mittig auf dem Bildschirm. Es ist immer nur eines dieser Popups sichtbar. Ein modales Popup (`modal`) legt eine Abdeckung über die restliche Oberfläche, die alle Klicks abfängt.
 - **Energiebilanz:** Nach jedem Tick kommt `(total_power_mw · 1000 − demand_kw) · tick_hours` zu `energy_balance_kwh` dazu.
   - Plus heißt, es wurde mehr erzeugt als verbraucht. Minus heißt Unterdeckung. Ziel ist eine Bilanz nahe 0.
   - Ein ladender Speicher hat negative Leistung und senkt die Bilanz. Einen Überschuss kann man also einspeichern und später wieder abgeben.
   - `demand_kw` ist ein Platzhalter-Verbrauch in kW (Standard 20 kW, in `scenes/level.tscn` 100 kW), bis es Verbraucher gibt. Er passt noch nicht zu den Leistungen der Anlagen: Schon ein Windrad liefert 2 MW (siehe „Noch offen“).
   - Die Bilanz wird nur intern mitgeführt und ist im Inspector sichtbar. Später kann sie z. B. für das Spielende oder eine Auswertung genutzt werden.
 - **Anzeige der Leistungsbilanz:** `scripts/power_balance_display.gd` zeigt Erzeugung − `demand_kw` mit Vorzeichen, unter 1 MW in kW, darüber in MW. Der Wert reagiert beim nächsten Tick, anders als die aufsummierte kWh-Bilanz.
-  - Dazu kommt ein Balken von −`demand_kw` bis +`demand_kw`: grün bis ±10 % des Verbrauchs, gelb bis ±30 %, sonst rot. Die Stufen sind Platzhalter-Exports (`green_band`, `yellow_band`).
+  - Dazu kommt ein Balken von −`demand_kw` bis +`demand_kw`: grün bis ±10 % des Verbrauchs, gelb bis ±30 %, sonst rot. Die Stufen sind Platzhalter und stehen in `BalanceBands` (`plants/_base/balance_bands.gd`), eine Instanz hängt am `EnergyMix` (`balance_bands`).
+  - Anzeige, Auswertung (Netzstabilität) und Netzzusammenbruch fragen alle `EnergyMix.get_balance_zone()`. Eine Änderung der Stufen gilt damit überall gleich.
   - Bei `demand_kw` 0 bleibt die Markierung in der Mitte.
 - **Netzfrequenz:** Sie entscheidet nicht mehr über den Spielablauf, wird aber weiter mitgeführt und ist im Inspector sichtbar. Nach jedem Tick läuft `frequency_hz` um den Anteil `frequency_response` auf `50 Hz + hz_per_imbalance · (total_power_mw · 1000 − demand_kw) / demand_kw` zu.
   - Bei zu viel Erzeugung steigt sie, bei zu wenig fällt sie. Sie reagiert träge wie eine Schwungmasse.
@@ -186,7 +193,7 @@ Stand 10.11.2026, Werte aus den `plant.json`. Die `plant.json` bleibt die einzig
 | Batterie | storage | Speicher | 2 MW / 4 MWh | – | 100 | – | η 95 %/95 % | 2 | 3×3 |
 | Pumpspeicher (ausgeblendet) | storage | Speicher | 5 MW / 40 MWh | – | 100 | – | η 88 %/88 % | 4 | 2×2 |
 
-- **Baupunkte** (`build.cost`) stehen noch in den `plant.json` und im Tooltip der Inventarleiste, begrenzen aber nichts. Laut Sprint Review vom 26.10.2026 werden Anlagen über den Platz begrenzt und nicht über Baupunkte (Kanban-Karte „Platzbegrenzung Plants“).
+- **Baupunkte** (`build.cost`) stehen noch in den `plant.json`, werden aber nicht mehr angezeigt (Tooltip der Inventarleiste zeigt nur den Namen) und begrenzen nichts. Laut Sprint Review vom 26.10.2026 werden Anlagen über den Platz begrenzt und nicht über Baupunkte (Kanban-Karte „Platzbegrenzung Plants“).
 
 **Auswirkungen je erzeugter kWh** (`impact`, für die Auswertung nach jeder Runde; grobe Platzhalter, Quellen in [`_base/plant_schema.md`](_base/plant_schema.md)):
 
@@ -213,6 +220,7 @@ Speicher haben keine `impact`-Werte. Sie erzeugen selbst keine Energie.
   - die Rundenlänge am `GameFlow`: `round_hours`
   - der Verbrauch am `EnergyMix`: `demand_kw` (Energiebilanz `energy_balance_kwh` nur lesbar)
   - der zentrale Seed am `EnergyMix`: `random_seed` (siehe Abschnitt 3)
+  - die Farbstufen der Leistungsbilanz am `EnergyMix`: `balance_bands` (Gruppe „Leistungsbilanz“)
   - die Netzfrequenz am `EnergyMix`: `hz_per_imbalance`, `frequency_response`
   - die Basis-Szenen
 - **Szenario:** `tick_hours`, `ticks_per_second`, `round_hours` und `random_seed` überschreibt beim Spielstart das gewählte Szenario (siehe `res://scenarios/KONZEPT.md`). Die Werte im Inspector gelten nur, wenn es kein Szenario gibt.
@@ -225,7 +233,7 @@ Aufruf im Projektordner:
 godot --headless --path . --script res://plants/_tests/run_tests.gd
 ```
 
-**Stand 10.11.2026:** 3 Tests schlagen fehl:
+**Stand 12.11.2026:** 3 Tests schlagen fehl:
 - „Wind mit Sollwert 100 → 2 MW“ und „Wind mit Sollwert 50 → 1 MW“. Die Wind-`plant.json` hat inzwischen `noise_level` 0,02, die Tests erwarten aber exakte Werte ohne Rauschen.
 - „Zufall ±20 %“. Der Code rechnet mit dem zusätzlichen Faktor 0,1 (siehe Abschnitt 3).
 
@@ -241,9 +249,11 @@ Siehe „Noch offen“.
 - `EnergyMix`, `build()` und Gebäude mit Platzhalter
 - Netzfrequenz: 50 Hz bei Gleichgewicht, träges Fallen bei Unterdeckung, `demand_kw` 0
 - Energiebilanz: 0 kWh bei Gleichgewicht, −166,67 kWh bei 1 MW Unterdeckung über 10 min, bei `demand_kw` 0 zählt die ganze Erzeugung als Plus
-- Rasterbelegung: Überlappung, angrenzende Flächen, Freigeben; beim Verschieben zählt die eigene Fläche als frei, fremde nicht
+- Rasterbelegung: Überlappung, angrenzende Flächen, Freigeben, Liste aller Beleger; beim Verschieben zählt die eigene Fläche als frei, fremde nicht
 - Anhalten und Zurücksetzen: kein Tick bei `running` aus; `reset()` setzt Uhr, Bilanz, Frequenz, Leistung, Störung und Ladestand zurück, `unit_count` und Sollwert bleiben
 - Rundenauswertung: `impact`-Felder aus der `plant.json`, Energie je Erzeuger (2 MW für 1 h → 2000 kWh), CO₂, Kosten, Durchschnittskosten, Atommüll nur mit Atom, Netzstabilität und Unterdeckung, neue Runde zählt von vorne
+- Farbstufen der Leistungsbilanz: grün bis ±10 %, gelb bis ±30 %, sonst rot; ohne Verbrauch grün; Stufen am `EnergyMix` änderbar
+- Netzzusammenbruch: 57 min rot → nein, 60 min → ja (nach 1 h), bleibt bis Rundenende, zwischendurch gelb → Zeit von vorne, Grenze 0 → nie, zusammen mit `RoundStats` und neuer Runde
 - Zufall: nach `reset()` dieselben Werte, gleicher Seed → gleiche Werte, anderer Seed → andere Werte, unabhängig davon welche Anlagen laufen, eigener fester Wert → eigene Zahlenfolge. Einzeln erzeugte Test-Anlagen bekommen Seed 0, damit jeder Testlauf gleich ist.
 - Ladefehler: fehlende Felder, unbekannter `type`, doppelte `id`, fehlende Assets, Punkt-Ordner
 
@@ -251,7 +261,7 @@ Siehe „Noch offen“.
 
 **Umgesetzt:**
 - alles aus den Abschnitten 1–7
-- seit der ersten Umsetzung dazugekommen: Biogas und Diesel, Kategorien und Reiter in der Inventarleiste, Bauen per Drag & Drop mit Verschieben und Abriss, Trennung von Bau- und Simulationsphase, Leistungsbilanz in kW statt Hz-Anzeige, zentraler Seed, Auswertung nach jeder Runde mit CO₂, Kosten und Atommüll
+- seit der ersten Umsetzung dazugekommen: Biogas und Diesel, Kategorien und Reiter in der Inventarleiste, Bauen per Drag & Drop mit Verschieben und Abriss, Trennung von Bau- und Simulationsphase, Leistungsbilanz in kW statt Hz-Anzeige, zentraler Seed, Auswertung nach jeder Runde mit CO₂, Kosten und Atommüll, Netzzusammenbruch in der Auswertung (zu lange am Stück im roten Bereich), Szenariowechsel in jeder Bauphase
 
 **Bewusst noch nicht umgesetzt** (abgestimmt, kommt bei Bedarf):
 - Editor-Vorschau eines Typs ohne Spielstart (`preview_json`, bräuchte `@tool` in den Basisskripten)
@@ -259,7 +269,7 @@ Siehe „Noch offen“.
 - eigene Rechenlogik pro Typ (`"script"`-Feld in der JSON)
 - automatisches Anwenden von `assets.textures`
 - Debug-Szene mit Schiebereglern
-- Netzzusammenbruch und Spielende über eine Grenze der Energiebilanz (kWh) statt über 48–52 Hz, Grenzen je Schwierigkeitsgrad
+- Spielende (Good/Bad Ending), das die Runde beim Netzzusammenbruch sofort beendet. Bisher zeigt nur die Auswertung den Zusammenbruch (siehe Abschnitt 2). Grenzen je Schwierigkeitsgrad gehen über `grid.max_red_minutes` im Szenario.
 - echte Verbraucher statt des Platzhalters `demand_kw`
 
 **Vorerst wieder entfernt** (17.10.2026; der Code steht in der Git-History):
@@ -271,4 +281,4 @@ Siehe „Noch offen“.
 2. **Rampenwerte:** Sie gelten pro Tick. Mit den kürzeren 3-min-Ticks fährt z. B. Kohle in Sim-Zeit schneller hoch als vorher, in Echtzeit gleich schnell.
 3. **Export:** Im exportierten Build prüfen, dass alle `plant.json` gefunden werden. Gegebenenfalls `*.json` im Export-Filter „Nicht-Ressourcen-Dateien“ ergänzen. Ein `export_presets.cfg` gibt es noch nicht.
 4. **Zufall:** Soll `noise_level` direkt der Anteil der installierten Leistung sein (wie hier ursprünglich beschrieben und von den Tests erwartet) oder mit dem Faktor 0,1 gerechnet werden (wie im Code)? Danach den Code oder die Tests und den Export-Kommentar in `generator_plant.gd` angleichen. Die Wind-Tests sollten `noise_level` auf 0 setzen.
-5. **Baupunkte:** `build.cost` aus den `plant.json`, der Feldreferenz und dem Tooltip (`scenes/inventory/inventory_slot.gd`) entfernen, sobald die Platzbegrenzung umgesetzt ist.
+5. **Baupunkte:** `build.cost` aus den `plant.json` und der Feldreferenz entfernen (aus dem Tooltip schon entfernt), sobald die Platzbegrenzung umgesetzt ist.

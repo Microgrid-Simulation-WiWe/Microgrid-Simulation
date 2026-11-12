@@ -9,7 +9,7 @@ var definition: PlantDefinition
 func setup(p_definition: PlantDefinition, slot_size: Vector2) -> void:
 	definition = p_definition
 	texture = definition.icon
-	tooltip_text = "%s (Baupunkte: %d)" % [definition.display_name, definition.build_cost]
+	tooltip_text = definition.display_name
 	custom_minimum_size = slot_size
 	expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED

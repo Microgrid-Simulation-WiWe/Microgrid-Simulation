@@ -22,6 +22,8 @@ func _run_all() -> void:
 	_test_energy_balance()
 	_test_pause_and_reset()
 	_test_round_stats()
+	_test_balance_bands()
+	_test_grid_collapse()
 	_test_random()
 	_test_loading_errors()
 	_test_grid_occupancy()
@@ -253,6 +255,80 @@ func _test_round_stats() -> void:
 	mix.free()
 
 
+func _test_balance_bands() -> void:
+	print("Farbstufen der Leistungsbilanz")
+	var bands := BalanceBands.new()
+	_check(bands.zone_of(0.0) == BalanceBands.Zone.GREEN and bands.zone_of(-0.1) == BalanceBands.Zone.GREEN,
+		"bis ±10 % → grün")
+	_check(bands.zone_of(0.2) == BalanceBands.Zone.YELLOW and bands.zone_of(-0.3) == BalanceBands.Zone.YELLOW,
+		"bis ±30 % → gelb")
+	_check(bands.zone_of(0.31) == BalanceBands.Zone.RED and bands.zone_of(-1.0) == BalanceBands.Zone.RED, "darüber → rot")
+	_check(is_equal_approx(BalanceBands.imbalance(-50.0, 100.0), -0.5) and BalanceBands.imbalance(50.0, 0.0) == 0.0,
+		"Abweichung als Anteil des Verbrauchs, ohne Verbrauch 0")
+
+	var mix := EnergyMix.new()
+	root.add_child(mix)
+	mix.demand_kw = 1000.0
+	mix.tick()
+	_check(is_equal_approx(mix.get_balance_kw(), -1000.0) and mix.get_balance_zone() == BalanceBands.Zone.RED,
+		"nichts erzeugt → −1000 kW, rot")
+	mix.balance_bands.yellow_band = 1.0
+	_check(mix.get_balance_zone() == BalanceBands.Zone.YELLOW, "Stufen am EnergyMix änderbar")
+	mix.demand_kw = 0.0
+	_check(mix.get_balance_zone() == BalanceBands.Zone.GREEN, "demand_kw 0 → grün")
+	mix.free()
+
+
+func _test_grid_collapse() -> void:
+	print("Netzzusammenbruch")
+	var red := BalanceBands.Zone.RED
+	var rule := GridCollapseRule.new(1.0)
+	for i in 19:
+		rule.observe(red, 0.05, (i + 1) * 0.05)
+	_check(not rule.has_collapsed(), "57 min am Stück rot → kein Zusammenbruch")
+	rule.observe(red, 0.05, 1.0)
+	_check(rule.has_collapsed() and is_equal_approx(rule.collapse_hour, 1.0), "60 min am Stück rot → Zusammenbruch nach 1 h")
+	rule.observe(BalanceBands.Zone.GREEN, 0.05, 1.05)
+	_check(rule.has_collapsed() and is_equal_approx(rule.collapse_hour, 1.0), "Zusammenbruch bleibt bis zum Rundenende")
+	rule.reset()
+	_check(not rule.has_collapsed() and rule.red_hours == 0.0 and rule.longest_red_hours == 0.0,
+		"reset() → neue Runde ohne Zusammenbruch")
+
+	for i in 10:
+		rule.observe(red, 0.05, 0.0)
+	rule.observe(BalanceBands.Zone.YELLOW, 0.05, 0.0)
+	for i in 10:
+		rule.observe(red, 0.05, 0.0)
+	_check(not rule.has_collapsed(), "zwischendurch gelb → Zeit läuft von vorne")
+	_check(is_equal_approx(rule.longest_red_hours, 0.5), "längste rote Phase 30 min (%.2f h)" % rule.longest_red_hours)
+
+	var never := GridCollapseRule.new(0.0)
+	for i in 100:
+		never.observe(red, 1.0, i + 1.0)
+	_check(not never.has_collapsed(), "Grenze 0 → Netz bricht nie zusammen")
+
+	# Zusammen mit RoundStats: ohne Erzeugung ist die Bilanz rot.
+	var mix := EnergyMix.new()
+	root.add_child(mix)
+	mix.tick_hours = 10.0 / 60.0
+	mix.demand_kw = 2000.0
+	var stats := RoundStats.new()
+	stats.energy_mix = mix
+	root.add_child(stats)
+	stats.collapse_rule.max_red_hours = 1.0
+	for i in 5:
+		mix.tick()
+	_check(not stats.has_collapsed(), "RoundStats: 50 min rot → noch kein Zusammenbruch")
+	mix.tick()
+	_check(stats.has_collapsed() and is_equal_approx(stats.collapse_rule.collapse_hour, 1.0),
+		"RoundStats: 1 h rot → Zusammenbruch nach 1 h")
+	mix.reset()
+	mix.tick()
+	_check(not stats.has_collapsed(), "RoundStats: neue Runde → Zusammenbruch zurückgesetzt")
+	stats.free()
+	mix.free()
+
+
 func _test_random() -> void:
 	print("Zufall")
 	var mix := _make_noisy_mix(1)
@@ -325,8 +401,13 @@ func _test_grid_occupancy() -> void:
 	_check(grid.get_occupant(Vector2i(1, 1)) == owner, "Feld kennt seinen Beleger")
 	_check(grid.can_place(Rect2i(1, 1, 2, 2), owner), "eigene Fläche zählt beim Verschieben als frei")
 	_check(not grid.can_place(Rect2i(1, 1, 2, 2), RefCounted.new()), "fremde Fläche bleibt beim Verschieben belegt")
+	var second := RefCounted.new()
+	grid.occupy(Rect2i(4, 4, 1, 1), second)
+	var occupants := grid.get_occupants()
+	_check(occupants.size() == 2 and occupants.has(owner) and occupants.has(second), "get_occupants() → jeder Beleger einmal")
 	grid.release(owner)
 	_check(grid.can_place(Rect2i(0, 0, 2, 2)) and grid.get_occupant(Vector2i(1, 1)) == null, "release() → wieder frei")
+	_check(grid.get_occupants().size() == 1 and grid.get_occupants()[0] == second, "release() → Beleger nicht mehr in get_occupants()")
 
 
 func _make_plant(id: StringName, units := 1) -> PowerPlant:

@@ -1,6 +1,6 @@
 # Konzept: Szenarien
 
-Stand: 02.11.2026, erste Umsetzung in `res://scenarios/`. Die Feldreferenz steht in [`_base/scenario_schema.md`](_base/scenario_schema.md).
+Stand: 12.11.2026 (erste Umsetzung 02.11.2026) in `res://scenarios/`. Die Feldreferenz steht in [`_base/scenario_schema.md`](_base/scenario_schema.md).
 
 ## Ziel
 
@@ -10,15 +10,18 @@ Kanban-Karte „Szenarien im BackEnd anlegen“. Ein Szenario legt fest, unter w
 - Baufläche, Landschaft, Hintergrund, Wetter
 - Name, Beschreibung und Hinweise für den Spieler
 
-Der Spieler wählt das Szenario zu Beginn oben in der Mitte aus. Konkrete Szenarien (Schule, Krankenhaus, Bauernhof, Regenwald, Ravensburg 2100) gibt es noch nicht. `ravensburg.json` ist ein Beispiel mit den Werten des bisherigen Spiels.
+Der Spieler wählt das Szenario oben in der Mitte aus, in jeder Bauphase. Konkrete Szenarien (Schule, Krankenhaus, Bauernhof, Regenwald, Ravensburg 2100) gibt es noch nicht. `ravensburg.json` ist ein Beispiel mit den Werten des bisherigen Spiels.
 
 ## Festgelegte Entscheidungen
 
 - **Eine JSON-Datei pro Szenario**, flach in `res://scenarios/`. Ein neues Szenario braucht keinen Code.
 - **`ScenarioRegistry` ist eine statische Klasse** wie die `PlantRegistry`. So bleibt `project.godot` unverändert.
-- **Wechsel nur vor dem ersten Bau.** Nach dem ersten gebauten Gebäude oder dem ersten Tick ist das Dropdown gesperrt. Das gilt auch, wenn wieder alles abgerissen wird. Ein anderes Szenario gibt es dann nur über einen Neustart.
-- **Kein Neuladen der Szene.** Vor dem ersten Bau gibt es nichts zurückzusetzen, deshalb werden die Werte direkt übernommen.
-- **Die Level-Knoten kennen keine Szenarien.** Der `ScenarioSelector` überträgt die Werte auf `GameFlow`, `EnergyMix`, `ClockDisplay` und `InventoryBar`.
+- **Wechsel in jeder Bauphase** (Kanban-Karte „szenario nach erstem mal sim nochmal ändern können“, 12.11.2026). Das Dropdown ist nur in der Bauphase sichtbar, also vor der ersten Runde und nach jeder Runde.
+  - Ist noch nichts gebaut, wechselt das Szenario sofort.
+  - Steht schon etwas, fragt ein Popup (`ConfirmPanel`, im Stil der Auswertung) nach, ob alle gebauten Kraftwerke abgerissen werden sollen. **Ja:** Alles wird abgerissen (`PlacementController.demolish_all()`), und das neue Szenario startet leer. **Nein:** Das Dropdown springt zurück, Gebautes und Szenario bleiben.
+  - Sollwerte und Ein/Aus der Anlagen bleiben beim Wechsel erhalten, wie nach einer Runde.
+- **Kein Neuladen der Szene.** Nach dem Abriss gibt es nichts mehr zurückzusetzen, deshalb werden die Werte direkt übernommen.
+- **Die Level-Knoten kennen keine Szenarien.** Der `ScenarioSelector` überträgt die Werte auf `GameFlow`, `EnergyMix`, `ClockDisplay`, `InventoryBar` und `RoundStats`.
 
 ## Klassen
 
@@ -28,7 +31,8 @@ ravensburg.json ──► ScenarioRegistry (statisch: get_all(), get_by_id(), ge
 					  ▼
 					ScenarioDefinition (Resource)  ◄── ScenarioSelector (scenes/scenario/, Dropdown)
 					  load_from_dict(),                  überträgt die Werte auf GameFlow, EnergyMix,
-					  is_plant_allowed(),                ClockDisplay, InventoryBar
+					  is_plant_allowed(),                ClockDisplay, InventoryBar, RoundStats;
+					                                     fragt beim Wechsel per ConfirmPanel nach
 					  get_power_factor()
 ```
 
@@ -70,6 +74,12 @@ Ein Objekt je Typ-`id` aus `res://plants/`, z. B. `"hydro": { ... }`. Fehlt ein 
 | `plants.<id>.allowed` | `false` verbietet den Typ in diesem Szenario. Nur ein ausdrückliches `false` verbietet. | Typ fehlt in der Inventarleiste (`InventoryBar.hidden_plants`) |
 | `plants.<id>.power_factor` | Leistungsfaktor des Typs in diesem Szenario, z. B. `0.5` für Wasserkraft bei niedrigem Wasserstand. Skaliert die installierte Leistung je Einheit (Sollwert in % bezieht sich darauf). | `PowerPlant.power_factor` (gesetzt vom `ScenarioSelector`) |
 
+### `grid` – Netz
+
+| Eintrag | Erklärung | Wirkung |
+|---|---|---|
+| `grid.max_red_minutes` | So viele simulierte Minuten darf die Leistungsbilanz am Stück im roten Bereich sein, dann gilt das Netz als zusammengebrochen. `0` = Netz bricht nie zusammen. Kürzer = schwerer. | `RoundStats.collapse_rule` (`GridCollapseRule`), Hinweis in der Auswertung |
+
 ### Spielfeld, Landschaft und Wetter
 
 | Eintrag | Erklärung | Wirkung |
@@ -99,9 +109,9 @@ godot --headless --path . --script res://scenarios/_tests/run_tests.gd
 ```
 
 **Was geprüft wird:**
-- Ravensburg wird gefunden und hat die Werte des bisherigen Spiels.
+- Ravensburg wird gefunden und hat die Werte des bisherigen Spiels, Netzzusammenbruch nach 60 min rot.
 - Ohne Auswahl ist das erste Szenario gewählt, `select()` wechselt, eine unbekannte id ändert nichts.
-- Fixtures: fehlende Felder → Standardwerte und `id` aus dem Dateinamen, Verbot und Leistungsfaktor, unbekannter Typ, fehlendes Asset, kein JSON-Objekt, doppelte `id`, Punkt-Datei, Sortierung.
+- Fixtures: fehlende Felder → Standardwerte und `id` aus dem Dateinamen, Verbot und Leistungsfaktor, Grenze für den Netzzusammenbruch, unbekannter Typ, fehlendes Asset, kein JSON-Objekt, doppelte `id`, Punkt-Datei, Sortierung.
 
 ## Noch offen
 

@@ -4,9 +4,9 @@ extends Node
 ## Beginnt mit dem ersten Tick jeder Runde von vorne.
 
 @export var energy_mix: EnergyMix
-## Anteil des Verbrauchs, bis zu dem die Bilanz als „grün“ zählt (wie in der Leistungsbilanz-Anzeige).
-@export_range(0.0, 1.0, 0.01) var green_band := 0.1
 
+## Entscheidet, ob das Netz zusammengebrochen ist. Die Grenze setzt der ScenarioSelector aus dem Szenario.
+var collapse_rule := GridCollapseRule.new()
 var ticks := 0
 var ticks_in_band := 0
 ## Zu wenig bzw. zu viel erzeugte Energie, über die Runde aufsummiert.
@@ -30,6 +30,7 @@ func reset() -> void:
 	surplus_kwh = 0.0
 	min_hz = INF
 	max_hz = -INF
+	collapse_rule.reset()
 	energy_kwh.clear()
 	for definition in PlantRegistry.get_all():
 		var plant := energy_mix.get_plant(definition.id) as GeneratorPlant
@@ -45,6 +46,11 @@ func hours() -> float:
 ## Anteil der Ticks im grünen Bereich, 0..1.
 func stability() -> float:
 	return float(ticks_in_band) / ticks if ticks > 0 else 0.0
+
+
+## Ist das Netz in dieser Runde zusammengebrochen? Zeitpunkt: collapse_rule.collapse_hour.
+func has_collapsed() -> bool:
+	return collapse_rule.has_collapsed()
 
 
 func co2_g(plant: GeneratorPlant) -> float:
@@ -85,10 +91,11 @@ func _on_ticked() -> void:
 	if energy_mix.tick_count == 1:
 		reset()
 	ticks += 1
-	var balance_kw := energy_mix.total_power_mw * 1000.0 - energy_mix.demand_kw
-	# Ohne Verbrauch gibt es kein Ungleichgewicht (wie in der Leistungsbilanz-Anzeige).
-	if energy_mix.demand_kw <= 0.0 or absf(balance_kw) <= green_band * energy_mix.demand_kw:
+	var balance_kw := energy_mix.get_balance_kw()
+	var zone := energy_mix.get_balance_zone()
+	if zone == BalanceBands.Zone.GREEN:
 		ticks_in_band += 1
+	collapse_rule.observe(zone, energy_mix.tick_hours, hours())
 	if balance_kw < 0.0:
 		shortfall_kwh -= balance_kw * energy_mix.tick_hours
 	else:

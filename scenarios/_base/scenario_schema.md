@@ -41,6 +41,12 @@ Ein Objekt je Typ-`id` aus `res://plants/`. Typen, die fehlen, sind erlaubt und 
 | `allowed` | `true`/`false` | `true` | `false` = Typ fehlt in diesem Szenario in der Inventarleiste. Nur ein ausdrückliches `false` verbietet. |
 | `power_factor` | Zahl | `1` | Leistungsfaktor in diesem Szenario, z. B. `0.5` für Wasserkraft bei niedrigem Wasserstand. Skaliert die installierte Leistung je Einheit. |
 
+## `grid` – Netz
+
+| Feld | Typ | Standard | Bedeutung |
+|---|---|---|---|
+| `max_red_minutes` | Zahl | `60` | Simulierte Minuten, die die Leistungsbilanz am Stück im roten Bereich sein darf. Danach gilt das Netz als zusammengebrochen, die Auswertung zeigt es an (→ `RoundStats.collapse_rule`). `0` = Netz bricht nie zusammen. Negative Werte zählen als `0`. |
+
 ## Spielfeld und Landschaft (noch ohne Wirkung)
 
 | Feld | Typ | Standard | Bedeutung |

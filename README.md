@@ -6,10 +6,10 @@ Der Spieler baut einen Mix aus Erzeugern und Speichern und regelt sie während e
 
 ## Spielablauf
 
-1. **Szenario wählen** (Dropdown oben in der Mitte). Das geht nur vor dem ersten Bau.
+1. **Szenario wählen** (Dropdown oben in der Mitte). Das geht in jeder Bauphase. Steht schon etwas, fragt das Spiel nach: Bei „Ja“ werden alle gebauten Kraftwerke abgerissen, und das neue Szenario startet leer.
 2. **Bauphase:** Anlagen aus der Inventarleiste aufs Spielfeld ziehen. Gebaute Anlagen kann man verschieben oder per Klick abreißen. Sie belegen Rasterfelder und dürfen sich nicht überlappen.
 3. **„Simulation starten“:** Eine Runde ist ein simulierter Tag und dauert etwa 8 Minuten. Der Spieler stellt die Sollwerte der Anlagen ein und behält die Leistungsbilanz im Blick (grün / gelb / rot). Während der Runde wird nicht gebaut.
-4. **Auswertung:** Nach der Runde oder nach einem Abbruch erscheinen Netzstabilität, Unterdeckung und Überschuss, CO₂, Kosten und Atommüll, gesamt und je Erzeuger. Danach geht es zurück in die Bauphase.
+4. **Auswertung:** Nach der Runde oder nach einem Abbruch erscheinen der Netzzustand (stabil, zeitweise rot mit der längsten roten Phase, oder „zusammengebrochen nach x h“, wenn die Leistungsbilanz zu lange am Stück rot war), Netzstabilität, Unterdeckung und Überschuss, CO₂, Kosten und Atommüll, gesamt und je Erzeuger. Danach geht es zurück in die Bauphase.
 
 ## Starten
 
@@ -22,7 +22,7 @@ Der Spieler baut einen Mix aus Erzeugern und Speichern und regelt sie während e
 |---|---|
 | `plants/` | Anlagentypen: eine `plant.json` pro Typ, Basisklassen in `_base/`, Tests in `_tests/` |
 | `scenarios/` | Szenarien: eine JSON-Datei pro Szenario, Basisklassen in `_base/`, Tests in `_tests/` |
-| `scenes/` | Level-Szene und UI: Spielablauf (`game_flow/`), Inventarleiste und Bauen (`inventory/`), Auswertung (`round_summary/`), Szenario-Auswahl (`scenario/`) |
+| `scenes/` | Level-Szene und UI: Spielablauf (`game_flow/`), Inventarleiste und Bauen (`inventory/`), Auswertung (`round_summary/`), Szenario-Auswahl (`scenario/`), Popups (`ui/`) |
 | `scripts/` | Anzeigen (Leistung, Leistungsbilanz), Gras, Kantenerkennung |
 | `assets/` | Modelle, Materialien, Shader, Sprites, Animationen |
 | `docs/` | Klassendiagramm (`klassendiagramm.svg`) |

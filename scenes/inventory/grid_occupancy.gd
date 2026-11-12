@@ -34,6 +34,13 @@ func get_area(occupant: Object) -> Rect2i:
 	return _areas.get(occupant, Rect2i())
 
 
+## Alle Beleger, jeder einmal.
+func get_occupants() -> Array[Object]:
+	var occupants: Array[Object] = []
+	occupants.assign(_areas.keys())
+	return occupants
+
+
 ## Wer das Feld belegt, oder null.
 func get_occupant(cell: Vector2i) -> Object:
 	return _occupants.get(cell)

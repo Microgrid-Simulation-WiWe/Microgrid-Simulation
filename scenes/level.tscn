@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://bug3guml8lpkj" path="res://assets/sprites/rain_display.jpeg" id="24_cmcjb"]
 [ext_resource type="Texture2D" uid="uid://csdf8r6bikwrw" path="res://assets/sprites/moon_display.webp" id="25_556r4"]
 [ext_resource type="Script" uid="uid://cyi8sp6ne20s1" path="res://scenes/weather/weather_data_display.gd" id="26_xy2fk"]
+[ext_resource type="Script" path="res://scenes/ui/confirm_panel.gd" id="27_confirm"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -247,7 +248,7 @@ script = ExtResource("21_rsum")
 game_flow = NodePath("../GameFlow")
 round_stats = NodePath("../RoundStats")
 
-[node name="ScenarioSelector" type="PanelContainer" parent="." unique_id=1938475620 node_paths=PackedStringArray("energy_mix", "game_flow", "clock_display", "inventory_bar", "placement", "weather_display")]
+[node name="ScenarioSelector" type="PanelContainer" parent="." unique_id=1938475620 node_paths=PackedStringArray("energy_mix", "game_flow", "clock_display", "inventory_bar", "placement", "weather_display", "round_stats", "confirm_panel")]
 script = ExtResource("22_scen")
 energy_mix = NodePath("../EnergyMix")
 game_flow = NodePath("../GameFlow")
@@ -255,6 +256,8 @@ clock_display = NodePath("../ClockDisplay")
 inventory_bar = NodePath("../InventoryBar")
 placement = NodePath("../PlacementController")
 weather_display = NodePath("../WeatherPanel/VBoxContainer/WeatherDisplay")
+round_stats = NodePath("../RoundStats")
+confirm_panel = NodePath("../ConfirmPanel")
 
 [node name="WeatherPanel" type="PanelContainer" parent="." unique_id=720998239]
 offset_left = 16.0
@@ -279,3 +282,6 @@ night = ExtResource("25_556r4")
 layout_mode = 2
 script = ExtResource("26_xy2fk")
 weather_display = NodePath("../WeatherDisplay")
+
+[node name="ConfirmPanel" type="PanelContainer" parent="." unique_id=1653094827]
+script = ExtResource("27_confirm")

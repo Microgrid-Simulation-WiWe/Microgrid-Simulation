@@ -56,6 +56,19 @@ func demolish(building: PlantBuilding) -> void:
 	building.queue_free()
 
 
+## Reißt alle gebauten Gebäude ab (z. B. beim Szenariowechsel).
+func demolish_all() -> void:
+	for building in get_buildings():
+		demolish(building)
+
+
+## Alle gebauten Gebäude.
+func get_buildings() -> Array[PlantBuilding]:
+	var buildings: Array[PlantBuilding] = []
+	buildings.assign(_occupancy.get_occupants())
+	return buildings
+
+
 func _on_plant_hovered(data: PlantDragData, screen_position: Vector2) -> void:
 	if _selected:
 		_select(null, Vector2.ZERO)

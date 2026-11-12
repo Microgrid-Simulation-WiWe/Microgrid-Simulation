@@ -29,6 +29,11 @@ extends Resource
 ## Noch ohne Wirkung.
 @export var power_factors: Dictionary[StringName, float] = {}
 
+@export_group("Netz")
+## So lange darf die Leistungsbilanz am Stück im roten Bereich sein, sonst bricht das Netz zusammen
+## (simulierte Minuten, → RoundStats.collapse_rule). 0 = Netz bricht nie zusammen.
+@export_range(0.0, 1440.0, 1.0, "or_greater", "suffix:min") var max_red_minutes := 60.0
+
 @export_group("Noch ohne Wirkung")
 ## Bebaubare Fläche in Rasterfeldern.
 @export var build_area := Vector2i(60, 60)
@@ -85,6 +90,8 @@ func load_from_dict(data: Dictionary, folder: String, source: String) -> void:
 			forbidden_plants.append(StringName(plant_id))
 		if entry.get("power_factor") != null:
 			power_factors[StringName(plant_id)] = float(entry["power_factor"])
+
+	max_red_minutes = maxf(float(_value(data, "grid.max_red_minutes", 60.0)), 0.0)
 
 	var area: Array = _value(data, "build_area", [60, 60])
 	build_area = Vector2i(int(area[0]), int(area[1]))

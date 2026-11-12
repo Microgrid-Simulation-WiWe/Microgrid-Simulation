@@ -1,8 +1,9 @@
 class_name ScenarioSelector
 extends PanelContainer
 ## Auswahl des Szenarios oben in der Mitte (nur in der Bauphase sichtbar, siehe GameFlow.build_ui).
-## Überträgt die Werte des gewählten Szenarios auf das Level. Nach dem ersten Bau oder der ersten
-## Runde steht das Szenario fest, dann ist die Auswahl gesperrt.
+## Überträgt die Werte des gewählten Szenarios auf das Level. Gewechselt werden kann in jeder Bauphase.
+## Steht schon etwas, fragt confirm_panel nach: Ja reißt alles ab und lädt das neue Szenario leer,
+## Nein lässt alles beim aktuellen Szenario.
 
 @export var energy_mix: EnergyMix
 @export var game_flow: GameFlow
@@ -10,9 +11,15 @@ extends PanelContainer
 @export var inventory_bar: InventoryBar
 @export var placement: PlacementController
 @export var weather_display: WeatherDisplay
+## Bekommt die Grenze für den Netzzusammenbruch.
+@export var round_stats: RoundStats
+## Rückfrage, bevor beim Wechsel die gebauten Kraftwerke abgerissen werden.
+@export var confirm_panel: ConfirmPanel
 @export var screen_margin: int = 16
 @export var label_text := "Szenario:"
-@export var locked_text := "Das Szenario steht nach dem ersten Bau fest."
+@export var change_title := "Szenario wechseln?"
+## %s = Name des neuen Szenarios.
+@export_multiline var change_message := "Beim Wechsel zu „%s“ werden alle gebauten Kraftwerke abgerissen und das Szenario startet leer.\n\nBei „Nein“ geht es mit dem aktuellen Szenario weiter."
 
 var _options: OptionButton
 var _scenarios: Array[ScenarioDefinition] = []
@@ -44,9 +51,6 @@ func _ready() -> void:
 		# Erst wenn alle Knoten bereit sind (InventoryBar.refresh() braucht deren _ready).
 		_apply.call_deferred(current)
 
-	placement.building_placed.connect(_lock.unbind(1), CONNECT_ONE_SHOT)
-	energy_mix.ticked.connect(_lock, CONNECT_ONE_SHOT)
-
 	# Oben in der Mitte verankern.
 	reset_size()
 	grow_horizontal = Control.GROW_DIRECTION_BOTH
@@ -60,6 +64,8 @@ func _apply(scenario: ScenarioDefinition) -> void:
 	energy_mix.tick_hours = scenario.tick_hours
 	energy_mix.ticks_per_second = scenario.get_ticks_per_second()
 	energy_mix.random_seed = scenario.random_seed
+	if round_stats != null:
+		round_stats.collapse_rule.max_red_hours = scenario.max_red_minutes / 60.0
 	for definition in PlantRegistry.get_all():
 		var plant := energy_mix.get_plant(definition.id)
 		if plant != null:
@@ -74,15 +80,30 @@ func _apply(scenario: ScenarioDefinition) -> void:
 
 func _on_item_selected(index: int) -> void:
 	var scenario := _scenarios[index]
+	var current := ScenarioRegistry.get_current()
+	if scenario == current:
+		return
+	# Gewechselt wird nur in der Bauphase. Steht schon etwas, muss es weg – vorher nachfragen.
+	var allowed := false
+	if game_flow.phase == GameFlow.Phase.BUILD:
+		allowed = await _confirm_demolish(scenario)
+	if not allowed:
+		_options.select(_scenarios.find(current))
+		return
+	placement.demolish_all()
 	ScenarioRegistry.select(scenario.id)
 	_apply(scenario)
 
 
-func _lock() -> void:
-	if _options.disabled:
-		return
-	_options.disabled = true
-	_options.tooltip_text = locked_text + "\n\n" + _options.tooltip_text
+## true, wenn gewechselt werden darf: nichts gebaut oder der Spieler stimmt dem Abriss zu.
+func _confirm_demolish(scenario: ScenarioDefinition) -> bool:
+	if placement.get_buildings().is_empty():
+		return true
+	if confirm_panel == null:
+		push_warning("ScenarioSelector: Kein confirm_panel gesetzt – Szenario wird ohne Rückfrage gewechselt.")
+		return true
+	confirm_panel.ask(change_title, change_message % scenario.display_name)
+	return await confirm_panel.answered
 
 
 ## Tooltip-Text: Beschreibung und darunter die Hinweise als Aufzählung.

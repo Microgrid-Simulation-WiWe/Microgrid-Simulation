@@ -23,6 +23,9 @@
 		"nuclear": { "allowed": false },
 		"battery": { "allowed": true, "power_factor": 1.0 }
 	},
+	"grid": {
+		"max_red_minutes": 60
+	},
 	"build_area": [25, 25],
 	"landscape": {
 		"ground_color": "#e8eef2",

@@ -35,6 +35,7 @@ func _test_example() -> void:
 	_check(all_allowed and ravensburg.power_factors.values().all(func(factor: float) -> bool: return factor == 1.0),
 		"alle Anlagentypen erlaubt, Faktor 1")
 	_check(ravensburg.grass != null and ravensburg.background == null, "Gras-Mesh geladen, kein Hintergrund")
+	_check(ravensburg.max_red_minutes == 60.0, "Netz bricht nach 60 min am Stück im roten Bereich zusammen")
 
 
 func _test_selection() -> void:
@@ -62,12 +63,14 @@ func _test_loading() -> void:
 	var minimal := ScenarioRegistry.get_by_id(&"minimal")
 	_check(minimal != null and minimal.display_name == "minimal" and minimal.round_hours == 24.0 and minimal.random_seed == 1,
 		"fehlende Felder → id aus dem Dateinamen und Standardwerte")
+	_check(minimal.max_red_minutes == 60.0, "fehlende Grenze für den Netzzusammenbruch → 60 min")
 
 	var forbid := ScenarioRegistry.get_by_id(&"forbid")
 	_check(forbid.round_hours == 48.0 and forbid.start_hour == 6.5 and forbid.tick_hours == 0.25
 		and forbid.round_minutes == 1.6 and forbid.random_seed == 7, "Simulationswerte gelesen")
 	_check(is_equal_approx(forbid.get_ticks_per_second(), 2.0), "48 h in 0,25-h-Ticks (192) in 1,6 min = 2 Tick/s")
 	_check(forbid.info == PackedStringArray(["wenig Wasser"]), "Hinweise gelesen")
+	_check(forbid.max_red_minutes == 30.0, "Grenze für den Netzzusammenbruch gelesen")
 	_check(not forbid.is_plant_allowed(&"nuclear"), "allowed false → verboten")
 	_check(is_equal_approx(forbid.get_power_factor(&"hydro"), 0.5), "power_factor 0.5 gelesen")
 	_check(forbid.is_plant_allowed(&"wind") and forbid.get_power_factor(&"wind") == 1.0, "allowed/power_factor null → erlaubt, Faktor 1")

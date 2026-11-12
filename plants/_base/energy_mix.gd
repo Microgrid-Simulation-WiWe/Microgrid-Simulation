@@ -40,6 +40,10 @@ const SEED_OFFSET_BUILD_POSITION := 2000
 ## Wirkt ab dem nächsten Rundenstart (reset).
 @export var random_seed := 1
 
+@export_group("Leistungsbilanz")
+## Farbstufen grün / gelb / rot, gemeinsam für Anzeige, Auswertung und Netzzusammenbruch.
+@export var balance_bands := BalanceBands.new()
+
 ## Anzahl der bisher ausgeführten Ticks.
 var tick_count := 0
 ## Windgeschwindigkeit der aktuellen Stunde in m/s. Setzt die Wetter-Anzeige.
@@ -92,10 +96,10 @@ func tick() -> void:
 		plant.weather_factor = _weather_factor(plant)
 		plant.tick(tick_hours)
 		total_power_mw += plant.actual_power_mw
-	var balance_kw := total_power_mw * 1000.0 - demand_kw
+	var balance_kw := get_balance_kw()
 	energy_balance_kwh += balance_kw * tick_hours
 	# Zu viel Erzeugung → Frequenz steigt, zu wenig → sie fällt. Träge wie eine Schwungmasse.
-	var imbalance := balance_kw / demand_kw if demand_kw > 0.0 else 0.0
+	var imbalance := BalanceBands.imbalance(balance_kw, demand_kw)
 	frequency_hz = lerpf(frequency_hz, NOMINAL_HZ + hz_per_imbalance * imbalance, frequency_response)
 	ticked.emit()
 
@@ -111,6 +115,16 @@ func reset() -> void:
 	for plant in _plants:
 		plant.reset()
 	_reset_random()
+
+
+## Leistungsbilanz in kW: Erzeugung − Verbrauch. Plus = Überschuss, minus = Unterdeckung.
+func get_balance_kw() -> float:
+	return total_power_mw * 1000.0 - demand_kw
+
+
+## Stufe der aktuellen Leistungsbilanz (grün / gelb / rot), siehe balance_bands.
+func get_balance_zone() -> BalanceBands.Zone:
+	return balance_bands.zone_of(BalanceBands.imbalance(get_balance_kw(), demand_kw))
 
 
 func get_plant(id: StringName) -> PowerPlant:

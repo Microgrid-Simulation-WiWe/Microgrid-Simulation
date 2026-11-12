@@ -18,6 +18,9 @@
 		"wind": { "allowed": null, "power_factor": null },
 		"unknown_type": { "allowed": false }
 	},
+	"grid": {
+		"max_red_minutes": 30
+	},
 	"build_area": [20, 30],
 	"landscape": {
 		"ground_color": "#ff0000",
