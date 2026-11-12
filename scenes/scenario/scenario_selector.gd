@@ -60,6 +60,10 @@ func _apply(scenario: ScenarioDefinition) -> void:
 	energy_mix.tick_hours = scenario.tick_hours
 	energy_mix.ticks_per_second = scenario.get_ticks_per_second()
 	energy_mix.random_seed = scenario.random_seed
+	for definition in PlantRegistry.get_all():
+		var plant := energy_mix.get_plant(definition.id)
+		if plant != null:
+			plant.power_factor = scenario.get_power_factor(definition.id)
 	energy_mix.reset()  # Der Seed wirkt erst ab dem Rundenstart.
 	inventory_bar.hidden_plants = scenario.forbidden_plants
 	inventory_bar.refresh()

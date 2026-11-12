@@ -18,7 +18,7 @@ func reset() -> void:
 
 func tick(tick_hours: float) -> void:
 	var def := definition as StorageDefinition
-	installed_power_mw = unit_count * def.unit_power_mw
+	installed_power_mw = unit_count * def.unit_power_mw * power_factor
 	var capacity_mwh := unit_count * def.unit_capacity_mwh
 
 	var max_discharge_mw := 0.0

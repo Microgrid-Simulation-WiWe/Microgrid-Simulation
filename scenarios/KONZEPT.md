@@ -68,7 +68,7 @@ Ein Objekt je Typ-`id` aus `res://plants/`, z. B. `"hydro": { ... }`. Fehlt ein 
 | Eintrag | Erklärung | Wirkung |
 |---|---|---|
 | `plants.<id>.allowed` | `false` verbietet den Typ in diesem Szenario. Nur ein ausdrückliches `false` verbietet. | Typ fehlt in der Inventarleiste (`InventoryBar.hidden_plants`) |
-| `plants.<id>.power_factor` | Leistungsfaktor des Typs in diesem Szenario, z. B. `0.5` für Wasserkraft bei niedrigem Wasserstand. | noch ohne Wirkung |
+| `plants.<id>.power_factor` | Leistungsfaktor des Typs in diesem Szenario, z. B. `0.5` für Wasserkraft bei niedrigem Wasserstand. Skaliert die installierte Leistung je Einheit (Sollwert in % bezieht sich darauf). | `PowerPlant.power_factor` (gesetzt vom `ScenarioSelector`) |
 
 ### Spielfeld, Landschaft und Wetter
 
@@ -106,6 +106,6 @@ godot --headless --path . --script res://scenarios/_tests/run_tests.gd
 ## Noch offen
 
 - Konkrete Szenarien und ihre Werte (Team / Product Owner).
-- Anwenden von `power_factor`, `build_area`, `landscape` und `weather`.
+- Anwenden von `build_area`, `landscape` und `weather`.
 - **Vorschlag:** Der Verbrauch (`EnergyMix.demand_kw`) steht nicht auf der Karte, wäre aber ein naheliegender Szenario-Wert (Krankenhaus ≠ Bauernhof).
 - **Export:** Im exportierten Build prüfen, dass alle Szenario-JSONs gefunden werden (wie bei den Anlagen).

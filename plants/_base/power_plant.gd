@@ -30,6 +30,9 @@ const READ_ONLY := PROPERTY_USAGE_EDITOR | PROPERTY_USAGE_READ_ONLY
 var rng := RandomNumberGenerator.new()
 var wind_speed_ms := 0.0
 var weather_factor := 1.0
+## Leistungsfaktor des Szenarios (1 = Typenschild-Leistung). Skaliert die installierte Leistung je Einheit.
+## Setzt der ScenarioSelector.
+var power_factor := 1.0
 
 
 func setup(p_definition: PlantDefinition) -> void:

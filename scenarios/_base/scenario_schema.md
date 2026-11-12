@@ -39,7 +39,7 @@ Ein Objekt je Typ-`id` aus `res://plants/`. Typen, die fehlen, sind erlaubt und 
 | Feld | Typ | Standard | Bedeutung |
 |---|---|---|---|
 | `allowed` | `true`/`false` | `true` | `false` = Typ fehlt in diesem Szenario in der Inventarleiste. Nur ein ausdrückliches `false` verbietet. |
-| `power_factor` | Zahl | `1` | Leistungsfaktor in diesem Szenario, z. B. `0.5` für Wasserkraft bei niedrigem Wasserstand. **Noch ohne Wirkung.** |
+| `power_factor` | Zahl | `1` | Leistungsfaktor in diesem Szenario, z. B. `0.5` für Wasserkraft bei niedrigem Wasserstand. Skaliert die installierte Leistung je Einheit. |
 
 ## Spielfeld und Landschaft (noch ohne Wirkung)
 
