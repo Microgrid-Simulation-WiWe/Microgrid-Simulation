@@ -32,5 +32,6 @@
 		"grass": "../assets/meshes/grass.res",
 		"background": null
 	},
-	"weather": {}
+	"weather": {},
+	"consumer": {"profile" : "datacenter"}
 }

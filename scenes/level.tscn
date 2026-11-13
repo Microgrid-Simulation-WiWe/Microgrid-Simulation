@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://mk8jube4dact" path="res://scripts/power_display.gd" id="7_pwr"]
 [ext_resource type="Script" uid="uid://dqfv1s277kja6" path="res://scenes/setpoint_panel.gd" id="8_setp"]
 [ext_resource type="Script" uid="uid://dgjtyjbxdslbn" path="res://scenes/clock_display.gd" id="9_clk"]
+[ext_resource type="Script" uid="uid://bh1x52meamy1r" path="res://scenes/demand/demand_display.gd" id="11_7agi7"]
 [ext_resource type="Script" uid="uid://cjdcbg0yuhv2h" path="res://scripts/power_balance_display.gd" id="11_bal"]
 [ext_resource type="Script" uid="uid://b15t5hvs60jqm" path="res://scenes/inventory/inventory_bar.gd" id="13_wc255"]
 [ext_resource type="Script" uid="uid://emeki7ued0vx" path="res://scenes/inventory/placement_controller.gd" id="14_arp2o"]
@@ -26,7 +27,8 @@
 [ext_resource type="Texture2D" uid="uid://bug3guml8lpkj" path="res://assets/sprites/rain_display.jpeg" id="24_cmcjb"]
 [ext_resource type="Texture2D" uid="uid://csdf8r6bikwrw" path="res://assets/sprites/moon_display.webp" id="25_556r4"]
 [ext_resource type="Script" uid="uid://cyi8sp6ne20s1" path="res://scenes/weather/weather_data_display.gd" id="26_xy2fk"]
-[ext_resource type="Script" path="res://scenes/ui/confirm_panel.gd" id="27_confirm"]
+[ext_resource type="Script" uid="uid://cxgcyhjuyr5lm" path="res://scenes/ui/confirm_panel.gd" id="27_confirm"]
+[ext_resource type="Script" uid="uid://cd2bcpn7d6gk5" path="res://scenes/demand/consumer_demand.gd" id="28_556r4"]
 
 [sub_resource type="QuadMesh" id="QuadMesh_13qdw"]
 flip_faces = true
@@ -133,6 +135,8 @@ layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 7.0
+offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_fpun6")
@@ -156,6 +160,22 @@ text = "Erzeugung: 0.0 MW"
 horizontal_alignment = 2
 script = ExtResource("7_pwr")
 energy_mix = NodePath("../EnergyMix")
+
+[node name="DemandDisplay" type="Label" parent="." unique_id=36229370 node_paths=PackedStringArray("energy_mix", "consumer")]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -249.0
+offset_top = 46.0
+offset_right = -16.0
+offset_bottom = 95.0
+grow_horizontal = 0
+text = "Verbrauch
+: 0.0 MW"
+horizontal_alignment = 2
+script = ExtResource("11_7agi7")
+energy_mix = NodePath("../EnergyMix")
+consumer = NodePath("../ConsumerDemand")
 
 [node name="ClockDisplay" type="Label" parent="." unique_id=1980054321 node_paths=PackedStringArray("energy_mix")]
 anchors_preset = 5
@@ -285,3 +305,8 @@ weather_display = NodePath("../WeatherDisplay")
 
 [node name="ConfirmPanel" type="PanelContainer" parent="." unique_id=1653094827]
 script = ExtResource("27_confirm")
+
+[node name="ConsumerDemand" type="Node" parent="." unique_id=975067862 node_paths=PackedStringArray("energy_mix", "clock_display")]
+script = ExtResource("28_556r4")
+energy_mix = NodePath("../EnergyMix")
+clock_display = NodePath("../ClockDisplay")

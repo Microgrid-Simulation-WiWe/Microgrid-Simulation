@@ -43,6 +43,8 @@ extends Resource
 @export var background: Texture2D
 ## Freie Struktur, wird mit dem Wetter festgelegt.
 @export var weather: Dictionary = {}
+## Verbraucher: { "profile": "school", "peak_kw": 800 }. Leer = Standard des ConsumerDemand-Nodes.
+@export var consumer: Dictionary = {}
 
 var _folder := ""
 var _source := ""
@@ -99,6 +101,7 @@ func load_from_dict(data: Dictionary, folder: String, source: String) -> void:
 	grass = _load_asset(_value(data, "landscape.grass", "")) as Mesh
 	background = _load_asset(_value(data, "landscape.background", "")) as Texture2D
 	weather = _value(data, "weather", {})
+	consumer = _value(data, "consumer", {})
 
 
 ## Liest ein Feld per Pfad ("simulation.round_hours"). Fehlt es, gibt es eine Warnung und den Standardwert.
